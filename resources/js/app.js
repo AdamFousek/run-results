@@ -20,6 +20,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(createI18n( {
+                legacy: false,
                 locale: props.initialPage.props.locale,
                 messages: Messages,
             }))

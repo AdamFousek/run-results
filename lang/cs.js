@@ -47,10 +47,21 @@ export default {
     login: 'Přihlásit se',
     register: 'Registrovat se',
     verifyEmail: 'Ověření e-mailu',
+    runners: 'Závodníci',
   },
   menu: {
     dashboard: 'Novinky',
     administration: 'Administrace',
     profile: 'Profil',
+    runners: 'Závodníci',
+  },
+  runner: {
+    name: 'Jméno',
+    firstName: 'Jméno',
+    lastName: 'Příjmení',
+    year: 'Rok narození',
+    city: 'Město',
+    club: 'Klub',
+    search: 'Vyhledat závodníka',
   }
 }

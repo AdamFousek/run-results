@@ -35,6 +35,9 @@ const showingNavigationDropdown = ref(false);
                 <NavLink :href="route('welcome')" :active="route().current('welcome')">
                   {{ $t('menu.dashboard') }}
                 </NavLink>
+                <NavLink :href="route('runners.index')" :active="route().current('runners.*')">
+                  {{ $t('menu.runners') }}
+                </NavLink>
               </div>
             </div>
 
@@ -128,8 +131,11 @@ const showingNavigationDropdown = ref(false);
           class="sm:hidden"
         >
           <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+            <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
               {{ $t('menu.dashboard') }}
+            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
+              {{ $t('menu.runners') }}
             </ResponsiveNavLink>
           </div>
 

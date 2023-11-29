@@ -7,10 +7,13 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
+        "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
+        "laravel/scout": "^10.6",
         "laravel/tinker": "^2.8",
+        "meilisearch/meilisearch-php": "^1.5",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
