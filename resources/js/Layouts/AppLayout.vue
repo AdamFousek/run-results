@@ -38,6 +38,9 @@ const showingNavigationDropdown = ref(false);
                 <NavLink :href="route('runners.index')" :active="route().current('runners.*')">
                   {{ $t('menu.runners') }}
                 </NavLink>
+                <NavLink :href="route('races.index')" :active="route().current('races.*')">
+                  {{ $t('menu.races') }}
+                </NavLink>
               </div>
             </div>
 

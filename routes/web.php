@@ -28,6 +28,9 @@ Route::get('/', function () {
 Route::get('/zavodnici', [\App\Http\Controllers\RunnerController::class, 'index'])->name('runners.index');
 Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class, 'show'])->name('runners.show');
 
+Route::get('/zavody', [\App\Http\Controllers\RaceController::class, 'index'])->name('races.index');
+Route::get('/zavody/{race}', [\App\Http\Controllers\RaceController::class, 'show'])->name('races.show');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

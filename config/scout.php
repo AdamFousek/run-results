@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Race;
 use App\Models\Runner;
 
 return [
@@ -145,6 +146,13 @@ return [
                     'maxTotalHits' => 100000
                 ]
             ],
+            Race::class => [
+                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface'],
+                'sortableAttributes'=> ['name', 'location', 'distance', 'date'],
+                'pagination' => [
+                    'maxTotalHits' => 100000
+                ]
+            ]
         ],
     ],
 

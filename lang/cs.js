@@ -54,6 +54,7 @@ export default {
     administration: 'Administrace',
     profile: 'Profil',
     runners: 'Závodníci',
+    races: 'Závody',
   },
   runner: {
     name: 'Jméno',
@@ -63,5 +64,12 @@ export default {
     city: 'Město',
     club: 'Klub',
     search: 'Vyhledat závodníka',
+  },
+  race: {
+    name: 'Název',
+    date: 'Datum',
+    location: 'Místo',
+    distance: 'Vzdálenost',
+    search: 'Vyhledat závod',
   }
 }
