@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRaceRequest;
 use App\Http\Requests\UpdateRaceRequest;
+use App\Http\Transformers\RaceListTransformer;
 use App\Models\Race;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
@@ -12,12 +13,12 @@ use Inertia\Response;
 
 class RaceController extends Controller
 {
-    const LIMIT = 20;
+    private const LIMIT = 20;
 
     public function __construct(
         private readonly PaginateService $paginateService,
-    )
-    {
+        private readonly RaceListTransformer $transformer,
+    ) {
     }
 
     public function index(Request $request): Response
@@ -27,7 +28,7 @@ class RaceController extends Controller
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Races/Index', [
-            'races' => $races->items(),
+            'races' => $this->transformer->transform($races->items()),
             'paginate' => [
                 'links' => $this->paginateService->resolveLinks($races),
                 'page' => $page,

@@ -21,7 +21,7 @@ class RaceFactory extends Factory
             'description' => $this->faker->text,
             'date' => $this->faker->dateTime,
             'location' => $this->faker->city,
-            'distance' => $this->faker->randomFloat(2, 0, 100),
+            'distance' => $this->faker->randomFloat(10, 0, 100000),
             'surface' => $this->faker->randomElement(['road', 'trail', 'track']),
             'type' => $this->faker->slug,
         ];

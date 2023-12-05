@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->date('date');
             $table->string('location');
-            $table->string('distance');
+            $table->float('distance');
             $table->string('surface');
             $table->string('type');
             $table->timestamps();

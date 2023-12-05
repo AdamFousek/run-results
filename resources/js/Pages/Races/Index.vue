@@ -72,11 +72,11 @@ const rowProps = (row) => {
 </script>
 
 <template>
-  <Head :title="$t('head.runners')" />
+  <Head :title="$t('head.races')" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.runners') }}</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.races') }}</h2>
     </template>
 
     <div class="py-4">

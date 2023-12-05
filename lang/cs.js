@@ -48,6 +48,7 @@ export default {
     register: 'Registrovat se',
     verifyEmail: 'Ověření e-mailu',
     runners: 'Závodníci',
+    races: 'Závody',
   },
   menu: {
     dashboard: 'Novinky',

@@ -9,6 +9,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PaginateService
 {
+    /**
+     * @param LengthAwarePaginator $paginator
+     * @return array<array<string, string|bool>>
+     */
     public function resolveLinks(LengthAwarePaginator $paginator): array
     {
         $result = [];

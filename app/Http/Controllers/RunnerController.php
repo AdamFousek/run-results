@@ -17,9 +17,7 @@ class RunnerController extends Controller
 
     public function __construct(
         private readonly PaginateService $paginateService,
-    )
-    {
-
+    ) {
     }
 
     public function index(Request $request): Response
