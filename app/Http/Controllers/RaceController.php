@@ -15,6 +15,26 @@ class RaceController extends Controller
 {
     private const LIMIT = 20;
 
+    public const SORT_NAME_ASC = 'name:asc';
+    public const SORT_NAME_DESC = 'name:desc';
+    public const SORT_DATE_ASC = 'date:asc';
+    public const SORT_DATE_DESC = 'date:desc';
+    public const SORT_LOCATION_ASC = 'location:asc';
+    public const SORT_LOCATION_DESC = 'location:desc';
+    public const SORT_DISTANCE_ASC = 'distance:asc';
+    public const SORT_DISTANCE_DESC = 'distance:desc';
+
+    public const SORTS = [
+        self::SORT_NAME_ASC => 'sort.name_asc',
+        self::SORT_NAME_DESC => 'sort.name_desc',
+        self::SORT_DATE_ASC => 'sort.date_asc',
+        self::SORT_DATE_DESC => 'sort.date_desc',
+        self::SORT_LOCATION_ASC => 'sort.location_asc',
+        self::SORT_LOCATION_DESC => 'sort.location_desc',
+        self::SORT_DISTANCE_ASC => 'sort.distance_asc',
+        self::SORT_DISTANCE_DESC => 'sort.distance_desc',
+    ];
+
     public function __construct(
         private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
@@ -23,8 +43,10 @@ class RaceController extends Controller
 
     public function index(Request $request): Response
     {
-        $search = $request->get('query');
-        $races = Race::search($search)->paginate(self::LIMIT);
+        $search = trim($request->get('query'));
+        $sort = $this->resolveSort($request);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
+        $races = Race::search($search)->orderBy($sortColumn, $sortDirection)->paginate(self::LIMIT);
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Races/Index', [
@@ -36,6 +58,8 @@ class RaceController extends Controller
                 'limit' => self::LIMIT
             ],
             'search' => $search,
+            'sortOptions' => $this->buildSort(),
+            'activeSort' => $this->resolveSort($request),
         ]);
     }
 
@@ -47,5 +71,32 @@ class RaceController extends Controller
             'race' => $race,
             'runners' => $runners,
         ]);
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    private function buildSort(): array
+    {
+        $sorts = [];
+        foreach (self::SORTS as $key => $value) {
+            $sorts[] = [
+                'label' => trans($value),
+                'value' => $key,
+            ];
+        }
+
+        return $sorts;
+    }
+
+    private function resolveSort(Request $request): string
+    {
+        $sort = $request->get('sort', self::SORT_NAME_ASC);
+
+        if (!array_key_exists($sort, self::SORTS)) {
+            $sort = self::SORT_NAME_ASC;
+        }
+
+        return $sort;
     }
 }

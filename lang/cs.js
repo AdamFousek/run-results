@@ -72,5 +72,21 @@ export default {
     location: 'Místo',
     distance: 'Vzdálenost',
     search: 'Vyhledat závod',
+    sort: 'Řadit',
+  },
+  result: {
+    position: 'Pozice',
+    time: 'Čas',
+    category_position: 'Pozice v kategorii',
+  },
+  sort: {
+    name_asc: 'Název vzestupně',
+    name_desc: 'Název sestupně',
+    date_asc: 'Datum vzestupně',
+    date_desc: 'Datum sestupně',
+    distance_asc: 'Vzdálenost vzestupně',
+    distance_desc: 'Vzdálenost sestupně',
+    location_asc: 'Místo vzestupně',
+    location_desc: 'Místo sestupně',
   }
 }

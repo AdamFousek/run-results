@@ -2,9 +2,10 @@
 import { h, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NDataTable, NInput, NInputGroup, NButton } from 'naive-ui';
+import { NDataTable, NInput, NInputGroup, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
+import InputLabel from '@/Components/InputLabel.vue'
 
 const { t } = useI18n();
 
@@ -21,12 +22,25 @@ const props = defineProps({
     required: false,
     default: '',
   },
+  sortOptions: {
+    type: Array,
+  },
+  activeSort: {
+    type: String,
+  }
 })
 
 const search = ref(props.search)
+const sort = ref(props.activeSort)
 
 watch(search, (value) => {
   if (value === '' || value.length > 2) {
+    searchRaces()
+  }
+})
+
+watch(sort, (value) => {
+  if (value) {
     searchRaces()
   }
 })
@@ -35,6 +49,7 @@ const searchRaces = () => {
   router.reload({
     data: {
       query: search.value,
+      sort: sort.value,
       page: 1,
     },
     only: ['races', 'paginate'],
@@ -82,14 +97,26 @@ const rowProps = (row) => {
     <div class="py-4">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <div class="my-4 w-full md:w-7/12 mx-auto">
-          <NInput type="text"
-                  class="mx-4"
-                  v-model:value="search"
-                  :placeholder="$t('race.search')"
-                  clearable
-                  round
-          />
+        <div class="flex justify-between">
+          <div class="my-3 w-1/2">
+            <InputLabel for="username" :value="$t('race.search')"/>
+
+            <NInput type="text"
+                    class=""
+                    v-model:value="search"
+                    :placeholder="$t('race.search')"
+                    clearable
+                    round
+            />
+          </div>
+
+          <div class="my-3 w-1/6">
+            <InputLabel for="username" :value="$t('race.sort')" />
+
+            <NSelect class="w-1/12" round :placeholder="$t('race.sort')" v-model:value="sort" :options="sortOptions" />
+          </div>
+
+
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <NDataTable

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
+use App\Http\Transformers\RunnerRaceListTransformer;
 use App\Models\Runner;
 use App\Services\PaginateService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -17,6 +18,7 @@ class RunnerController extends Controller
 
     public function __construct(
         private readonly PaginateService $paginateService,
+        private readonly RunnerRaceListTransformer $runnerRaceListTransformer,
     ) {
     }
 
@@ -40,11 +42,11 @@ class RunnerController extends Controller
 
     public function show(Runner $runner): Response
     {
-        $races = [];
+        $results = $runner->results()->with('race')->get();
 
         return Inertia::render('Runners/Show', [
             'runner' => $runner,
-            'races' => $races,
+            'results' => $this->runnerRaceListTransformer->transform($results),
         ]);
     }
 }

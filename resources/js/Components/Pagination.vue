@@ -11,8 +11,8 @@ defineProps({
 </script>
 
 <template>
-  <nav class="flex justify-center items-center" aria-label="Page navigation example">
-    <ul class="inline-flex -space-x-px text-sm">
+  <nav class="flex justify-center items-center p-4" aria-label="Page navigation example">
+    <ul class="inline-flex -space-x-px text-sm w-full overflow-x-auto">
       <li v-for="(link, index ) in pages" :key="index">
         <Link v-if="link.active"
               href="#"
@@ -22,7 +22,7 @@ defineProps({
                 'rounded-l-md': index === 0,
                 'rounded-r-md': index === pages.length-1,
               }"
-              v-html="$t(link.label)"
+              v-html="link.label"
         />
         <Link v-else-if="link.link"
               :href="link.link"
@@ -32,9 +32,9 @@ defineProps({
                 'rounded-r-md': index === pages.length-1,
               }"
         >
-          {{ $t(link.label) }}
+          {{ link.label }}
         </Link>
-        <span v-else class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300" v-html="$t(link.label)" />
+        <span v-else class="flex items-center justify-center px-3 h-8 text-gray-500 bg-white border border-gray-300" v-html="link.label" />
       </li>
     </ul>
   </nav>

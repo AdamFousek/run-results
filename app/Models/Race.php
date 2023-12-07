@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
@@ -80,6 +81,17 @@ class Race extends Model
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    public function runners(): BelongsToMany
+    {
+        return $this->belongsToMany(Runner::class, 'results')
+            ->withTimestamps();
+    }
+
+    public function results(): HasMany
+    {
+        return $this->hasMany(Result::class);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -89,7 +101,7 @@ class Race extends Model
             'parent_id' => $this->parent_id,
             'name' => $this->name,
             'description' => $this->description,
-            'date' => $this->date->format('j.n.Y G:i:s'),
+            'date' => $this->date->timestamp,
             'location' => $this->location,
             'distance' => $this->distance,
             'surface' => $this->surface,

@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
@@ -76,6 +78,17 @@ class Runner extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function races(): BelongsToMany
+    {
+        return $this->belongsToMany(Race::class, 'results')
+            ->withTimestamps();
+    }
+
+    public function results(): HasMany
+    {
+        return $this->hasMany(Result::class);
     }
 
     /**
