@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DistanceCast;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+
 
 /**
  * App\Models\Race
@@ -20,7 +22,7 @@ use Laravel\Scout\Searchable;
  * @property string $description
  * @property \Illuminate\Support\Carbon $date
  * @property string $location
- * @property float $distance
+ * @property mixed $distance
  * @property string $surface
  * @property string $type
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -29,6 +31,10 @@ use Laravel\Scout\Searchable;
  * @property-read Race|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $records
  * @property-read int|null $records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Runner> $runners
+ * @property-read int|null $runners_count
  * @method static \Database\Factories\RaceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Race newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Race newQuery()
@@ -69,6 +75,7 @@ class Race extends Model
         'date' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'distance' => DistanceCast::class,
     ];
 
     public function parent(): BelongsTo
@@ -103,7 +110,7 @@ class Race extends Model
             'description' => $this->description,
             'date' => $this->date->timestamp,
             'location' => $this->location,
-            'distance' => $this->distance,
+            'distance' => $this->getRawOriginal('distance'),
             'surface' => $this->surface,
             'type' => $this->type,
             'created_at' => $this->created_at,

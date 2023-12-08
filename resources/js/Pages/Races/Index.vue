@@ -125,7 +125,9 @@ const rowProps = (row) => {
             :pagination="false"
             :bordered="false"
             :row-props="rowProps"
-          />
+          >
+            <template #empty>{{ $t('noResults') }}</template>
+          </NDataTable>
 
           <Pagination v-if="races.length" :pages="paginate.links" class="my-4" />
         </div>

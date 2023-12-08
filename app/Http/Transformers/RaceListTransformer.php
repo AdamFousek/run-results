@@ -6,18 +6,12 @@ declare(strict_types=1);
 namespace App\Http\Transformers;
 
 use App\Models\Race;
-use App\Services\DistanceService;
 
 class RaceListTransformer
 {
-    public function __construct(private readonly DistanceService $distanceService)
-    {
-
-    }
-
     /**
      * @param array<int, ?Race> $items
-     * @return array<array<string, string>>
+     * @return array<array<string, string|int|float>>
      */
     public function transform(array $items): array
     {
@@ -35,15 +29,16 @@ class RaceListTransformer
 
     /**
      * @param Race $race
-     * @return array<string, string>
+     * @return array<string, string|int|float>
      */
     private function transformItem(Race $race): array
     {
         return [
+            'id' => $race->id,
             'name' => $race->name,
             'date' => $race->date->format('j.n.Y'),
             'location' => $race->location,
-            'distance' => $this->distanceService->transform($race->distance),
+            'distance' => $race->distance,
         ];
     }
 }

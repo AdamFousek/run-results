@@ -17,6 +17,7 @@ class ResultFactory extends Factory
     public function definition(): array
     {
         return [
+            'starting_number' => $this->faker->numberBetween(1, 1000),
             'position' => $this->faker->numberBetween(1, 1000),
             'time' => $this->faker->time('H:i:s.v', 'now'),
             'category' => $this->faker->randomElement(['M', 'F', 'MV40', 'FV40', 'MV50', 'FV50', 'MV60', 'FV60', 'MV70', 'FV70', 'MV80', 'FV80']),

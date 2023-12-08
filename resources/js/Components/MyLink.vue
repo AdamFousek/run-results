@@ -4,7 +4,8 @@ import { Link } from '@inertiajs/vue3'
 const props = defineProps({
   type: {
     type: String,
-    required: true,
+    required: false,
+    default: 'primary',
   },
   href: {
     type: String,
@@ -13,9 +14,9 @@ const props = defineProps({
 })
 
 const typeClasses = {
-  primary: 'bg-sea-pink-600 hover:bg-sea-pink-700 text-white ',
-  secondary: 'bg-white hover:bg-gray-50 text-gray-700 ',
-  danger: 'bg-red-600 hover:bg-red-700 text-white ',
+  primary: 'text-violet-950 hover:text-violet-800',
+  secondary: 'bg-white hover:bg-gray-50 text-gray-700',
+  danger: 'bg-red-600 hover:bg-red-700',
   link: 'text-sea-pink-600 hover:text-sea-pink-700 ',
 }
 

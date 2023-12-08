@@ -1,5 +1,6 @@
 export default {
   cancel: 'Zrušit',
+  noResults: 'Nic jsme nenašli',
   profile: {
     information: 'Informace o profilu',
     informationDescription: 'Aktualizujte svojí emailovou adresu',
@@ -71,11 +72,16 @@ export default {
     date: 'Datum',
     location: 'Místo',
     distance: 'Vzdálenost',
+    surface: 'Povrch',
+    type: 'Typ',
     search: 'Vyhledat závod',
     sort: 'Řadit',
+    information: 'Informace o závodě',
+    runners: 'Počet závodníků',
   },
   result: {
     position: 'Pozice',
+    startingNumber: 'Startovní číslo',
     time: 'Čas',
     category_position: 'Pozice v kategorii',
   },

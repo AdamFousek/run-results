@@ -1,6 +1,6 @@
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
 parameters:
     paths:
         - app

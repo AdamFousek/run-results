@@ -36,7 +36,7 @@ const searchRaces = () => {
     data: {
       query: search.value,
     },
-    only: ['races'],
+    only: ['results'],
     preserveState: true,
   })
 }
@@ -108,7 +108,9 @@ const rowProps = (row) => {
             :pagination="false"
             :bordered="false"
             :row-props="rowProps"
-          />
+          >
+            <template #empty>{{ $t('noResults') }}</template>
+          </NDataTable>
         </div>
       </div>
     </div>

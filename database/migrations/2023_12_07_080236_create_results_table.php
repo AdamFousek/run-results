@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('race_id');
             $table->foreign('race_id')->references('id')
                 ->on('races')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('starting_number');
             $table->unsignedBigInteger('position');
             $table->unsignedBigInteger('time');
             $table->string('category');

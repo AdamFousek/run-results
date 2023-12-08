@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRaceRequest;
 use App\Http\Requests\UpdateRaceRequest;
 use App\Http\Transformers\RaceListTransformer;
+use App\Http\Transformers\RaceRunnerListTransformer;
+use App\Http\Transformers\RaceTransformer;
 use App\Models\Race;
+use App\Models\Runner;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -38,6 +41,8 @@ class RaceController extends Controller
     public function __construct(
         private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
+        private readonly RaceRunnerListTransformer $raceRunnerListTransformer,
+        private readonly RaceTransformer $raceTransformer,
     ) {
     }
 
@@ -63,13 +68,24 @@ class RaceController extends Controller
         ]);
     }
 
-    public function show(Race $race): Response
+    public function show(Request $request, Race $race): Response
     {
-        $runners = [];
+        $search = trim($request->get('query'));
+        $isNumeric = is_numeric($search);
+        if ($search !== '') {
+            if ($isNumeric) {
+                $results = $race->results()->where('starting_number', (int)$search)->orderBy('time')->with('runner')->get();
+            } else {
+                $runnerIds = Runner::search($search)->get()->pluck('id');
+                $results = $race->results()->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->get();
+            }
+        } else {
+            $results = $race->results()->orderBy('time')->with('runner')->get();
+        }
 
-        return Inertia::render('Runner/Show', [
-            'race' => $race,
-            'runners' => $runners,
+        return Inertia::render('Races/Show', [
+            'race' => $this->raceTransformer->transform($race),
+            'results' => $this->raceRunnerListTransformer->transform($results),
         ]);
     }
 

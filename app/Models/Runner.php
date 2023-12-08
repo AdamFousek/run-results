@@ -26,6 +26,10 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Race> $races
+ * @property-read int|null $races_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\RunnerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newModelQuery()
