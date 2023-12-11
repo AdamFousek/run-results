@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Runner;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRunnerRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreRunnerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->isAdmin() ?? false;
+        return $this->user()?->can('create', Runner::class) ?? false;
     }
 
     /**

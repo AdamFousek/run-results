@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 
-namespace App\Commands;
+namespace App\Commands\PairRunnerLog;
 
 use App\Models\PairRunnerLog;
 use App\Models\Runner;
-use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,17 +20,18 @@ class PairRunnerLogCreateHandler
         $runner = Runner::whereId($command->runnerId)->first();
         $user = $command->user;
 
-        if ($runner === null || $user === null) {
+        if ($runner === null) {
             throw new Exception(trans('runner_not_found'));
         }
 
+        $runner->setVisible(['day', 'month']);
         $pairRunnerLog = new PairRunnerLog();
         $pairRunnerLog->runner_id = $runner->id;
         $pairRunnerLog->user_id = $user->id;
 
         if ($runner->day === null || $runner->month === null) {
-            $pairRunnerLog->error = PairRunnerLog::RESULT_NEED_ATTENTION;
-            $pairRunnerLog->result = trans('messages.runner_pair_runner_not_day_or_month');
+            $pairRunnerLog->error = trans('messages.runner_pair_runner_not_day_or_month');
+            $pairRunnerLog->result = PairRunnerLog::RESULT_NEED_ATTENTION;
             $pairRunnerLog->save();
 
             return $pairRunnerLog;

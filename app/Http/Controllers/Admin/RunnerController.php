@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Commands\Runner\CreateRunner;
+use App\Commands\Runner\CreateRunnerHandler;
+use App\Commands\Runner\UpdateRunner;
+use App\Commands\Runner\UpdateRunnerHandler;
+use App\Http\Requests\StoreRunnerRequest;
+use App\Http\Requests\UpdateRunnerRequest;
 use App\Models\Runner;
 use App\Services\PaginateService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,6 +22,8 @@ class RunnerController extends AdminController
 
     public function __construct(
         private readonly PaginateService $paginateService,
+        private readonly CreateRunnerHandler $createRunnerHandler,
+        private readonly UpdateRunnerHandler $updateRunnerHandler,
     ) {
     }
 
@@ -33,5 +43,70 @@ class RunnerController extends AdminController
             ],
             'search' => $search,
         ]);
+    }
+
+    public function edit(Runner $runner): Response
+    {
+        return Inertia::render('Admin/Runners/Edit', [
+            'runner' => $runner,
+        ]);
+    }
+
+    public function create(): Response
+    {
+        $this->authorize('create', Runner::class);
+
+        return Inertia::render('Admin/Runners/Create');
+    }
+
+    public function store(StoreRunnerRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        try {
+            $runner = $this->createRunnerHandler->handle(
+                new CreateRunner(
+                    $data['first_name'],
+                    $data['last_name'],
+                    $data['day'] === 0 ? null : $data['day'],
+                    $data['month'] === 0 ? null : $data['month'],
+                    $data['year'],
+                    $data['city'],
+                    $data['club'],
+                )
+            );
+
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.runner_create_success'));
+
+            return Redirect::route('admin.runners.edit', $runner->id);
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
+        }
+    }
+
+    public function update(Runner $runner, UpdateRunnerRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        try {
+            $runner = $this->updateRunnerHandler->handle(new UpdateRunner(
+                $runner,
+                $data['first_name'],
+                $data['last_name'],
+                $data['day'] === 0 ? null : $data['day'],
+                $data['month'] === 0 ? null : $data['month'],
+                $data['year'],
+                $data['city'],
+                $data['club'],
+            ));
+
+            return Redirect::route('admin.runners.edit', $runner->id);
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
+        }
     }
 }

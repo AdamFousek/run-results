@@ -9,3 +9,4 @@ parameters:
 #        - message: '#Access to an undefined property [a-zA-Z0-9\\_]+::\$pivot.#'
     excludePaths:
     checkGenericClassInNonGenericObjectType: false
+    tmpDir: var/cache/phpstan

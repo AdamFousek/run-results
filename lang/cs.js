@@ -58,6 +58,7 @@ export default {
     admin: {
       runners: 'Administrace - Závodníci',
       races: 'Administrace - Závody',
+      runners_create: 'Administrace - Vytvořit závodníka',
     }
   },
   menu: {
@@ -126,6 +127,8 @@ export default {
     },
     runner: {
       create: 'Vytvořit závodníka',
+      update: 'Aktualizovat závodníka',
+      back: 'Zpět na výpis'
     }
   }
 }

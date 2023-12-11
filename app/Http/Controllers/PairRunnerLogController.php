@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Commands\PairRunnerLogCreate;
-use App\Commands\PairRunnerLogCreateHandler;
+use App\Commands\PairRunnerLog\PairRunnerLogCreate;
+use App\Commands\PairRunnerLog\PairRunnerLogCreateHandler;
 use App\Http\Requests\StorePairRunnerLogRequest;
-use App\Http\Requests\UpdatePairRunnerLogRequest;
 use App\Models\PairRunnerLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;

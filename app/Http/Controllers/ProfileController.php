@@ -28,7 +28,7 @@ class ProfileController extends Controller
         $pairRunnerLimit = PairRunnerLog::LIMIT - PairRunnerLog::where('user_id', $user->id)->count();
 
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
+            'mustVerifyEmail' => true, // $user instanceof MustVerifyEmail,
             'status' => session('status'),
             'pairRunnerLimit' => $pairRunnerLimit,
         ]);

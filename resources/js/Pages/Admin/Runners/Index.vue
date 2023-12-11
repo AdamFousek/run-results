@@ -73,6 +73,7 @@ const rowProps = (row) => {
     }
   };
 };
+
 </script>
 
 <template>
@@ -94,7 +95,7 @@ const rowProps = (row) => {
                   round
           />
 
-          <NButton round type="success">
+          <NButton round type="success" @click="router.get(route('admin.runners.create'))">
             <template #icon>
               <NIcon>
                 <PlusSharp />
