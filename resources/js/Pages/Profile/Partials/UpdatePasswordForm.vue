@@ -54,12 +54,11 @@ const updatePassword = () => {
         <InputLabel for="current_password" :value="$t('profile.currentPassword')"/>
 
         <NInput
-          id="current_password"
+          :input-props="{ id: 'current_password', autocomplete: 'current-password' }"
           ref="currentPasswordInput"
           v-model:value="form.current_password"
           type="password"
           class="mt-1 block w-full"
-          autocomplete="current-password"
           :status="errors.currentPassword"
           :placeholder="$t('profile.currentPassword')"
           @input="errors.currentPassword = ''"
@@ -72,12 +71,11 @@ const updatePassword = () => {
         <InputLabel for="password" :value="$t('profile.newPassword')"/>
 
         <NInput
-          id="password"
+          :input-props="{ id: 'password', autocomplete: 'new-password' }"
           ref="passwordInput"
           v-model:value="form.password"
           type="password"
           class="mt-1 block w-full"
-          autocomplete="new-password"
           :status="errors.password"
           :placeholder="$t('profile.newPassword')"
           @input="errors.password = ''"
@@ -90,7 +88,7 @@ const updatePassword = () => {
         <InputLabel for="password_confirmation" :value="$t('profile.confirmPassword')"/>
 
         <NInput
-          id="password_confirmation"
+          :input-props="{ id: 'password_confirmation' }"
           v-model:value="form.password_confirmation"
           type="password"
           class="mt-1 block w-full"

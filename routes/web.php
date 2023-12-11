@@ -35,10 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/profile/runner-pair', [\App\Http\Controllers\PairRunnerLogController::class, 'store'])->name('profile.runner.pair');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavodnici', [\App\Http\Controllers\Admin\RunnerController::class, 'index'])->name('admin.runners.index');
+
+    Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
 });
 
 require __DIR__.'/auth.php';

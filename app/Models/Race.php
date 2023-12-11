@@ -105,6 +105,7 @@ class Race extends Model
     public function toSearchableArray(): array
     {
         return [
+            'id' => $this->id,
             'parent_id' => $this->parent_id,
             'name' => $this->name,
             'description' => $this->description,

@@ -1,15 +1,16 @@
 <script setup>
 import { h, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
-import AppLayout from '@/Layouts/AppLayout.vue'
-import { NDataTable, NInput, NInputGroup, NButton } from 'naive-ui';
+import AdminLayout from '@/Layouts/AdminLayout.vue'
+import { NDataTable, NInput, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
+import InputLabel from '@/Components/InputLabel.vue'
 
 const { t } = useI18n();
 
 const props = defineProps({
-  runners: {
+  races: {
     type: Array,
   },
   paginate: {
@@ -27,40 +28,38 @@ const search = ref(props.search)
 
 watch(search, (value) => {
   if (value === '' || value.length > 2) {
-    searchRunners()
+    searchRaces()
   }
 })
 
-const searchRunners = () => {
+const searchRaces = () => {
   router.reload({
     data: {
       query: search.value,
+      sort: sort.value,
       page: 1,
     },
-    only: ['runners', 'paginate'],
+    only: ['races', 'paginate'],
     preserveState: true,
   })
 }
 
 const columns = [
   {
-    title: t('runner.name'),
+    title: t('race.name'),
     key: 'name',
-    render(row) {
-      return h('div', { innerHTML: row.last_name + ' ' + row.first_name });
-    }
   },
   {
-    title: t('runner.year'),
-    key: 'year',
+    title: t('race.date'),
+    key: 'date',
   },
   {
-    title: t('runner.club'),
-    key: 'club',
+    title: t('race.location'),
+    key: 'location',
   },
   {
-    title: t('runner.city'),
-    key: 'city',
+    title: t('race.distance'),
+    key: 'distance',
   },
 ]
 
@@ -68,36 +67,40 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('runners.show', { runner: row.id }))
+      router.get(route('races.show', { race: row.id }))
     }
   };
 };
 </script>
 
 <template>
-  <Head :title="$t('head.runners')" />
+  <Head :title="$t('head.admin.races')" />
 
-  <AppLayout>
+  <AdminLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.runners') }}</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.admin.races') }}</h2>
     </template>
 
     <div class="py-4">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <div class="my-4 w-full md:w-7/12 mx-auto">
-          <NInput type="text"
-                  class="mx-4"
-                  v-model:value="search"
-                  :placeholder="$t('runner.search')"
-                  clearable
-                  round
-          />
+        <div class="flex justify-between">
+          <div class="my-3 w-1/2">
+            <InputLabel for="username" :value="$t('race.search')"/>
+
+            <NInput type="text"
+                    class=""
+                    v-model:value="search"
+                    :placeholder="$t('race.search')"
+                    clearable
+                    round
+            />
+          </div>
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <NDataTable
             :columns="columns"
-            :data="runners"
+            :data="races"
             :pagination="false"
             :bordered="false"
             :row-props="rowProps"
@@ -105,11 +108,11 @@ const rowProps = (row) => {
             <template #empty>{{ $t('noResults') }}</template>
           </NDataTable>
 
-          <Pagination v-if="runners.length" :pages="paginate.links" class="my-4" />
+          <Pagination v-if="races.length" :pages="paginate.links" class="my-4" />
         </div>
       </div>
     </div>
-  </AppLayout>
+  </AdminLayout>
 </template>
 
 <style scoped>

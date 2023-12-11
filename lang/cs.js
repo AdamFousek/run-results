@@ -1,6 +1,8 @@
 export default {
   cancel: 'Zrušit',
   noResults: 'Nic jsme nenašli',
+  laoding: 'Načítání...',
+  somethingWentWrong: 'Něco se pokazilo',
   profile: {
     information: 'Informace o profilu',
     informationDescription: 'Aktualizujte svojí emailovou adresu',
@@ -20,6 +22,8 @@ export default {
     emailVerificationLinkSent: 'Na vaši e-mailovou adresu byl odeslán nový ověřovací odkaz.',
     save: 'Uložit',
     saved: 'Změny byly uloženy.',
+    runnerPairEmailVerified: 'Vaše emailová adresa nebyla ověřena. Prosím, nejdříve ověřte vaši emailovou adresu a poté můžete napárovat účet se závodníkem.',
+    runnerNotFound: 'Závodník nebyl nalezen. Zkontrolujte prosím zadané údaje.',
   },
   auth: {
     forgotPassword: 'Zapomněli jste heslo?',
@@ -50,6 +54,11 @@ export default {
     verifyEmail: 'Ověření e-mailu',
     runners: 'Závodníci',
     races: 'Závody',
+
+    admin: {
+      runners: 'Administrace - Závodníci',
+      races: 'Administrace - Závody',
+    }
   },
   menu: {
     dashboard: 'Novinky',
@@ -66,6 +75,8 @@ export default {
     city: 'Město',
     club: 'Klub',
     search: 'Vyhledat závodníka',
+    day: 'Den',
+    month: 'Měsíc',
   },
   race: {
     name: 'Název',
@@ -94,5 +105,27 @@ export default {
     distance_desc: 'Vzdálenost sestupně',
     location_asc: 'Místo vzestupně',
     location_desc: 'Místo sestupně',
+  },
+  runnerPair: {
+    header: 'Propojení účtu se závodníkem',
+    description: 'Pro propojení účtu se závodníkem je potřeba zadat den a měsíc narození závodníka. Poté budete moct hodnotit závody, kterých jste se zúčastnil.',
+    day: 'Den',
+    month: 'Měsíc',
+    year: 'Rok',
+    submit: 'Propojit',
+    confirmDate: 'Prosím vyplňte den a měsíc narození závodníka pro potvrzení že se jedná o Vás.',
+    pair: 'Propojit účet',
+    requestSent: 'Žádost o propojení účtu byla odeslána.',
+    pairLimit: 'Na propojení účtu se závodníkem máte 3 pokusy. Po vyčerpání limitu Vás budeme kontaktovat e-mailem.',
+    pairLimitCount: 'Počet zbývajících pokusů',
+    pairLimitExceed: 'Byl vyčerpán limit pokusů o propojení účtu se závodníkem. Budete kontaktováni e-mailem.',
+  },
+  admin: {
+    menu: {
+      web: 'Zpět na web'
+    },
+    runner: {
+      create: 'Vytvořit závodníka',
+    }
   }
 }

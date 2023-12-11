@@ -18,8 +18,8 @@ use Laravel\Scout\Searchable;
  * @property int|null $user_id
  * @property string $first_name
  * @property string $last_name
- * @property int|null $day
- * @property int|null $month
+ * @property string|null $day
+ * @property string|null $month
  * @property int $year
  * @property string|null $city
  * @property string|null $club
@@ -73,7 +73,6 @@ class Runner extends Model
         'month',
     ];
 
-
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -101,6 +100,7 @@ class Runner extends Model
     public function toSearchableArray(): array
     {
         return [
+            'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'year' => $this->year,

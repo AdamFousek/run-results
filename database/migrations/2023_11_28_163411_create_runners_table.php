@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('first_name')->nullable(false);
             $table->string('last_name')->nullable(false);
-            $table->smallInteger('day')->nullable();
-            $table->smallInteger('month')->nullable();
+            $table->string('day')->nullable();
+            $table->string('month')->nullable();
             $table->integer('year')->nullable(false);
             $table->string('city')->nullable();
             $table->string('club')->nullable();

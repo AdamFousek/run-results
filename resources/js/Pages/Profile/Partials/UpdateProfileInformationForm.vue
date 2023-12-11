@@ -36,7 +36,7 @@ const form = useForm({
         <InputLabel for="name" :value="$t('auth.username')"/>
 
         <NInput
-          id="name"
+          :input-props="{ id: 'name', autocomplete: 'name' }"
           type="text"
           class="mt-1 block w-full"
           v-model:value="form.username"
@@ -50,12 +50,10 @@ const form = useForm({
         <InputLabel for="email" :value="$t('auth.email')"/>
 
         <NInput
-          id="email"
-          :input-props="{ type: 'email' }"
+          :input-props="{ type: 'email', id: 'email', autocomplete: 'email' }"
           class="mt-1 block w-full"
           v-model:value="form.email"
           required
-          autocomplete="username"
         />
 
         <InputError class="mt-2" :message="form.errors.email"/>
