@@ -16,19 +16,18 @@ class UpdateRunnerHandler
         $runner->setVisible(['day', 'month']);
         $runner->first_name = $command->firstName;
         $runner->last_name = $command->lastName;
-        $day = $command->day === null ? null : (string)$command->day;
-        $month = $command->month === null ? null : (string)$command->month;
-        if ($day && !Hash::check($day, (string)$runner->day)) {
-            $runner->day = Hash::make($day);
+        if ($runner->day === null && $command->day !== null) {
+            $runner->day = Hash::make((string)$command->day);
         }
-        if ($month && !Hash::check($month, (string)$runner->month)) {
-            $runner->month = Hash::make($month);
+        if ($runner->month === null && $command->month !== null) {
+            $runner->month = Hash::make((string)$command->month);
         }
         $runner->year = $command->year;
         $runner->city = $command->city;
         $runner->club = $command->club;
 
         $runner->save();
+        $runner->makeHidden(['day', 'month']);
 
         return $runner;
     }

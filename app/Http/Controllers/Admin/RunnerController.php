@@ -68,8 +68,8 @@ class RunnerController extends AdminController
                 new CreateRunner(
                     $data['first_name'],
                     $data['last_name'],
-                    $data['day'] === 0 ? null : $data['day'],
-                    $data['month'] === 0 ? null : $data['month'],
+                    $data['day'] ?? null,
+                    $data['month'] ?? null,
                     $data['year'],
                     $data['city'],
                     $data['club'],
@@ -95,14 +95,37 @@ class RunnerController extends AdminController
                 $runner,
                 $data['first_name'],
                 $data['last_name'],
-                $data['day'] === 0 ? null : $data['day'],
-                $data['month'] === 0 ? null : $data['month'],
+                $data['day'] ?? null ,
+                $data['month'] ?? null,
                 $data['year'],
                 $data['city'],
                 $data['club'],
             ));
 
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.runner_update_success'));
+
             return Redirect::route('admin.runners.edit', $runner->id);
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
+        }
+    }
+
+    public function destroy(Request $request, Runner $runner): RedirectResponse
+    {
+        try {
+            $this->authorize('delete', $runner);
+
+            $request->validate([
+                'runnerId' => 'required|exists:runners,id',
+            ]);
+
+            $runner->delete();
+
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.runner_delete_success'));
+
+            return Redirect::route('admin.runners.index');
         } catch (\Exception $exception) {
             $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
 

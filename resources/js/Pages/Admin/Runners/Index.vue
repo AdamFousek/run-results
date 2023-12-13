@@ -69,7 +69,7 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('runners.show', { runner: row.id }))
+      router.get(route('admin.runners.update', { runner: row.id }))
     }
   };
 };

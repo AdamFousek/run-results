@@ -15,7 +15,10 @@ defineProps({
   },
   pairRunnerLimit: {
     type: Number,
-  }
+  },
+  runner: {
+    type: Object,
+  },
 });
 </script>
 
@@ -42,7 +45,7 @@ defineProps({
         </div>
 
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-          <PairRunnerForm :pair-runner-limit="pairRunnerLimit" class="max-w-xl" />
+          <PairRunnerForm :pair-runner-limit="pairRunnerLimit" :runner="runner" class="max-w-xl" />
         </div>
 
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

@@ -3,16 +3,16 @@
 declare(strict_types=1);
 
 
-namespace App\Http\Transformers;
+namespace App\Http\Transformers\Runner;
 
 use App\Models\Result;
 use Illuminate\Database\Eloquent\Collection;
 
-class RaceRunnerListTransformer
+class RunnerRaceListTransformer
 {
     /**
      * @param Collection $results
-     * @return array<array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
     public function transform(Collection $results): array
     {
@@ -23,16 +23,14 @@ class RaceRunnerListTransformer
             }
 
             $transformedData[] = [
-                'runner_id' => $result->runner->id,
-                'starting_number' => $result->starting_number,
-                'first_name' => $result->runner->first_name,
-                'last_name' => $result->runner->last_name,
-                'year' => $result->runner->year,
-                'club' => $result->runner->club,
+                'race_id' => $result->race->id,
+                'name' => $result->race->name,
+                'date' => $result->race->date->format('j.n.Y'),
+                'location' => $result->race->location,
+                'distance' => $result->race->distance,
+                'time' => $result->time,
                 'position' => $result->position,
                 'category_position' => $result->category_position,
-                'category' => $result->category,
-                'time' => $result->time,
             ];
         }
 

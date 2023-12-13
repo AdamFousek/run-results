@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Transformers\Runner\RunnerTransformer;
 use App\Models\PairRunnerLog;
 use App\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +15,11 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private readonly RunnerTransformer $runnerTransformer,
+    ) {
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -31,6 +36,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => true, // $user instanceof MustVerifyEmail,
             'status' => session('status'),
             'pairRunnerLimit' => $pairRunnerLimit,
+            'runner' => $user->runner ? $this->runnerTransformer->transform($user->runner) : null,
         ]);
     }
 

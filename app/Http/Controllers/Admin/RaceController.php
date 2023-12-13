@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Transformers\RaceListTransformer;
+use App\Http\Transformers\Race\RaceListTransformer;
 use App\Models\Race;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RaceController extends Controller
+class RaceController extends AdminController
 {
     private const LIMIT = 50;
 

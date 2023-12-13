@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { NButton, NInput } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
@@ -12,15 +12,15 @@ const minYear = 1900;
 const form = useForm({
   first_name: '',
   last_name: '',
-  day: 0,
-  month: 0,
+  day: null,
+  month: null,
   year: 2000,
   city: '',
   club: '',
 });
 
 const submit = () => {
-  form.post(route('admin.runners.store'));
+  form.post(route('admin.runners.store'))
 };
 </script>
 

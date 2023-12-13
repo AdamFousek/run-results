@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Transformers\RunnerListTransformer;
+use App\Http\Transformers\Runner\RunnerListTransformer;
 use App\Models\PairRunnerLog;
 use App\Models\Runner;
 use Illuminate\Http\JsonResponse;

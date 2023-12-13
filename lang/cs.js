@@ -67,6 +67,7 @@ export default {
     profile: 'Profil',
     runners: 'Závodníci',
     races: 'Závody',
+    users: 'Uživatelé',
   },
   runner: {
     name: 'Jméno',
@@ -120,6 +121,7 @@ export default {
     pairLimit: 'Na propojení účtu se závodníkem máte 3 pokusy. Po vyčerpání limitu Vás budeme kontaktovat e-mailem.',
     pairLimitCount: 'Počet zbývajících pokusů',
     pairLimitExceed: 'Byl vyčerpán limit pokusů o propojení účtu se závodníkem. Budete kontaktováni e-mailem.',
+    pairedWith: 'Účet je propojen se závodníkem:',
   },
   admin: {
     menu: {
@@ -128,7 +130,23 @@ export default {
     runner: {
       create: 'Vytvořit závodníka',
       update: 'Aktualizovat závodníka',
-      back: 'Zpět na výpis'
+      back: 'Zpět na výpis',
+      deleteRunner: 'Smazat závodníka',
+      deleteDescription: 'Závodník bude smazán ze všech výsledků!',
+      delete: 'Smazar závodníka',
+      deleteConfirmation: 'Jste si jisti, že chcete smazat závodníka?',
     }
+  },
+  user: {
+    username: 'Uživatelské jméno',
+    email: 'E-mailová adresa',
+    runner: {
+        firstName: 'Jméno běžce',
+        lastName: 'Příjmení běžce',
+        year: 'Rok narození',
+        city: 'Město',
+        club: 'Klub',
+    },
+    search: 'Vyhledat uživatele',
   }
 }

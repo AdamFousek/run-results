@@ -42,6 +42,9 @@ const alert = computed(() => {
                 <NavLink :href="route('admin.races.index')" :active="route().current('admin.races.*')">
                   {{ $t('menu.races') }}
                 </NavLink>
+                <NavLink :href="route('admin.users.index')" :active="route().current('admin.users.*')">
+                  {{ $t('menu.users') }}
+                </NavLink>
               </div>
             </div>
 
@@ -136,10 +139,13 @@ const alert = computed(() => {
         >
           <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
-              {{ $t('menu.dashboard') }}
-            </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
               {{ $t('menu.runners') }}
+            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('admin.races.index')" :active="route().current('admin.races.*')">
+              {{ $t('menu.races') }}
+            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('admin.users.index')" :active="route().current('admin.users.*')">
+              {{ $t('menu.users') }}
             </ResponsiveNavLink>
           </div>
 

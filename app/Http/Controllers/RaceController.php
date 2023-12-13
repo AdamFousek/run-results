@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRaceRequest;
-use App\Http\Requests\UpdateRaceRequest;
-use App\Http\Transformers\RaceListTransformer;
-use App\Http\Transformers\RaceRunnerListTransformer;
-use App\Http\Transformers\RaceTransformer;
+use App\Http\Transformers\Race\RaceListTransformer;
+use App\Http\Transformers\Race\RaceRunnerListTransformer;
+use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Race;
 use App\Models\Runner;
 use App\Services\PaginateService;

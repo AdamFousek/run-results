@@ -56,6 +56,9 @@ class PairRunnerLogCreateHandler
         $pairRunnerLog->result = PairRunnerLog::RESULT_SUCCESS;
         $pairRunnerLog->save();
 
+        $runner->user_id = $user->id;
+        $runner->save();
+
         return $pairRunnerLog;
     }
 }

@@ -10,7 +10,7 @@ import InputLabel from '@/Components/InputLabel.vue'
 const { t } = useI18n();
 
 const props = defineProps({
-  races: {
+  users: {
     type: Array,
   },
   paginate: {
@@ -28,38 +28,37 @@ const search = ref(props.search)
 
 watch(search, (value) => {
   if (value === '' || value.length > 2) {
-    searchRaces()
+    searchUser()
   }
 })
 
-const searchRaces = () => {
+const searchUser = () => {
   router.reload({
     data: {
       query: search.value,
-      sort: sort.value,
       page: 1,
     },
-    only: ['races', 'paginate'],
+    only: ['users', 'paginate'],
     preserveState: true,
   })
 }
 
 const columns = [
   {
-    title: t('race.name'),
-    key: 'name',
+    title: t('user.username'),
+    key: 'username',
   },
   {
-    title: t('race.date'),
-    key: 'date',
+    title: t('user.email'),
+    key: 'email',
   },
   {
-    title: t('race.location'),
-    key: 'location',
+    title: t('user.runner.firstName'),
+    key: 'runner.first_name',
   },
   {
-    title: t('race.distance'),
-    key: 'distance',
+    title: t('user.runner.lastName'),
+    key: 'runner.last_name',
   },
 ]
 
@@ -67,7 +66,7 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('admin.race.edit', { race: row.id }))
+      router.get(route('admin.users.edit', { user: row.id }))
     }
   };
 };
@@ -86,12 +85,12 @@ const rowProps = (row) => {
 
         <div class="flex justify-between">
           <div class="my-3 w-1/2">
-            <InputLabel for="username" :value="$t('race.search')"/>
+            <InputLabel for="username" :value="$t('user.search')"/>
 
             <NInput type="text"
                     class=""
                     v-model:value="search"
-                    :placeholder="$t('race.search')"
+                    :placeholder="$t('user.search')"
                     clearable
                     round
             />
@@ -100,7 +99,7 @@ const rowProps = (row) => {
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <NDataTable
             :columns="columns"
-            :data="races"
+            :data="users"
             :pagination="false"
             :bordered="false"
             :row-props="rowProps"
@@ -108,7 +107,7 @@ const rowProps = (row) => {
             <template #empty>{{ $t('noResults') }}</template>
           </NDataTable>
 
-          <Pagination v-if="races.length" :pages="paginate.links" class="my-4" />
+          <Pagination v-if="users.length" :pages="paginate.links" class="my-4" />
         </div>
       </div>
     </div>

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRunnerRequest;
-use App\Http\Requests\UpdateRunnerRequest;
-use App\Http\Transformers\RunnerRaceListTransformer;
+use App\Http\Transformers\Runner\RunnerRaceListTransformer;
 use App\Models\Runner;
 use App\Services\PaginateService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
