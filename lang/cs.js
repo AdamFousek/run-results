@@ -59,6 +59,7 @@ export default {
       runners: 'Administrace - Závodníci',
       races: 'Administrace - Závody',
       runners_create: 'Administrace - Vytvořit závodníka',
+      races_create: 'Administrace - Vytvořit závod',
     }
   },
   menu: {
@@ -133,8 +134,14 @@ export default {
       back: 'Zpět na výpis',
       deleteRunner: 'Smazat závodníka',
       deleteDescription: 'Závodník bude smazán ze všech výsledků!',
-      delete: 'Smazar závodníka',
+      delete: 'Smazat závodníka',
       deleteConfirmation: 'Jste si jisti, že chcete smazat závodníka?',
+    },
+    races: {
+      create: 'Vytvořit závod',
+      update: 'Aktualizovat závod',
+      back: 'Zpět na výpis',
+      deleteRace: 'Smazat závod',
     }
   },
   user: {

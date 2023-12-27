@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Race;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRaceRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreRaceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()?->can('create', Race::class) ?? false;
     }
 
     /**
@@ -22,7 +23,15 @@ class StoreRaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'parentId' => 'nullable|exists:races,id',
+            'name' => 'required|string|max:255',
+            'description' => 'string',
+            'date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'distance' => 'required|numeric',
+            'surface' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'isParent' => 'boolean',
         ];
     }
 }

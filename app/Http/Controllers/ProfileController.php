@@ -30,6 +30,12 @@ class ProfileController extends Controller
             abort(403);
         }
 
+        $verified = (bool)$request->get('verified');
+
+        if ($verified) {
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.profile_mail_verified'));
+        }
+
         $pairRunnerLimit = PairRunnerLog::LIMIT - PairRunnerLog::where('user_id', $user->id)->count();
 
         return Inertia::render('Profile/Edit', [

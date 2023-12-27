@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\StoreRaceRequest;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Models\Race;
 use App\Services\PaginateService;
@@ -35,5 +36,17 @@ class RaceController extends AdminController
             ],
             'search' => $search,
         ]);
+    }
+
+    public function create(): Response
+    {
+        $this->authorize('create', Race::class);
+
+        return Inertia::render('Admin/Races/Create');
+    }
+
+    public function store(StoreRaceRequest $request)
+    {
+
     }
 }

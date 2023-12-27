@@ -2,10 +2,11 @@
 import { h, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { NDataTable, NInput, NSelect } from 'naive-ui';
+import { NButton, NDataTable, NIcon, NInput, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
 import InputLabel from '@/Components/InputLabel.vue'
+import { PlusSharp } from '@vicons/material'
 
 const { t } = useI18n();
 
@@ -84,18 +85,22 @@ const rowProps = (row) => {
     <div class="py-4">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <div class="flex justify-between">
-          <div class="my-3 w-1/2">
-            <InputLabel for="username" :value="$t('race.search')"/>
-
-            <NInput type="text"
-                    class=""
-                    v-model:value="search"
-                    :placeholder="$t('race.search')"
-                    clearable
-                    round
-            />
-          </div>
+        <div class="flex justify-between items-center gap-4">
+          <NInput type="text"
+                  class="my-4"
+                  v-model:value="search"
+                  :placeholder="$t('race.search')"
+                  clearable
+                  round
+          />
+          <NButton round type="success" @click="router.get(route('admin.races.create'))">
+            <template #icon>
+              <NIcon>
+                <PlusSharp />
+              </NIcon>
+            </template>
+            {{ $t('admin.races.create') }}
+          </NButton>
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <NDataTable

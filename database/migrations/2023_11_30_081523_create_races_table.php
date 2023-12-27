@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('distance');
             $table->string('surface');
             $table->string('type');
+            $table->boolean('is_parent')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
