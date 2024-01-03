@@ -97,8 +97,8 @@ const rowProps = (row) => {
     <div class="py-4">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <div class="flex justify-between">
-          <div class="my-3 w-1/2">
+        <div class="m-2 flex justify-between flex-wrap">
+          <div class="md:my-3 w-full md:w-1/2">
             <InputLabel for="username" :value="$t('race.search')"/>
 
             <NInput type="text"
@@ -110,12 +110,11 @@ const rowProps = (row) => {
             />
           </div>
 
-          <div class="my-3 w-1/6">
+          <div class="my-3 w-full md:w-1/6">
             <InputLabel for="username" :value="$t('race.sort')" />
 
             <NSelect class="w-1/12" round :placeholder="$t('race.sort')" v-model:value="sort" :options="sortOptions" />
           </div>
-
 
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

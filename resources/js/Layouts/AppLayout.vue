@@ -29,7 +29,7 @@ const alert = computed(() => {
               <div class="shrink-0 flex items-center">
                 <Link :href="route('welcome')">
                   <ApplicationLogo
-                    class="block h-9 w-auto fill-current text-gray-800"
+                    class="block w-auto fill-current text-gray-800"
                   />
                 </Link>
               </div>
@@ -141,8 +141,11 @@ const alert = computed(() => {
             <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
               {{ $t('menu.dashboard') }}
             </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
+            <ResponsiveNavLink :href="route('runners.index')" :active="route().current('runners.*')">
               {{ $t('menu.runners') }}
+            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('races.index')" :active="route().current('races.*')">
+              {{ $t('menu.races') }}
             </ResponsiveNavLink>
           </div>
 

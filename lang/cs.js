@@ -1,4 +1,5 @@
 export default {
+  appName: 'Závody mimo dráhy',
   cancel: 'Zrušit',
   noResults: 'Nic jsme nenašli',
   laoding: 'Načítání...',
