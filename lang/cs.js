@@ -61,6 +61,7 @@ export default {
       races: 'Administrace - Závody',
       runners_create: 'Administrace - Vytvořit závodníka',
       races_create: 'Administrace - Vytvořit závod',
+      races_update: 'Administrace - Upravit závod',
     }
   },
   menu: {
@@ -87,6 +88,7 @@ export default {
     date: 'Datum',
     location: 'Místo',
     distance: 'Vzdálenost',
+    description: 'Popis',
     surface: 'Povrch',
     type: 'Typ',
     search: 'Vyhledat závod',

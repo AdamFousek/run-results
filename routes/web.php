@@ -50,6 +50,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
     Route::get('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'create'])->name('admin.races.create');
+    Route::get('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'edit'])->name('admin.races.edit');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

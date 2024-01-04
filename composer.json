@@ -14,7 +14,8 @@
         "laravel/scout": "^10.6",
         "laravel/tinker": "^2.8",
         "meilisearch/meilisearch-php": "^1.5",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "tonysm/rich-text-laravel": "^1.7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

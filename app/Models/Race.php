@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 
 /**
@@ -58,16 +59,18 @@ use Laravel\Scout\Searchable;
  */
 class Race extends Model
 {
-    use HasFactory, SoftDeletes, Searchable;
+    use HasFactory, SoftDeletes, Searchable, HasRichText;
 
     protected $fillable = [
         'parent_id',
         'name',
+        'slug',
         'description',
         'date',
         'location',
         'distance',
         'surface',
+        'is_parent',
         'type',
     ];
 
@@ -76,6 +79,10 @@ class Race extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'distance' => DistanceCast::class,
+    ];
+
+    protected $richTextFields = [
+        'description',
     ];
 
     public function parent(): BelongsTo

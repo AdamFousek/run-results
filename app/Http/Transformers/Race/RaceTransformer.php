@@ -18,6 +18,7 @@ class RaceTransformer
         return [
             'id' => $race->id,
             'name' => $race->name,
+            'slug' => $race->slug,
             'date' => $race->date->format('j. n. Y'),
             'description' => $race->description,
             'location' => $race->location,
@@ -25,6 +26,9 @@ class RaceTransformer
             'surface' => $race->surface,
             'type' => $race->type,
             'runners' => $race->runners->count(),
+            'isParent' => $race->is_parent,
+            'parentId' => $race->parent_id,
+            'parentName' => $race->parent?->name,
         ];
     }
 }

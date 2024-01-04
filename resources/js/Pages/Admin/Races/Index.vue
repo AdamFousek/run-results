@@ -68,7 +68,7 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('admin.race.edit', { race: row.id }))
+      router.get(route('admin.races.edit', { race: row.id }))
     }
   };
 };
