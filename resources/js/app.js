@@ -1,7 +1,6 @@
 import './bootstrap';
-import './libs/trix';
 import '../css/app.css';
-import '@/lib/trix';
+import '@/libs/trix';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

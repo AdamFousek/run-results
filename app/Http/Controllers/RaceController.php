@@ -6,6 +6,7 @@ use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Race;
+use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ use Inertia\Response;
 class RaceController extends Controller
 {
     private const LIMIT = 20;
+
+    private const LIMIT_RUNNERS = 50;
 
     public const SORT_NAME_ASC = 'name:asc';
     public const SORT_NAME_DESC = 'name:desc';
@@ -69,21 +72,31 @@ class RaceController extends Controller
     public function show(Request $request, Race $race): Response
     {
         $search = trim($request->get('query'));
-        $isNumeric = is_numeric($search);
+        $page = (int)$request->get('page', 1);
         if ($search !== '') {
-            if ($isNumeric) {
-                $results = $race->results()->where('starting_number', (int)$search)->orderBy('time')->with('runner')->get();
+            if (is_numeric($search)) {
+                $results = Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
             } else {
                 $runnerIds = Runner::search($search)->get()->pluck('id');
-                $results = $race->results()->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->get();
+                $results = Result::whereRaceId($race->id)->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
             }
         } else {
-            $results = $race->results()->orderBy('time')->with('runner')->get();
+            $results = Result::whereRaceId($race->id)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
         }
 
         return Inertia::render('Races/Show', [
             'race' => $this->raceTransformer->transform($race),
-            'results' => $this->raceRunnerListTransformer->transform($results),
+            'results' => $this->raceRunnerListTransformer->transform($results->items()),
+            'paginate' => [
+                'links' => $this->paginateService->resolveLinks($results),
+                'page' => $page,
+                'total' => $results->total(),
+                'limit' => self::LIMIT
+            ],
+            'head' => [
+                'title' => $race->name,
+                'description' => $race->is_parent ? $race->name : $race->name . ' ' . $race->date->format('j. n. Y'),
+            ]
         ]);
     }
 

@@ -18,4 +18,6 @@ return [
     'runner_update_success' => 'Závodník byl úspěšně upraven.',
     'runner_delete_success' => 'Závodník byl úspěšně smazán.',
     'profile_mail_verified' => 'Váš e-mail byl úspěšně ověřen.',
+
+    'race_update_success' => 'Závod byl aktualizován',
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Race;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRaceRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateRaceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()?->can('update', $this->race) ?? false;
     }
 
     /**
@@ -22,7 +23,16 @@ class UpdateRaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'parentId' => 'nullable|exists:races,id',
+            'name' => 'required|string|max:255',
+            'description' => 'string',
+            'date' => 'date',
+            'time' => 'date_format:H:i',
+            'location' => 'string|max:255',
+            'distance' => 'numeric',
+            'surface' => 'string|max:255',
+            'type' => 'string|max:255',
+            'isParent' => 'boolean',
         ];
     }
 }

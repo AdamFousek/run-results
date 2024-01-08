@@ -40,6 +40,7 @@ class RunnerController extends Controller
     public function show(Runner $runner): Response
     {
         $results = $runner->results()->with('race')->get();
+        // @todo filter of races
 
         return Inertia::render('Runners/Show', [
             'runner' => $runner,

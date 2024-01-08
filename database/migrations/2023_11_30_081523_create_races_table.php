@@ -18,12 +18,11 @@ return new class extends Migration
                 ->on('races')->onUpdate('cascade')->onDelete('cascade');
             $table->string('slug')->unique();
             $table->string('name');
-            $table->text('description');
-            $table->date('date');
-            $table->string('location');
-            $table->float('distance');
-            $table->string('surface');
-            $table->string('type');
+            $table->dateTime('date')->nullable();
+            $table->string('location')->nullable();
+            $table->float('distance')->nullable();
+            $table->string('surface')->nullable();
+            $table->string('type')->nullable();
             $table->boolean('is_parent')->default(false);
             $table->timestamps();
             $table->softDeletes();

@@ -20,7 +20,7 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @property int $id
  * @property int|null $parent_id
  * @property string $name
- * @property string $description
+ * @property mixed $description
  * @property \Illuminate\Support\Carbon $date
  * @property string $location
  * @property mixed $distance
@@ -55,6 +55,11 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Race withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Race withoutTrashed()
+ * @property string $slug
+ * @property int $is_parent
+ * @method static \Illuminate\Database\Eloquent\Builder|Race whereIsParent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Race whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Race withRichText($fields = [])
  * @mixin \Eloquent
  */
 class Race extends Model
@@ -81,7 +86,10 @@ class Race extends Model
         'distance' => DistanceCast::class,
     ];
 
-    protected $richTextFields = [
+    /**
+     * @var array|string[]
+     */
+    protected array $richTextFields = [
         'description',
     ];
 

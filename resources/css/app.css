@@ -79,3 +79,7 @@
 .trix-dialog {
     color: black;
 }
+
+.trix-content.big {
+    min-height: 10em;
+}

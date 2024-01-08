@@ -80,7 +80,7 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('races.show', { race: row.id }))
+      router.get(route('races.show', { race: row.slug }))
     }
   };
 };

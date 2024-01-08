@@ -85,7 +85,9 @@ export default {
   },
   race: {
     name: 'Název',
+    slug: 'Slug - url adresa',
     date: 'Datum',
+    time: 'Čas',
     location: 'Místo',
     distance: 'Vzdálenost',
     description: 'Popis',
@@ -95,6 +97,8 @@ export default {
     sort: 'Řadit',
     information: 'Informace o závodě',
     runners: 'Počet závodníků',
+    parent: 'Nadřazený závod',
+    isParent: 'Nadřazený závod',
   },
   result: {
     position: 'Pozice',

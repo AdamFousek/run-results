@@ -1,11 +1,10 @@
 <script setup>
-import { h, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { NButton, NDataTable, NIcon, NInput, NSelect } from 'naive-ui';
+import { NButton, NDataTable, NIcon, NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
-import InputLabel from '@/Components/InputLabel.vue'
 import { PlusSharp } from '@vicons/material'
 
 const { t } = useI18n();
