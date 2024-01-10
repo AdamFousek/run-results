@@ -56,7 +56,16 @@ class RaceController extends AdminController
     {
         $this->authorize('create', Race::class);
 
-        return Inertia::render('Admin/Races/Create');
+        $optionsType = DB::table('races')->select(DB::raw('distinct type'))->get();
+        $optionsSurface = DB::table('races')->select(DB::raw('distinct surface'))->get();
+
+        $parentRaces = Race::whereIsParent(true)->get();
+
+        return Inertia::render('Admin/Races/Create', [
+            'parentRaces' => $this->transformer->transform($parentRaces),
+            'optionsType' => $this->transformOptions($optionsType, 'type'),
+            'optionsSurface' => $this->transformOptions($optionsSurface, 'surface'),
+        ]);
     }
 
     public function store(StoreRaceRequest $request): RedirectResponse
@@ -67,16 +76,19 @@ class RaceController extends AdminController
             $race = $this->createRaceCommand->handle(new CreateRace(
                 name: $validated['name'],
                 description: $validated['description'],
-                date: $validated['date'],
-                location: $validated['location'],
-                distance: $validated['distance'],
-                surface: $validated['surface'],
-                type: $validated['type'],
-                isParent: $validated['isParent'],
-                parentId: $validated['parentId'],
+                date: $validated['date'] ?? '',
+                time: $validated['time'] ?? '',
+                location: $validated['location'] ?? '',
+                distance: $validated['distance'] ?? 0,
+                surface: $validated['surface'] ?? '',
+                type: $validated['type'] ?? '',
+                isParent: $validated['isParent'] ?? false,
+                parentId: $validated['parentId'] ?? null,
             ));
 
-            return Redirect::route('admin.race.edit', $race->id);
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.race_created_success'));
+
+            return Redirect::route('admin.races.edit', $race->id);
         } catch (\Throwable $th) {
             $this->withMessage(self::ALERT_ERROR, $th->getMessage());
 
@@ -104,17 +116,16 @@ class RaceController extends AdminController
         $validated = $request->validated();
 
         try {
-            $date = Carbon::createFromFormat('Y-m-d H:i', $validated['date'] . ' ' . $validated['time']);
-
             $race = $this->updateRaceCommand->handle(new UpdateRace(
                 race: $race,
                 name: $validated['name'],
                 description: $validated['description'],
-                date: $date ?? null,
-                location: $validated['location'] ?? null,
-                distance: $validated['distance'] ?? null,
-                surface: $validated['surface'] ?? null,
-                type: $validated['type'] ?? null,
+                date: $validated['date'] ?? '',
+                time: $validated['time'] ?? '',
+                location: $validated['location'] ?? '',
+                distance: $validated['distance'] ?? '',
+                surface: $validated['surface'] ?? '',
+                type: $validated['type'] ?? '',
                 isParent: $validated['isParent'],
                 parentId: $validated['parentId'],
             ));
@@ -126,6 +137,27 @@ class RaceController extends AdminController
             $this->withMessage(self::ALERT_ERROR, $th->getMessage());
 
             return back();
+        }
+    }
+
+    public function destroy(Race $race, Request $request): RedirectResponse
+    {
+        try {
+            $this->authorize('delete', $race);
+
+            $request->validate([
+                'raceId' => 'required|exists:races,id',
+            ]);
+
+            $race->delete();
+
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.race_delete_success'));
+
+            return Redirect::route('admin.races.index');
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
         }
     }
 

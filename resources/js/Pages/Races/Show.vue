@@ -110,8 +110,7 @@ const rowProps = (row) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-between gap-4 flex-wrap p-2">
-                    <div class="bg-white col-span-1 md:col-span-3 p-4 shadow-sm rounded-xl self-start trix-content">
-                        {{ race.description }}
+                    <div class="bg-white col-span-1 md:col-span-3 p-4 shadow-sm rounded-xl self-start trix-content" v-html="race.description">
                     </div>
                     <div class="bg-white p-4 shadow-sm rounded-xl">
                         <h2 class="text-xl">{{ $t('race.information') }}</h2>
@@ -135,9 +134,13 @@ const rowProps = (row) => {
                             <div class="font-bold">{{ $t('race.surface') }}:</div>
                             <div class="">{{ race.surface }}</div>
                         </div>
-                        <div class="flex my-2 gap-2 justify-start">
+                        <div v-if="!race.isParent" class="flex my-2 gap-2 justify-start">
                             <div class="font-bold">{{ $t('race.runners') }}:</div>
                             <div class="">{{ race.runners }}</div>
+                        </div>
+                        <div v-if="race.isParent" class="flex my-2 gap-2 justify-start">
+                            <div class="font-bold">{{ $t('race.races') }}:</div>
+                            <div class="">{{ race.races }}</div>
                         </div>
                     </div>
                 </div>

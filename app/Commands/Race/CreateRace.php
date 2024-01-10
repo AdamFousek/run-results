@@ -12,7 +12,8 @@ readonly class CreateRace
     public function __construct(
         public string $name,
         public string $description,
-        public Carbon $date,
+        public string $date,
+        public string $time,
         public string $location,
         public float $distance,
         public string $surface,

@@ -36,7 +36,6 @@ const searchRaces = () => {
   router.reload({
     data: {
       query: search.value,
-      sort: sort.value,
       page: 1,
     },
     only: ['races', 'paginate'],

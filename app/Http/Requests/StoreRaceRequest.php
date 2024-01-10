@@ -25,12 +25,13 @@ class StoreRaceRequest extends FormRequest
         return [
             'parentId' => 'nullable|exists:races,id',
             'name' => 'required|string|max:255',
-            'description' => 'string',
-            'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'distance' => 'required|numeric',
-            'surface' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'date' => 'nullable|date',
+            'time' => 'nullable|date_format:H:i',
+            'location' => 'nullable|string|max:255',
+            'distance' => 'nullable|numeric',
+            'surface' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
             'isParent' => 'boolean',
         ];
     }

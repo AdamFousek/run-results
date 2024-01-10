@@ -72,6 +72,7 @@ class Race extends Model
         'slug',
         'description',
         'date',
+        'time',
         'location',
         'distance',
         'surface',
@@ -80,7 +81,8 @@ class Race extends Model
     ];
 
     protected $casts = [
-        'date' => 'datetime',
+        'date' => 'date',
+        'time' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'distance' => DistanceCast::class,
@@ -98,7 +100,7 @@ class Race extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function records(): HasMany
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }

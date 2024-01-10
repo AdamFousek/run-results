@@ -41,7 +41,6 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavodnici', [\App\Http\Controllers\Admin\RunnerController::class, 'index'])->name('admin.runners.index');
-
     Route::get('/admin/zavodnici/{runner}/edit', [\App\Http\Controllers\Admin\RunnerController::class, 'edit'])->name('admin.runners.edit');
     Route::post('/admin/zavodnici/{runner}/edit', [\App\Http\Controllers\Admin\RunnerController::class, 'update'])->name('admin.runners.update');
     Route::get('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'create'])->name('admin.runners.create');
@@ -50,8 +49,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
     Route::get('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'create'])->name('admin.races.create');
+    Route::post('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'store'])->name('admin.races.store');
     Route::get('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'edit'])->name('admin.races.edit');
     Route::post('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'update'])->name('admin.races.update');
+    Route::delete('/admin/zavody/{race}/delete', [\App\Http\Controllers\Admin\RaceController::class, 'destroy'])->name('admin.races.destroy');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

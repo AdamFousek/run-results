@@ -99,6 +99,7 @@ export default {
     runners: 'Počet závodníků',
     parent: 'Nadřazený závod',
     isParent: 'Nadřazený závod',
+    races: 'Počet závodů',
   },
   result: {
     position: 'Pozice',
@@ -149,6 +150,10 @@ export default {
       update: 'Aktualizovat závod',
       back: 'Zpět na výpis',
       deleteRace: 'Smazat závod',
+      show: 'Zobrazit závod',
+      deleteDescription: 'Závod vymaže i výsledky závodníků!',
+      delete: 'Smazat',
+      deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
     }
   },
   user: {

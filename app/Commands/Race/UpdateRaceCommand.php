@@ -16,6 +16,7 @@ class UpdateRaceCommand
         $race->name = $command->name;
         $race->description = $command->description;
         $race->date = $command->date;
+        $race->time = $command->time;
         $race->location = $command->location;
         $race->distance = $command->distance;
         $race->surface = $command->surface;

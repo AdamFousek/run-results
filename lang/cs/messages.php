@@ -20,4 +20,6 @@ return [
     'profile_mail_verified' => 'Váš e-mail byl úspěšně ověřen.',
 
     'race_update_success' => 'Závod byl aktualizován',
+    'race_delete_success' => 'Závod byl vymazán',
+    'race_created_success' => 'Závod byl vytvořen',
 ];

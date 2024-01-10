@@ -1,7 +1,7 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { Head, router, useForm } from '@inertiajs/vue3'
-import { NButton, NInput } from 'naive-ui'
+import { Head, useForm } from '@inertiajs/vue3'
+import { NButton, NInput, NInputNumber } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
@@ -67,9 +67,11 @@ const submit = () => {
               <div class="flex-1">
                 <InputLabel for="day" :value="$t('runner.day')"/>
 
-                <NInput
-                  :input-props="{ type: 'number', id: 'day', min: 0, max: 31 }"
+                <NInputNumber
+                  :input-props="{ id: 'day' }"
                   :placeholder="$t('runner.day')"
+                  :min="0"
+                  :max="31"
                   class="mt-1 block w-full"
                   v-model:value="form.day"
                 />
@@ -79,9 +81,11 @@ const submit = () => {
               <div class="flex-1">
                 <InputLabel for="month" :value="$t('runner.month')"/>
 
-                <NInput
-                  :input-props="{ type: 'number', id: 'day', min: 0, max: 12 }"
+                <NInputNumber
+                  :input-props="{ id: 'day' }"
                   :placeholder="$t('runner.month')"
+                  :min="0"
+                  :max="12"
                   class="mt-1 block w-full"
                   v-model:value="form.month"
                 />
@@ -91,9 +95,11 @@ const submit = () => {
               <div class="flex-1">
                 <InputLabel for="year" :value="$t('runner.year')"/>
 
-                <NInput
-                  :input-props="{ type: 'number', id: 'year', min: minYear, max: maxYear }"
+                <NInputNumber
+                  :input-props="{ id: 'year'}"
                   :placeholder="$t('runner.year')"
+                  :min="minYear"
+                  :max="maxYear"
                   class="mt-1 block w-full"
                   v-model:value="form.year"
                   required

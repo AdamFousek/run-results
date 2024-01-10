@@ -1,7 +1,7 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
-import { NButton, NInput } from 'naive-ui'
+import { NButton, NInput, NInputNumber } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
@@ -82,7 +82,7 @@ const submit = () => {
                 <div class="flex-1">
                   <InputLabel for="day" :value="$t('runner.day')"/>
 
-                  <NInput
+                  <NInputNumber
                     :input-props="{ type: 'number', id: 'day', min: 0, max: 31 }"
                     :placeholder="$t('runner.day')"
                     class="mt-1 block w-full"
@@ -94,7 +94,7 @@ const submit = () => {
                 <div class="flex-1">
                   <InputLabel for="month" :value="$t('runner.month')"/>
 
-                  <NInput
+                  <NInputNumber
                     :input-props="{ type: 'number', id: 'day', min: 0, max: 12 }"
                     :placeholder="$t('runner.month')"
                     class="mt-1 block w-full"
@@ -106,7 +106,7 @@ const submit = () => {
                 <div class="flex-1">
                   <InputLabel for="year" :value="$t('runner.year')"/>
 
-                  <NInput
+                  <NInputNumber
                     :input-props="{ type: 'number', id: 'year', min: minYear, max: maxYear }"
                     :placeholder="$t('runner.year')"
                     class="mt-1 block w-full"

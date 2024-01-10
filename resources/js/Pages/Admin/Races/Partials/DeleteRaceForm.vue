@@ -4,24 +4,24 @@ import { ref } from 'vue';
 import { NButton, NModal } from 'naive-ui';
 
 const props = defineProps({
-    runner: {
+    race: {
         type: Object,
     },
 });
 
-const confirmingUserDeletion = ref(false);
+const confirmingRaceDeletion = ref(false);
 const formError = ref('');
 
 const form = useForm({
-    runnerId: props.runner.id,
+    raceId: props.race.id,
 });
 
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
+const confirmRaceDeletion = () => {
+    confirmingRaceDeletion.value = true;
 };
 
 const deleteUser = () => {
-    form.delete(route('admin.runners.destroy', {runner: props.runner.id}), {
+    form.delete(route('admin.races.destroy', { race: props.race.id }), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => {
@@ -32,41 +32,41 @@ const deleteUser = () => {
 };
 
 const closeModal = () => {
-    confirmingUserDeletion.value = false;
+    confirmingRaceDeletion.value = false;
 };
 </script>
 
 <template>
     <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
         <header>
-            <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.runner.deleteRunner') }}</h2>
+            <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.races.deleteRace') }}</h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                {{ $t('admin.runner.deleteDescription') }}
+                {{ $t('admin.races.deleteDescription') }}
             </p>
         </header>
 
-        <n-button @click="confirmUserDeletion" type="error" round>
-            {{ $t('admin.runner.delete') }}
-        </n-button>
+        <NButton @click="confirmRaceDeletion" type="error" round>
+            {{ $t('admin.races.delete') }}
+        </NButton>
 
-        <NModal v-model:show="confirmingUserDeletion">
+        <NModal v-model:show="confirmingRaceDeletion">
             <div class="bg-white p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    {{ $t('admin.runner.deleteConfirmation') }}
+                    {{ $t('admin.races.deleteConfirmation') }}
                 </h2>
 
                 <p class="mt-1 text-sm text-red-500">
-                    {{ $t('admin.runner.deleteDescription') }}
+                    {{ $t('admin.races.deleteDescription') }}
                 </p>
 
                 <div class="mt-6 flex justify-end gap-3">
-                    <n-button @click="closeModal" secondary round> {{ $t('cancel') }}</n-button>
+                    <NButton @click="closeModal" secondary round> {{ $t('cancel') }}</NButton>
 
-                    <n-button @click="deleteUser" :class="{ 'opacity-25': form.processing }" type="error" round
+                    <NButton @click="deleteUser" :class="{ 'opacity-25': form.processing }" type="error" round
                               :disabled="form.processing">
-                        {{ $t('admin.runner.delete') }}
-                    </n-button>
+                        {{ $t('admin.races.delete') }}
+                    </NButton>
                 </div>
             </div>
         </NModal>

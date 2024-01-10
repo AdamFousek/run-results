@@ -25,13 +25,13 @@ class UpdateRaceRequest extends FormRequest
         return [
             'parentId' => 'nullable|exists:races,id',
             'name' => 'required|string|max:255',
-            'description' => 'string',
-            'date' => 'date',
-            'time' => 'date_format:H:i',
-            'location' => 'string|max:255',
-            'distance' => 'numeric',
-            'surface' => 'string|max:255',
-            'type' => 'string|max:255',
+            'description' => 'nullable|string',
+            'date' => 'nullable|date',
+            'time' => 'nullable|date_format:H:i',
+            'location' => 'nullable|string|max:255',
+            'distance' => 'nullable|numeric',
+            'surface' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
             'isParent' => 'boolean',
         ];
     }
