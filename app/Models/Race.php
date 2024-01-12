@@ -126,7 +126,7 @@ class Race extends Model
             'parent_id' => $this->parent_id,
             'name' => $this->name,
             'description' => $this->description,
-            'date' => $this->date->timestamp,
+            'date' => $this->date?->timestamp,
             'location' => $this->location,
             'distance' => $this->getRawOriginal('distance'),
             'surface' => $this->surface,

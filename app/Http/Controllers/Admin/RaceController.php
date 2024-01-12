@@ -149,6 +149,7 @@ class RaceController extends AdminController
                 'raceId' => 'required|exists:races,id',
             ]);
 
+            $race->results()->delete();
             $race->delete();
 
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.race_delete_success'));

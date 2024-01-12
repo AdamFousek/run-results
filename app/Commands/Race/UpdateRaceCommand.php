@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Commands\Race;
 
 use App\Models\Race;
+use Illuminate\Support\Carbon;
 
 class UpdateRaceCommand
 {
@@ -13,10 +14,19 @@ class UpdateRaceCommand
     {
         $race = $command->race;
 
+        $date = null;
+        if ($command->date !== '') {
+            $date = Carbon::createFromFormat('Y-m-d', $command->date);
+        }
+        $time = null;
+        if ($command->time !== '') {
+            $time = (new Carbon())->setTimeFromTimeString($command->time);
+        }
+
         $race->name = $command->name;
         $race->description = $command->description;
-        $race->date = $command->date;
-        $race->time = $command->time;
+        $race->date = $date;
+        $race->time = $time;
         $race->location = $command->location;
         $race->distance = $command->distance;
         $race->surface = $command->surface;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Transformers\Runner\RunnerRaceListTransformer;
+use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class RunnerController extends Controller
 
     public function show(Runner $runner): Response
     {
-        $results = $runner->results()->with('race')->get();
+        $results = Result::whereRunnerId($runner->id)->with('race')->get();
         // @todo filter of races
 
         return Inertia::render('Runners/Show', [

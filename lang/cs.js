@@ -100,6 +100,7 @@ export default {
     parent: 'Nadřazený závod',
     isParent: 'Nadřazený závod',
     races: 'Počet závodů',
+    childRaces: 'Podřazené závody',
   },
   result: {
     position: 'Pozice',

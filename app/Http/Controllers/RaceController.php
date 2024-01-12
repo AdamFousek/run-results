@@ -9,6 +9,7 @@ use App\Models\Race;
 use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -73,31 +74,37 @@ class RaceController extends Controller
     {
         $search = trim($request->get('query'));
         $page = (int)$request->get('page', 1);
-        if ($search !== '') {
-            if (is_numeric($search)) {
-                $results = Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
-            } else {
-                $runnerIds = Runner::search($search)->get()->pluck('id');
-                $results = Result::whereRaceId($race->id)->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
-            }
-        } else {
-            $results = Result::whereRaceId($race->id)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
-        }
 
-        return Inertia::render('Races/Show', [
-            'race' => $this->raceTransformer->transform($race),
-            'results' => $this->raceRunnerListTransformer->transform($results->items()),
-            'paginate' => [
+        $results = null;
+        $childRaces = null;
+        $paginate = null;
+        if (!$race->is_parent) {
+            $results = $this->resolveResults($race, $search);
+            $paginate = [
                 'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
                 'total' => $results->total(),
                 'limit' => self::LIMIT
-            ],
+            ];
+        } else {
+            $childRaces = $race->children()->orderBy('date', 'desc')->get();
+        }
+
+        $metaDescription = $this->resolveMetaDescription($race);
+
+        $data = [
+            'race' => $this->raceTransformer->transform($race),
+            'childRaces' => $childRaces !== null ? $this->transformer->transform($childRaces) : [],
+            'results' => $results !== null ? $this->raceRunnerListTransformer->transform($results->items()) : [],
+            'paginate' => $paginate,
             'head' => [
                 'title' => $race->name,
-                'description' => $race->is_parent ? $race->name : $race->name . ' ' . $race->date->format('j. n. Y'),
+                'description' => $metaDescription,
             ]
-        ]);
+        ];
+
+
+        return Inertia::render('Races/Show', $data);
     }
 
     /**
@@ -125,5 +132,32 @@ class RaceController extends Controller
         }
 
         return $sort;
+    }
+
+    private function resolveResults(Race $race, string $search): LengthAwarePaginator
+    {
+        if ($search !== '') {
+            if (is_numeric($search)) {
+                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
+            }
+
+            $runnerIds = Runner::search($search)->get()->pluck('id');
+            return Result::whereRaceId($race->id)->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
+        }
+
+        return Result::whereRaceId($race->id)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
+    }
+
+    private function resolveMetaDescription(Race $race): string
+    {
+        if ($race->is_parent) {
+            return $race->name;
+        }
+
+        if ($race->date === null) {
+            return $race->name;
+        }
+
+        return $race->name . ' ' . $race->date->format('j. n. Y');
     }
 }

@@ -22,6 +22,11 @@ class RunnerRaceListTransformer
                 continue;
             }
 
+            if ($result->race === null) {
+                dump($result->race);
+                dd($result);
+            }
+
             $transformedData[] = [
                 'race_id' => $result->race->id,
                 'name' => $result->race->name,
