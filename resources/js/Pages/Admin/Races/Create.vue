@@ -24,10 +24,6 @@ const props = defineProps({
 
 const time = ref(null)
 
-watch(time, (value) => {
-    console.log(value)
-})
-
 const form = useForm({
     parentId: null,
     name: '',

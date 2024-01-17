@@ -11,7 +11,7 @@ class StoreResultRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()?->isAdmin() ?? false;
     }
 
     /**
@@ -22,7 +22,14 @@ class StoreResultRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'raceId' => 'required|integer|exists:App\Models\Race,id',
+            'runnerId' => 'required|integer|exists:App\Models\Runner,id',
+            'time' => 'nullable|string',
+            'startingNumber' => 'nullable|integer',
+            'position' => 'nullable|integer',
+            'categoryPosition' => 'nullable|integer',
+            'category' => 'nullable|string',
+            'DNF' => 'nullable|boolean',
         ];
     }
 }

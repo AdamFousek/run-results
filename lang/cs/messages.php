@@ -22,4 +22,6 @@ return [
     'race_update_success' => 'Závod byl aktualizován',
     'race_delete_success' => 'Závod byl vymazán',
     'race_created_success' => 'Závod byl vytvořen',
+
+    'result_create_success' => 'Vysledek byl přidán',
 ];

@@ -109,6 +109,7 @@ export default {
     resultsCount: 'Počet výsledků',
   },
   result: {
+    runner: 'Běžec',
     position: 'Pozice',
     startingNumber: 'Start. č.',
     time: 'Čas',
@@ -165,9 +166,10 @@ export default {
       deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
     },
     results: {
-      create: 'Nahrát výsledky',
+      create: 'Vytvořit výsledky',
       erase: 'Vymazat všechny výsledky',
       upload: 'Nahrát výsledky',
+      createSingle: 'Zadat výsledek'
     }
   },
   user: {
@@ -181,5 +183,6 @@ export default {
         club: 'Klub',
     },
     search: 'Vyhledat uživatele',
-  }
+  },
+  close: 'Zavřít',
 }

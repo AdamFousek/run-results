@@ -21,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/runners', \App\Http\Controllers\Api\SearchRunnerController::class)->name('api.runners.search');
 });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/admin/results/availableRunners', \App\Http\Controllers\Api\Results\AvailableRunnersController::class)->name('api.results.availableRunners');
+});

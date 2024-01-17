@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Commands\Results\CreateResult;
+use App\Commands\Results\CreateResultCommand;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreResultRequest;
 use App\Http\Transformers\Race\RaceResultsTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Result\ResultTransformer;
@@ -22,6 +25,7 @@ class ResultController extends Controller
         private readonly RaceTransformer $raceTransformer,
         private readonly PaginateService $paginateService,
         private readonly ResultTransformer $resultTransformer,
+        private readonly CreateResultCommand $createResultCommand,
     ) {
     }
 
@@ -61,9 +65,31 @@ class ResultController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreResultRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        try {
+            $result = $this->createResultCommand->handle(new CreateResult(
+                raceId: $validated['raceId'],
+                runnerId: $validated['runnerId'],
+                position: $validated['position'] ?? 0,
+                startingNumber: $validated['startingNumber'] ?? 0,
+                time: $validated['time'] ?? '',
+                categoryPosition: $validated['categoryPosition'] ?? 0,
+                category: $validated['category'] ?? '',
+                dnf: $validated['DNF'] ?? false,
+            ));
+
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.result_create_success'));
+
+            return back();
+        } catch (\Throwable $th) {
+            $this->withMessage(self::ALERT_ERROR, $th->getMessage());
+
+            return back();
+        }
+
     }
 
     /**
