@@ -6,6 +6,7 @@ import { h, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
+import RaceInfo from '@/Components/Race/RaceInfo.vue'
 
 const {t} = useI18n();
 
@@ -117,37 +118,7 @@ const rowProps = (row) => {
                     <div class="bg-white col-span-1 md:col-span-3 p-4 shadow-sm rounded-xl self-start trix-content"
                          v-html="race.description">
                     </div>
-                    <section class="bg-white p-4 shadow-sm rounded-xl">
-                        <h3 class="text-xl">{{ $t('race.information') }}</h3>
-                        <div v-if="race.location" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.location') }}:</div>
-                            <div class="">{{ race.location }}</div>
-                        </div>
-                        <div v-if="race.distance" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.distance') }}:</div>
-                            <div class="">{{ race.distance }}</div>
-                        </div>
-                        <div v-if="race.date" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.date') }}:</div>
-                            <div class="">{{ race.date }}</div>
-                        </div>
-                        <div v-if="race.time" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.time') }}:</div>
-                            <div class="">{{ race.time }}</div>
-                        </div>
-                        <div v-if="race.surface" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.surface') }}:</div>
-                            <div class="">{{ race.surface }}</div>
-                        </div>
-                        <div v-if="!race.isParent" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.runners') }}:</div>
-                            <div class="">{{ race.runners }}</div>
-                        </div>
-                        <div v-if="race.isParent" class="flex my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.races') }}:</div>
-                            <div class="">{{ race.races }}</div>
-                        </div>
-                    </section>
+                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
                 </div>
 
                 <section v-if="results.length > 0">

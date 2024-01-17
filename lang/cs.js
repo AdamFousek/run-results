@@ -4,6 +4,9 @@ export default {
   noResults: 'Nic jsme nenašli',
   laoding: 'Načítání...',
   somethingWentWrong: 'Něco se pokazilo',
+  actions: 'Akce',
+  yes: 'Ano',
+  no: 'Ne',
   profile: {
     information: 'Informace o profilu',
     informationDescription: 'Aktualizujte svojí emailovou adresu',
@@ -62,6 +65,7 @@ export default {
       runners_create: 'Administrace - Vytvořit závodníka',
       races_create: 'Administrace - Vytvořit závod',
       races_update: 'Administrace - Upravit závod',
+      results: 'Administrace - Výsledky',
     }
   },
   menu: {
@@ -71,6 +75,7 @@ export default {
     runners: 'Závodníci',
     races: 'Závody',
     users: 'Uživatelé',
+    results: 'Výsledky',
   },
   runner: {
     name: 'Jméno',
@@ -100,13 +105,16 @@ export default {
     parent: 'Nadřazený závod',
     isParent: 'Nadřazený závod',
     races: 'Počet závodů',
-    childRaces: 'Podřazené závody',
+    childRaces: 'Závody',
+    resultsCount: 'Počet výsledků',
   },
   result: {
     position: 'Pozice',
-    startingNumber: 'Startovní číslo',
+    startingNumber: 'Start. č.',
     time: 'Čas',
-    category_position: 'Pozice v kategorii',
+    categoryPosition: 'Pozice v kat.',
+    category: 'Kategorie',
+    DNF: 'DNF',
   },
   sort: {
     name_asc: 'Název vzestupně',
@@ -155,6 +163,11 @@ export default {
       deleteDescription: 'Závod vymaže i výsledky závodníků!',
       delete: 'Smazat',
       deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
+    },
+    results: {
+      create: 'Nahrát výsledky',
+      erase: 'Vymazat všechny výsledky',
+      upload: 'Nahrát výsledky',
     }
   },
   user: {
