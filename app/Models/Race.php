@@ -60,6 +60,10 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereIsParent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Race withRichText($fields = [])
+ * @property \Illuminate\Support\Carbon|null $time
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $children
+ * @property-read int|null $children_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Race whereTime($value)
  * @mixin \Eloquent
  */
 class Race extends Model

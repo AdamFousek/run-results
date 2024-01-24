@@ -24,4 +24,7 @@ return [
     'race_created_success' => 'Závod byl vytvořen',
 
     'result_create_success' => 'Vysledek byl přidán',
+    'result_delete_success' => 'Vysledek byl odstraněn',
+
+    'result_file_could_not_be_uploaded' => 'Soubor s výsledky se nepodařilo nahrát',
 ];

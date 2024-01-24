@@ -169,7 +169,9 @@ export default {
       create: 'Vytvořit výsledky',
       erase: 'Vymazat všechny výsledky',
       upload: 'Nahrát výsledky',
-      createSingle: 'Zadat výsledek'
+      createSingle: 'Zadat výsledek',
+      deleteConfirmation: 'Jste si jisti, že chcete smazat výsledek?',
+      delete: 'Smazat výsledek?',
     }
   },
   user: {

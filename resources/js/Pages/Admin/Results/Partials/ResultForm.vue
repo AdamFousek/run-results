@@ -24,17 +24,21 @@ const emits = defineEmits(['submitted'])
 
 const form = useForm({
     raceId: props.race.id,
-    runnerId: null,
-    position: 0,
-    startingNumber: 0,
-    time: null,
-    category: '',
-    categoryPosition: 0,
-    DNF: false,
+    runnerId: props.result?.runnerId ?? null,
+    position: props.result?.position ?? 0,
+    startingNumber: props.result?.startingNumber ?? 0,
+    time: props.result?.time ?? null,
+    category: props.result?.category ?? '',
+    categoryPosition: props.result?.categoryPosition ?? 0,
+    DNF: props.result?.DNF ?? false,
 });
 
 const submit = () => {
-    form.post(route('admin.results.store'))
+    if (props.result) {
+        form.post(route('admin.results.update', { result: props.result.id }))
+    } else {
+        form.post(route('admin.results.store'))
+    }
     emits('submitted')
 };
 

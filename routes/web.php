@@ -45,19 +45,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/zavodnici/{runner}/edit', [\App\Http\Controllers\Admin\RunnerController::class, 'update'])->name('admin.runners.update');
     Route::get('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'create'])->name('admin.runners.create');
     Route::post('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'store'])->name('admin.runners.store');
-    Route::delete('/admin/zavodnici/{runner}/delete', [\App\Http\Controllers\Admin\RunnerController::class, 'destroy'])->name('admin.runners.destroy');
+    Route::delete('/admin/zavodnici/{runner}/smazat', [\App\Http\Controllers\Admin\RunnerController::class, 'destroy'])->name('admin.runners.destroy');
 
     Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
     Route::get('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'create'])->name('admin.races.create');
     Route::post('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'store'])->name('admin.races.store');
     Route::get('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'edit'])->name('admin.races.edit');
     Route::post('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'update'])->name('admin.races.update');
-    Route::delete('/admin/zavody/{race}/delete', [\App\Http\Controllers\Admin\RaceController::class, 'destroy'])->name('admin.races.destroy');
+    Route::delete('/admin/zavody/{race}/smazat', [\App\Http\Controllers\Admin\RaceController::class, 'destroy'])->name('admin.races.destroy');
 
     Route::get('/admin/vysledky', [\App\Http\Controllers\Admin\ResultController::class, 'index'])->name('admin.results.index');
     Route::get('/admin/vysledky/{race}', [\App\Http\Controllers\Admin\ResultController::class, 'show'])->name('admin.results.show');
+    Route::post('/admin/vysledky/{race}/upload', [\App\Http\Controllers\Admin\ResultController::class, 'upload'])->name('admin.results.upload');
     Route::get('/admin/vysledky/vytvorit', [\App\Http\Controllers\Admin\ResultController::class, 'create'])->name('admin.results.create');
     Route::post('/admin/vysledky/vytvorit', [\App\Http\Controllers\Admin\ResultController::class, 'store'])->name('admin.results.store');
+    Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
+    Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

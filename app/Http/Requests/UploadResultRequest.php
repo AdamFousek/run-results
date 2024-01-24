@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateResultRequest extends FormRequest
+class UploadResultRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,7 @@ class UpdateResultRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'raceId' => 'required|integer|exists:App\Models\Race,id',
-            'runnerId' => 'required|integer|exists:App\Models\Runner,id',
-            'time' => 'nullable|string',
-            'startingNumber' => 'nullable|integer',
-            'position' => 'nullable|integer',
-            'categoryPosition' => 'nullable|integer',
-            'category' => 'nullable|string',
-            'DNF' => 'nullable|boolean',
+            'results' => 'required|mimes:csv,txt'
         ];
     }
 }

@@ -1,15 +1,14 @@
 <script setup>
-import { ref, watch } from "vue";
-import { Head, router } from '@inertiajs/vue3'
+import { ref } from "vue";
+import { Head, useForm } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { PlusSharp } from '@vicons/material'
-import { NButton, NIcon, NInput, NModal, NCard } from 'naive-ui';
+import { NButton, NIcon, NModal, NCard } from 'naive-ui';
 import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp } from '@vicons/material'
 import ResultList from '@/Pages/Admin/Results/Partials/ResultList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
-import CreateForm from '@/Pages/Admin/Results/Partials/CreateForm.vue'
+import CreateForm from '@/Pages/Admin/Results/Partials/ResultForm.vue'
 
-defineProps({
+const props = defineProps({
     race: {
         type: Object,
         required: true,
@@ -21,17 +20,26 @@ defineProps({
 
 const eraseModal = ref(false)
 const openModalSingleResult = ref(false)
+const uploadResultsModal = ref(false)
+
+const uploadForm = useForm({
+    results: null,
+})
 
 const openEraseModal = () => {
     eraseModal.value = true
 }
 
 const uploadResults = () => {
-    console.log('upload results')
+    uploadResultsModal.value = true
 }
 
 const addSingleResult = () => {
     openModalSingleResult.value = true
+}
+
+function upload() {
+    uploadForm.post(route('admin.results.upload', { race: props.race.id }))
 }
 </script>
 
@@ -69,7 +77,7 @@ const addSingleResult = () => {
                     </div>
                 </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <ResultList :results="results"/>
+                    <ResultList :race="race" :results="results"/>
                 </div>
 
                 <div class="my-4 flex justify-end items-center gap-4">
@@ -97,6 +105,34 @@ const addSingleResult = () => {
                     </div>
                 </template>
                 <CreateForm :race="race" @submitted="openModalSingleResult = false" />
+            </NCard>
+        </NModal>
+        <NModal v-model:show="uploadResultsModal" size="huge">
+            <NCard
+                    class="max-w-3xl bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                    :title="$t('admin.results.upload')"
+                    :bordered="false"
+                    aria-modal="true"
+            >
+                <template #header-extra>
+                    <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="uploadResultsModal = false">
+                        <CloseSharp />
+                    </div>
+                </template>
+                <form @submit.prevent="upload">
+                    <div class="mt-3">
+                        <input id="files" type="file" @input="uploadForm.results = $event.target.files[0]" />
+                        <progress v-if="uploadForm.progress" :value="uploadForm.progress.percentage" max="100">
+                            {{ uploadForm.progress.percentage }}%
+                        </progress>
+                    </div>
+                    <div class="mt-3 flex justify-end">
+                        <NButton attr-type="submit" :class="{ 'opacity-25': uploadForm.processing }" type="info" round
+                                 :disabled="uploadForm.processing">
+                            {{ $t('admin.results.upload') }}
+                        </NButton>
+                    </div>
+                </form>
             </NCard>
         </NModal>
     </AdminLayout>

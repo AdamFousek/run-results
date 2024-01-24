@@ -1,11 +1,49 @@
 <script setup>
-import { EditFilled, DeleteFilled } from '@vicons/material'
+import { EditFilled, DeleteFilled, CloseSharp } from '@vicons/material'
+import { NButton, NCard, NModal } from 'naive-ui'
+import { ref } from 'vue'
+import { useForm } from '@inertiajs/vue3'
+import CreateForm from '@/Pages/Admin/Results/Partials/ResultForm.vue'
 
 defineProps({
+    race: {
+        type: Object,
+        required: true,
+    },
     results: {
         type: Array,
     }
 })
+
+const removeResultModal = ref(false)
+const updateResultModal = ref(false)
+const selectedResult = ref(null)
+
+const removeResultForm = useForm({});
+
+const removeResult = () => {
+    removeResultForm.delete(route('admin.results.destroy', { result: selectedResult.value.id }), {
+        preserveScroll: false,
+        onSuccess: () => {
+            removeResultModal.value = false
+            selectedResult.value = null
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+        onFinish: () => removeResultForm.reset(),
+    });
+};
+
+const openRemoveResult = (result) => {
+    selectedResult.value = result
+    removeResultModal.value = true
+}
+
+const openUpdateResult = (result) => {
+    selectedResult.value = result
+    updateResultModal.value = true
+}
 </script>
 
 <template>
@@ -31,13 +69,44 @@ defineProps({
             <div class="p-2">{{ result.DNF ? $t('yes') : $t('no') }}</div>
             <div class="p-2 flex justify-center align-middle gap-2">
                 <button class="text-purple-900 hover:text-purple-500">
-                    <EditFilled class="w-6" />
+                    <EditFilled class="w-6" @click="openUpdateResult(result)" />
                 </button>
                 <button class="text-red-800 hover:text-red-500">
-                    <DeleteFilled class="w-6" />
+                    <DeleteFilled class="w-6" @click="openRemoveResult(result)" />
                 </button>
             </div>
         </div>
+        <NModal v-model:show="updateResultModal">
+            <NCard
+                    class="max-w-3xl bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                    :title="$t('admin.results.createSingle')"
+                    :bordered="false"
+                    aria-modal="true"
+            >
+                <template #header-extra>
+                    <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="updateResultModal = false">
+                        <CloseSharp />
+                    </div>
+                </template>
+                <CreateForm :race="race" :result="selectedResult" @submitted="updateResultModal = false" />
+            </NCard>
+        </NModal>
+        <NModal v-model:show="removeResultModal">
+            <div class="bg-white p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ $t('admin.results.deleteConfirmation') }}
+                </h2>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <NButton @click="removeResultModal = false" secondary round> {{ $t('cancel') }}</NButton>
+
+                    <NButton @click="removeResult" :class="{ 'opacity-25': removeResultForm.processing }" type="error" round
+                             :disabled="removeResultForm.processing">
+                        {{ $t('admin.results.delete') }}
+                    </NButton>
+                </div>
+            </div>
+        </NModal>
     </div>
 </template>
 
