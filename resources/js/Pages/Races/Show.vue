@@ -65,6 +65,9 @@ const columns = [
     {
         title: t('result.startingNumber'),
         key: 'starting_number',
+        render(row) {
+            return h('div', {innerHTML: row.starting_number === 0 ? '-' : row.starting_number});
+        }
     },
     {
         title: t('runner.name'),
@@ -86,7 +89,11 @@ const columns = [
         key: 'time',
     },
     {
-        title: t('result.category_position'),
+        title: t('result.category'),
+        key: 'category',
+    },
+    {
+        title: t('result.categoryPosition'),
         key: 'category_position',
     },
 ]
@@ -121,7 +128,7 @@ const rowProps = (row) => {
                     <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
                 </div>
 
-                <section v-if="results.length > 0">
+                <section>
                     <div class="my-4 w-8/12 md:w-7/12 mx-auto">
                         <NInput type="text"
                                 v-model:value="search"

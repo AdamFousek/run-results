@@ -22,14 +22,10 @@ class RunnerRaceListTransformer
                 continue;
             }
 
-            if ($result->race === null) {
-                dump($result->race);
-                dd($result);
-            }
-
             $transformedData[] = [
                 'race_id' => $result->race->id,
                 'name' => $result->race->name,
+                'raceSlug' => $result->race->slug,
                 'date' => $result->race->date->format('j.n.Y'),
                 'location' => $result->race->location,
                 'distance' => $result->race->distance,

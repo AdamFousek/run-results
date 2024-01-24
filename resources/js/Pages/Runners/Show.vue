@@ -67,7 +67,7 @@ const columns = [
     key: 'position',
   },
   {
-    title: t('result.category_position'),
+    title: t('result.categoryPosition'),
     key: 'category_position',
   },
 ]
@@ -76,7 +76,7 @@ const rowProps = (row) => {
   return {
     style: "cursor: pointer;",
     onClick: () => {
-      router.get(route('races.show', { race: row.race_id }))
+      router.get(route('races.show', { race: row.raceSlug }))
     }
   };
 };

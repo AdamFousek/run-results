@@ -35,6 +35,9 @@ class HandleUploadFileResultService
         while (($data = fgetcsv($file, 1000, ",")) !== false )
         {
             $runner = $this->resolveRunner($data);
+            if ($runner === null) {
+                $runner = $this->createNewRunner($data);
+            }
             $result = new Result();
             $result->race_id = $results->race_id;
             $result->runner_id = $runner->id;
@@ -45,14 +48,17 @@ class HandleUploadFileResultService
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->save();
         }
+
         fclose($file);
+
+        Storage::delete($results->file_path);
     }
 
     /**
      * @param string[] $data
-     * @return Runner
+     * @return ?Runner
      */
-    private function resolveRunner(array $data): Runner
+    private function resolveRunner(array $data): ?Runner
     {
         $birthDate = explode('.', $data[self::DATE_OF_BIRTH] ?? '0.0.0');
         $year = (int)($birthDate[2] ?? 0);
@@ -65,6 +71,10 @@ class HandleUploadFileResultService
             ->where('first_name', $data[self::FIRST_NAME])
             ->where('last_name', $data[self::LAST_NAME])
             ->get();
+
+        $runners = $runners->filter(function (Runner $runner) use ($year) {
+            return $runner->year === $year;
+        });
 
         if ($year === 0 && $month === 0 && $day === 0) {
             if ($runners->count() === 1) {
