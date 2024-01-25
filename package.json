@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build && vite build --ssr"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -11,6 +11,7 @@
         "@vicons/material": "^0.12.0",
         "@vicons/utils": "^0.1.4",
         "@vitejs/plugin-vue": "^4.0.0",
+        "@vue/server-renderer": "^3.4.15",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.1",
         "laravel-vite-plugin": "^0.8.0",
@@ -20,6 +21,7 @@
         "trix": "^1.3.1",
         "vite": "^4.0.0",
         "vue": "^3.2.41",
-        "vue-i18n": "^9.7.0"
+        "vue-i18n": "^9.7.0",
+        "@css-render/vue3-ssr": "^0.15.12"
     }
 }

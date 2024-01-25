@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
+import ResultList from '@/Pages/Races/partials/ResultList.vue'
 
 const {t} = useI18n();
 
@@ -56,56 +57,6 @@ const searchRaces = (searchTerm) => {
         preserveState: true,
     })
 }
-
-const columns = [
-    {
-        title: t('result.position'),
-        key: 'position',
-    },
-    {
-        title: t('result.startingNumber'),
-        key: 'starting_number',
-        render(row) {
-            return h('div', {innerHTML: row.starting_number === 0 ? '-' : row.starting_number});
-        }
-    },
-    {
-        title: t('runner.name'),
-        key: 'name',
-        render(row) {
-            return h('div', {innerHTML: row.last_name + ' ' + row.first_name});
-        }
-    },
-    {
-        title: t('runner.year'),
-        key: 'year',
-    },
-    {
-        title: t('runner.club'),
-        key: 'club',
-    },
-    {
-        title: t('result.time'),
-        key: 'time',
-    },
-    {
-        title: t('result.category'),
-        key: 'category',
-    },
-    {
-        title: t('result.categoryPosition'),
-        key: 'category_position',
-    },
-]
-
-const rowProps = (row) => {
-    return {
-        style: "cursor: pointer;",
-        onClick: () => {
-            router.get(route('runners.show', {runner: row.runner_id}))
-        }
-    };
-};
 </script>
 
 <template>
@@ -139,15 +90,8 @@ const rowProps = (row) => {
                     </div>
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">
-                            <NDataTable
-                                    :columns="columns"
-                                    :data="results"
-                                    :pagination="false"
-                                    :bordered="false"
-                                    :row-props="rowProps"
-                            >
-                                <template #empty>{{ $t('noResults') }}</template>
-                            </NDataTable>
+                            <ResultList :results="results" />
+                            <section v-if="results.length === 0">{{ $t('noResults') }}</section>
 
                             <Pagination v-if="results.length" :pages="paginate.links" class="my-4"/>
                         </div>

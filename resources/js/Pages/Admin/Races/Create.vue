@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
 import { ref, watch } from 'vue'
+import MyTrixEditor from '@/Components/MyTrixEditor.vue'
 
 const props = defineProps({
     optionsType: {
@@ -53,11 +54,6 @@ const fillValueFromParent = (value) => {
         form.type = selectedRace.type
     }
 }
-
-
-document.addEventListener('trix-change', (event) => {
-    form.description = event.target.value;
-})
 </script>
 
 <template>
@@ -136,8 +132,7 @@ document.addEventListener('trix-change', (event) => {
                         <div class="mt-4">
                             <InputLabel for="description" :value="$t('race.description')"/>
 
-                            <trix-editor v-model="form.description" :inputId="'description'"
-                                         class="trix-content big"></trix-editor>
+                            <MyTrixEditor v-model="form.description" name="description"></MyTrixEditor>
 
                             <InputError class="mt-2" :message="form.errors.description"/>
                         </div>
