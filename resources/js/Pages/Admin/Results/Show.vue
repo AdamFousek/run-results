@@ -39,7 +39,12 @@ const addSingleResult = () => {
 }
 
 function upload() {
-    uploadForm.post(route('admin.results.upload', { race: props.race.id }))
+    uploadForm.post(route('admin.results.upload', { race: props.race.id }),{
+        onSuccess: () => {
+            uploadForm.reset()
+            uploadResultsModal.value = false
+        },
+    })
 }
 </script>
 
@@ -126,6 +131,7 @@ function upload() {
                             {{ uploadForm.progress.percentage }}%
                         </progress>
                     </div>
+                    <div class="text-red-800">{{ uploadForm.errors.results }}</div>
                     <div class="mt-3 flex justify-end">
                         <NButton attr-type="submit" :class="{ 'opacity-25': uploadForm.processing }" type="info" round
                                  :disabled="uploadForm.processing">

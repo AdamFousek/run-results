@@ -75,7 +75,7 @@ class RaceController extends AdminController
         try {
             $race = $this->createRaceCommand->handle(new CreateRace(
                 name: $validated['name'],
-                description: $validated['description'],
+                description: $validated['description'] ?? '',
                 date: $validated['date'] ?? '',
                 time: $validated['time'] ?? '',
                 location: $validated['location'] ?? '',
@@ -119,7 +119,7 @@ class RaceController extends AdminController
             $race = $this->updateRaceCommand->handle(new UpdateRace(
                 race: $race,
                 name: $validated['name'],
-                description: $validated['description'],
+                description: $validated['description'] ?? '',
                 date: $validated['date'] ?? '',
                 time: $validated['time'] ?? '',
                 location: $validated['location'] ?? '',

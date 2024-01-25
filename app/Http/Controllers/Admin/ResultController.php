@@ -157,9 +157,9 @@ class ResultController extends Controller
 
     public function upload(UploadResultRequest $request, Race $race): RedirectResponse
     {
-        try {
-            $data = $request->validated();
+        $data = $request->validated();
 
+        try {
             $file = $data['results'];
             if (!$file instanceof UploadedFile) {
                 throw new \Exception(trans('result_file_could_not_be_uploaded'));
@@ -190,9 +190,8 @@ class ResultController extends Controller
      */
     public function destroy(Result $result): RedirectResponse
     {
+        $this->authorize('delete', $result);
         try {
-            $this->authorize('delete', $result);
-
             $result->delete();
 
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.result_delete_success'));
