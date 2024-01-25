@@ -141,7 +141,7 @@ const alert = computed(() => {
           class="sm:hidden"
         >
           <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink :href="route('admin.runners.index')" :active="route().current('welcome')">
+            <ResponsiveNavLink :href="route('admin.runners.index')" :active="route().current('admin.runners.*')">
               {{ $t('menu.runners') }}
             </ResponsiveNavLink>
             <ResponsiveNavLink :href="route('admin.races.index')" :active="route().current('admin.races.*')">
