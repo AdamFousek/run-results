@@ -25,7 +25,7 @@ class UserController extends AdminController
         $search = trim(strtolower($request->get('query')));
         $page = (int)$request->get('page', 1);
 
-        $users = User::whereRaw('LOWER(`username`) LIKE ? ',["%$search%"])->orWhereRaw('LOWER(`email`) LIKE ? ',["%$search%"])->paginate(self::LIMIT);
+        $users = User::with('runner')->whereRaw('LOWER(`username`) LIKE ? ',["%$search%"])->orWhereRaw('LOWER(`email`) LIKE ? ',["%$search%"])->paginate(self::LIMIT);
 
         return Inertia::render('Admin/Users/Index', [
             'users' => $this->userListTransformer->transform($users->items()),
