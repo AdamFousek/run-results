@@ -168,7 +168,7 @@ const alert = computed(() => {
 
             <div class="mt-3 space-y-1">
               <template v-if="$page.props.auth.user.role === UserRoleEnum.ADMIN">
-                <ResponsiveNavLink :href="route('profile.edit')">{{ $t('menu.administration') }}</ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</ResponsiveNavLink>
                 <hr>
               </template>
               <ResponsiveNavLink :href="route('profile.edit')" :active="route().current('profile.*')"> Profile</ResponsiveNavLink>

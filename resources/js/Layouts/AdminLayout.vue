@@ -141,7 +141,7 @@ const alert = computed(() => {
           class="sm:hidden"
         >
           <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink :href="route('welcome')" :active="route().current('welcome')">
+            <ResponsiveNavLink :href="route('admin.runners.index')" :active="route().current('welcome')">
               {{ $t('menu.runners') }}
             </ResponsiveNavLink>
             <ResponsiveNavLink :href="route('admin.races.index')" :active="route().current('admin.races.*')">
@@ -174,7 +174,7 @@ const alert = computed(() => {
 
             <div class="mt-3 space-y-1">
               <template v-if="$page.props.auth.user.role === UserRoleEnum.ADMIN">
-                <ResponsiveNavLink :href="route('profile.edit')">{{ $t('menu.administration') }}</ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</ResponsiveNavLink>
                 <hr>
               </template>
               <ResponsiveNavLink :href="route('profile.edit')" :active="route().current('profile.*')"> Profile</ResponsiveNavLink>
