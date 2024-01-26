@@ -8,7 +8,7 @@ import Pagination from '@/Components/Pagination.vue'
 import { PlusSharp } from '@vicons/material'
 import RaceList from '@/Pages/Admin/Results/Partials/RaceList.vue'
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 const props = defineProps({
     races: {
@@ -46,7 +46,7 @@ const searchRaces = () => {
 </script>
 
 <template>
-    <Head :title="$t('head.admin.results')" />
+    <Head :title="$t('head.admin.results')"/>
 
     <AdminLayout>
         <template #header>
@@ -64,19 +64,13 @@ const searchRaces = () => {
                             clearable
                             round
                     />
-                    <NButton round type="success" @click="router.get(route('admin.results.create'))">
-                        <template #icon>
-                            <NIcon>
-                                <PlusSharp />
-                            </NIcon>
-                        </template>
-                        {{ $t('admin.results.create') }}
-                    </NButton>
                 </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <RaceList :races="races" />
+                <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
+                    <div class="md:w-full flex-shrink-0">
+                        <RaceList :races="races"/>
 
-                    <Pagination v-if="races.length" :pages="paginate.links" class="my-4" />
+                        <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>
+                    </div>
                 </div>
             </div>
         </div>

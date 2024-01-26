@@ -51,7 +51,7 @@ class ResultController extends Controller
         if ($search !== '') {
             $races = Race::search($search)->paginate(self::LIMIT);
         } else {
-            $races = Race::has('results')->paginate(self::LIMIT);
+            $races = Race::query()->paginate(self::LIMIT);
         }
         $page = (int)$request->get('page', 1);
 
@@ -65,14 +65,6 @@ class ResultController extends Controller
             ],
             'search' => $search,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**

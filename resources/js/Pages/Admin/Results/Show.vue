@@ -124,6 +124,7 @@ function upload() {
                         <CloseSharp />
                     </div>
                 </template>
+                <div class="text-red-800">{{ $t('admin.results.uploadWillRemoveAllResults') }}</div>
                 <form @submit.prevent="upload">
                     <div class="mt-3">
                         <input id="files" type="file" @input="uploadForm.results = $event.target.files[0]" />

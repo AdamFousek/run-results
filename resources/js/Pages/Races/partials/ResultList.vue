@@ -1,4 +1,6 @@
 <script setup>
+import { Link } from '@inertiajs/vue3'
+
 defineProps({
     results: {
         type: Array,
@@ -18,7 +20,7 @@ defineProps({
             <div class="font-bold p-3 md:px-4">{{ $t('result.categoryPosition') }}</div>
             <div class="col-span-3 font-bold p-3 md:px-4">{{ $t('runner.club') }}</div>
         </div>
-        <a v-for="(result, index) in results" :key="result.id" :href="route('runners.show', { runner: result.runner_id })" class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100"
+        <Link v-for="(result, index) in results" :key="result.id" :href="route('runners.show', { runner: result.runner_id })" class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100"
            :class="{ 'bg-gray-50': index%2 === 0}">
             <div class="p-3 md:px-4 text-center">{{ result.position }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.starting_number }}</div>
@@ -27,7 +29,7 @@ defineProps({
             <div class="p-3 md:px-4">{{ result.category }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.category_position }}</div>
             <div class="col-span-3 p-3 md:px-4">{{ result.club }}</div>
-        </a>
+        </Link>
     </section>
 </template>
 

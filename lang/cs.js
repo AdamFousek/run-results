@@ -172,6 +172,7 @@ export default {
       createSingle: 'Zadat výsledek',
       deleteConfirmation: 'Jste si jisti, že chcete smazat výsledek?',
       delete: 'Smazat výsledek?',
+      uploadWillRemoveAllResults: 'Nahrání nových výsledků vymaže všechny stávající výsledky!',
     }
   },
   user: {

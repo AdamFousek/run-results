@@ -57,7 +57,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/vysledky', [\App\Http\Controllers\Admin\ResultController::class, 'index'])->name('admin.results.index');
     Route::get('/admin/vysledky/{race}', [\App\Http\Controllers\Admin\ResultController::class, 'show'])->name('admin.results.show');
     Route::post('/admin/vysledky/{race}/upload', [\App\Http\Controllers\Admin\ResultController::class, 'upload'])->name('admin.results.upload');
-    Route::get('/admin/vysledky/vytvorit', [\App\Http\Controllers\Admin\ResultController::class, 'create'])->name('admin.results.create');
     Route::post('/admin/vysledky/vytvorit', [\App\Http\Controllers\Admin\ResultController::class, 'store'])->name('admin.results.store');
     Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
     Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
