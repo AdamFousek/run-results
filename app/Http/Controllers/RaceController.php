@@ -53,7 +53,17 @@ class RaceController extends Controller
         $search = trim($request->get('query'));
         $sort = $this->resolveSort($request);
         [$sortColumn, $sortDirection] = explode(':', $sort);
-        $races = Race::search($search)->orderBy($sortColumn, $sortDirection)->paginate(self::LIMIT);
+        if ($search !== '') {
+            $races = Race::search($search)
+                ->where('is_parent', 0)
+                ->orderBy($sortColumn, $sortDirection)
+                ->paginate(self::LIMIT);
+        } else {
+            $races = Race::query()
+                ->where('is_parent', 0)
+                ->orderBy($sortColumn, $sortDirection)
+                ->paginate(self::LIMIT);
+        }
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Races/Index', [

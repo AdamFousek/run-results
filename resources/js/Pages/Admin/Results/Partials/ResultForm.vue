@@ -31,6 +31,7 @@ const form = useForm({
     category: props.result?.category ?? '',
     categoryPosition: props.result?.categoryPosition ?? 0,
     DNF: props.result?.DNF ?? false,
+    DNS: props.result?.DNS ?? false,
 });
 
 const submit = () => {
@@ -148,6 +149,18 @@ onMounted(() => {
             />
 
             <InputError class="mt-2" :message="form.errors.DNF"/>
+        </div>
+        <div>
+            <InputLabel for="isParent" :value="$t('result.DNS')"/>
+
+            <NCheckbox
+                    :input-props="{ id: 'DNS'}"
+                    :placeholder="$t('result.DNS')"
+                    class="mt-1 block w-full"
+                    v-model:checked="form.DNS"
+            />
+
+            <InputError class="mt-2" :message="form.errors.DNS"/>
         </div>
 
         <div class="col-span-2 flex justify-end self-end mt-4 gap-4">

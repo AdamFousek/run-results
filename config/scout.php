@@ -147,7 +147,7 @@ return [
                 ]
             ],
             Race::class => [
-                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type'],
+                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'is_parent'],
                 'sortableAttributes'=> ['name', 'location', 'distance', 'date'],
                 'pagination' => [
                     'maxTotalHits' => 100000

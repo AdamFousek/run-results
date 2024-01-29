@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\DistanceCast;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -99,6 +100,8 @@ class Race extends Model
         'description',
     ];
 
+    protected array $makeAllSearchableWith = ['results'];
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
@@ -120,6 +123,27 @@ class Race extends Model
         return $this->hasMany(Result::class);
     }
 
+    public function scopeNotParents(Builder $query): Builder
+    {
+        return $query->whereNot('is_parent', true);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRichTextFieldsSearchable(): array
+    {
+        return $this->richTextFields;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllSearchableWith(): array
+    {
+        return $this->makeAllSearchableWith;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -134,7 +158,9 @@ class Race extends Model
             'location' => $this->location,
             'distance' => $this->getRawOriginal('distance'),
             'surface' => $this->surface,
+            'runnerCount' => $this->results->count(),
             'type' => $this->type,
+            'is_parent' => $this->is_parent,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'upserted_at' => new Carbon(),

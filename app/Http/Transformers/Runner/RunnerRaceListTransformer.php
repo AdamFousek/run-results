@@ -31,6 +31,7 @@ class RunnerRaceListTransformer
                 'distance' => $result->race->distance,
                 'time' => $result->time,
                 'position' => $result->position,
+                'category' => $result->category,
                 'category_position' => $result->category_position,
             ];
         }

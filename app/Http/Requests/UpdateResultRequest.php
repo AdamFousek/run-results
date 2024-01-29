@@ -30,6 +30,7 @@ class UpdateResultRequest extends FormRequest
             'categoryPosition' => 'nullable|integer',
             'category' => 'nullable|string',
             'DNF' => 'nullable|boolean',
+            'DNS' => 'nullable|boolean',
         ];
     }
 }

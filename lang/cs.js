@@ -116,6 +116,7 @@ export default {
     categoryPosition: 'Pozice v kat.',
     category: 'Kategorie',
     DNF: 'DNF',
+    DNS: 'DNS',
   },
   sort: {
     name_asc: 'Název vzestupně',

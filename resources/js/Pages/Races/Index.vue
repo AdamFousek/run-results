@@ -99,7 +99,7 @@ const searchRaces = () => {
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
                         <RaceList :races="races"/>
-                        <section v-if="races.length === 0">{{ $t('noResults') }}</section>
+                        <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
 
 
                         <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>

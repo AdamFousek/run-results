@@ -43,7 +43,7 @@ class HandleUploadFileResultService
             $result->runner_id = $runner->id;
             $result->position = (int)$data[self::POSITION];
             $result->starting_number = (int)$data[self::STARTING_NUMBER];
-            $result->time = $data[self::TIME];
+            $result->time = $this->resolveTime($result, $data);
             $result->category = $data[self::CATEGORY];
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->save();
@@ -190,5 +190,23 @@ class HandleUploadFileResultService
         $runner->save();
 
         return $runner;
+    }
+
+    /**
+     * @param Result $result
+     * @param array<int, mixed> $data
+     * @return string
+     */
+    private function resolveTime(Result $result, array $data): string
+    {
+        $time = $data[self::TIME];
+        if (!str_contains($time, ':')) {
+            $result->DNF = $time === 'DNF' ? 1 : 0;
+            $result->DNS = $time === 'DNS' ? 1 : 0;
+
+            return '0:00:00';
+        }
+
+        return $time;
     }
 }

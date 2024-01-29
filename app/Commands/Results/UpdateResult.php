@@ -19,6 +19,7 @@ readonly class UpdateResult
         public int $categoryPosition,
         public string $category,
         public bool $dnf,
+        public bool $dns,
     ) {
     }
 }

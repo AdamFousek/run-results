@@ -84,6 +84,7 @@ class ResultController extends Controller
                 categoryPosition: $validated['categoryPosition'] ?? 0,
                 category: $validated['category'] ?? '',
                 dnf: $validated['DNF'] ?? false,
+                dns: $validated['DNS'] ?? false,
             ));
 
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.result_create_success'));
@@ -110,14 +111,6 @@ class ResultController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Result $result)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateResultRequest $request, Result $result): RedirectResponse
@@ -135,6 +128,7 @@ class ResultController extends Controller
                 categoryPosition: $validated['categoryPosition'] ?? 0,
                 category: $validated['category'] ?? '',
                 dnf: $validated['DNF'] ?? false,
+                dns: $validated['DNS'] ?? false,
             ));
 
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.result_create_success'));

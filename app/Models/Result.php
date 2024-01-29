@@ -53,6 +53,7 @@ class Result extends Model
         'category',
         'category_position',
         'DNF',
+        'DNS',
     ];
 
     protected $casts = [
