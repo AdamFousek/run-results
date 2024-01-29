@@ -148,14 +148,14 @@ class RaceController extends Controller
     {
         if ($search !== '') {
             if (is_numeric($search)) {
-                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
+                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->with('runner')->paginate(self::LIMIT_RUNNERS);
             }
 
             $runnerIds = Runner::search($search)->get()->pluck('id');
-            return Result::whereRaceId($race->id)->orderBy('time')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
+            return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
         }
 
-        return Result::whereRaceId($race->id)->orderBy('time')->with('runner')->paginate(self::LIMIT_RUNNERS);
+        return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->paginate(self::LIMIT_RUNNERS);
     }
 
     private function resolveMetaDescription(Race $race): string
