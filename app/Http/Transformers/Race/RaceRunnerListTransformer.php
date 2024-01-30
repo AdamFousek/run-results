@@ -33,6 +33,8 @@ class RaceRunnerListTransformer
                 'category_position' => $result->category_position,
                 'category' => $result->category,
                 'time' => $result->time,
+                'DNF' => $result->DNF,
+                'DNS' => $result->DNS,
             ];
         }
 

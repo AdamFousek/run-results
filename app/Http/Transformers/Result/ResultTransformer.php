@@ -45,6 +45,7 @@ class ResultTransformer
             'categoryPosition' => $result->category_position,
             'category' => $result->category,
             'DNF' => $result->DNF,
+            'DNS' => $result->DNS,
         ];
     }
 }

@@ -195,16 +195,16 @@ class HandleUploadFileResultService
     /**
      * @param Result $result
      * @param array<int, mixed> $data
-     * @return string
+     * @return string|null
      */
-    private function resolveTime(Result $result, array $data): string
+    private function resolveTime(Result $result, array $data): ?string
     {
         $time = $data[self::TIME];
         if (!str_contains($time, ':')) {
             $result->DNF = $time === 'DNF' ? 1 : 0;
             $result->DNS = $time === 'DNS' ? 1 : 0;
 
-            return '0:00:00';
+            return null;
         }
 
         return $time;

@@ -41,46 +41,6 @@ const searchRaces = () => {
         preserveState: true,
     })
 }
-
-const columns = [
-    {
-        title: t('race.name'),
-        key: 'name',
-    },
-    {
-        title: t('race.date'),
-        key: 'date',
-    },
-    {
-        title: t('race.location'),
-        key: 'location',
-    },
-    {
-        title: t('result.time'),
-        key: 'time',
-    },
-    {
-        title: t('race.distance'),
-        key: 'distance',
-    },
-    {
-        title: t('result.position'),
-        key: 'position',
-    },
-    {
-        title: t('result.categoryPosition'),
-        key: 'category_position',
-    },
-]
-
-const rowProps = (row) => {
-    return {
-        style: "cursor: pointer;",
-        onClick: () => {
-            router.get(route('races.show', {race: row.raceSlug}))
-        }
-    };
-};
 </script>
 
 <template>

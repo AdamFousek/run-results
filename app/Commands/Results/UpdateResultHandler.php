@@ -18,8 +18,8 @@ class UpdateResultHandler
         $result->time = $command->time;
         $result->category_position = $command->categoryPosition;
         $result->category = $command->category;
-        $result->dns = $command->dns ? 1 : 0;
-        $result->dnf = $command->dnf ? 1 : 0;
+        $result->DNS = $command->dns ? 1 : 0;
+        $result->DNF = $command->dnf ? 1 : 0;
 
         $result->save();
 

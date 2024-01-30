@@ -15,7 +15,7 @@ readonly class UpdateResult
         public int $runnerId,
         public int $position,
         public int $startingNumber,
-        public string $time,
+        public ?string $time,
         public int $categoryPosition,
         public string $category,
         public bool $dnf,

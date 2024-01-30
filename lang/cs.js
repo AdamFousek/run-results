@@ -174,6 +174,7 @@ export default {
       deleteConfirmation: 'Jste si jisti, že chcete smazat výsledek?',
       delete: 'Smazat výsledek?',
       uploadWillRemoveAllResults: 'Nahrání nových výsledků vymaže všechny stávající výsledky!',
+      showRace: 'Zobrazit závod',
     }
   },
   user: {

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('results', function (Blueprint $table) {
-            $table->boolean('DNS')->default(false);
+            $table->boolean('DNS')->default(false)->after('DNF');
+            $table->unsignedBigInteger('time')->nullable()->change();
         });
     }
 

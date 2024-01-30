@@ -2,10 +2,9 @@
 import { ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { NButton, NIcon, NInput } from 'naive-ui';
+import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
-import { PlusSharp } from '@vicons/material'
 import RaceList from '@/Pages/Admin/Results/Partials/RaceList.vue'
 
 const {t} = useI18n();

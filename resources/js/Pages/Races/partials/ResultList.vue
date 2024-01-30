@@ -25,7 +25,9 @@ defineProps({
             <div class="p-3 md:px-4 text-center">{{ result.position }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.starting_number }}</div>
             <div class="col-span-3 p-3 md:px-4">{{ result.last_name }} {{ result.first_name }} ({{ result.year }})</div>
-            <div class="col-span-2 p-3 md:px-4">{{ result.time }}</div>
+            <div v-if="result.DNF" class="col-span-2 p-3 md:px-4">{{ $t('result.DNF') }}</div>
+            <div v-else-if="result.DNS" class="col-span-2 p-3 md:px-4">{{ $t('result.DNS') }}</div>
+            <div v-else class="col-span-2 p-3 md:px-4">{{ result.time }}</div>
             <div class="p-3 md:px-4">{{ result.category }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.category_position }}</div>
             <div class="col-span-3 p-3 md:px-4">{{ result.club }}</div>

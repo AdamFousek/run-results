@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, useForm, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { NButton, NIcon, NModal, NCard } from 'naive-ui';
-import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp } from '@vicons/material'
+import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp, RemoveRedEyeOutlined } from '@vicons/material'
 import ResultList from '@/Pages/Admin/Results/Partials/ResultList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import CreateForm from '@/Pages/Admin/Results/Partials/ResultForm.vue'
@@ -39,12 +39,16 @@ const addSingleResult = () => {
 }
 
 function upload() {
-    uploadForm.post(route('admin.results.upload', { race: props.race.id }),{
+    uploadForm.post(route('admin.results.upload', {race: props.race.id}), {
         onSuccess: () => {
             uploadForm.reset()
             uploadResultsModal.value = false
         },
     })
+}
+
+const visitRace = () => {
+    router.visit(route('races.show', {race: props.race.slug}))
 }
 </script>
 
@@ -61,7 +65,7 @@ function upload() {
         <div class="md:py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex flex-col m-2 md:mx-0 md:flex-row justify-between align-top mb-4">
-                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
+                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl"/>
                     <div class="my-4 flex flex-col justify-start gap-4">
                         <NButton round type="info" @click="uploadResults">
                             <template #icon>
@@ -74,10 +78,18 @@ function upload() {
                         <NButton round type="success" @click="addSingleResult">
                             <template #icon>
                                 <NIcon>
-                                    <PlusFilled />
+                                    <PlusFilled/>
                                 </NIcon>
                             </template>
                             {{ $t('admin.results.createSingle') }}
+                        </NButton>
+                        <NButton round type="warning" @click="visitRace">
+                            <template #icon>
+                                <NIcon>
+                                    <RemoveRedEyeOutlined/>
+                                </NIcon>
+                            </template>
+                            {{ $t('admin.results.showRace') }}
                         </NButton>
                     </div>
                 </div>
@@ -106,10 +118,10 @@ function upload() {
             >
                 <template #header-extra>
                     <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="openModalSingleResult = false">
-                        <CloseSharp />
+                        <CloseSharp/>
                     </div>
                 </template>
-                <CreateForm :race="race" @submitted="openModalSingleResult = false" />
+                <CreateForm :race="race" @submitted="openModalSingleResult = false"/>
             </NCard>
         </NModal>
         <NModal v-model:show="uploadResultsModal" size="huge">
@@ -121,13 +133,13 @@ function upload() {
             >
                 <template #header-extra>
                     <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="uploadResultsModal = false">
-                        <CloseSharp />
+                        <CloseSharp/>
                     </div>
                 </template>
                 <div class="text-red-800">{{ $t('admin.results.uploadWillRemoveAllResults') }}</div>
                 <form @submit.prevent="upload">
                     <div class="mt-3">
-                        <input id="files" type="file" @input="uploadForm.results = $event.target.files[0]" />
+                        <input id="files" type="file" @input="uploadForm.results = $event.target.files[0]"/>
                         <progress v-if="uploadForm.progress" :value="uploadForm.progress.percentage" max="100">
                             {{ uploadForm.progress.percentage }}%
                         </progress>
