@@ -136,10 +136,10 @@ class RaceController extends Controller
 
     private function resolveSort(Request $request): string
     {
-        $sort = $request->get('sort', self::SORT_NAME_ASC);
+        $sort = $request->get('sort', self::SORT_DATE_DESC);
 
         if (!array_key_exists($sort, self::SORTS)) {
-            $sort = self::SORT_NAME_ASC;
+            $sort = self::SORT_DATE_DESC;
         }
 
         return $sort;
