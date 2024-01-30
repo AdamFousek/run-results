@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Transformers\Runner\RunnerRaceListTransformer;
+use App\Models\Race;
 use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
@@ -38,14 +39,30 @@ class RunnerController extends Controller
         ]);
     }
 
-    public function show(Runner $runner): Response
+    public function show(Request $request, Runner $runner): Response
     {
-        $results = Result::whereRunnerId($runner->id)->with('race')->get();
-        // @todo filter of races
+        $search = trim($request->get('query'));
+        if ($search !== '') {
+            $raceIds = Race::search($search)->get()->pluck('id');
+            $results = Result::whereRunnerId($runner->id)
+                ->join('races', 'results.race_id', '=', 'races.id')
+                ->orderBy('races.date', 'desc')
+                ->whereIn('races.id', $raceIds)
+                ->with('race')
+                ->get();
+        } else {
+            $results = Result::whereRunnerId($runner->id)
+                ->join('races', 'results.race_id', '=', 'races.id')
+                ->orderBy('races.date', 'desc')
+                ->with('race')
+                ->get();
+        }
+
 
         return Inertia::render('Runners/Show', [
             'runner' => $runner,
             'results' => $this->runnerRaceListTransformer->transform($results),
+            'search' => $search,
         ]);
     }
 }
