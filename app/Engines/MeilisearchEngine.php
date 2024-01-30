@@ -15,11 +15,11 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
             return;
         }
 
-        if (is_callable([$models->first(), 'getAllSearchableWith'])) {
+        if (method_exists($models->first(), 'getAllSearchableWith') && is_callable([$models->first(), 'getAllSearchableWith'])) {
             $models->load($models->first()->getAllSearchableWith());
         }
 
-        if (is_callable([$models->first(), 'getRichTextFieldsSearchable'])) {
+        if (method_exists($models->first(), 'getRichTextFieldsSearchable') && is_callable([$models->first(), 'getRichTextFieldsSearchable'])) {
             $fields = collect($models->first()->getRichTextFieldsSearchable())
                 ->map(fn ($field) => 'richText'.Str::studly($field))
                 ->all();
