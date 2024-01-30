@@ -35,7 +35,11 @@ const props = defineProps({
     head: {
         type: Object,
         required: true,
-    }
+    },
+    selectedRunner: {
+        type: Number,
+        required: false,
+    },
 })
 
 const search = ref(props.search)
@@ -79,7 +83,7 @@ const searchRaces = (searchTerm) => {
                     <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
                 </div>
 
-                <section>
+                <section v-if="!race.isParent">
                     <div class="my-4 w-8/12 md:w-7/12 mx-auto">
                         <NInput type="text"
                                 v-model:value="search"
@@ -90,7 +94,7 @@ const searchRaces = (searchTerm) => {
                     </div>
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">
-                            <ResultList :results="results" />
+                            <ResultList :results="results" :selected-runner="selectedRunner" />
                             <section class="p-4 text-center" v-if="results.length === 0">{{ $t('noResults') }}</section>
 
                             <Pagination v-if="results.length" :pages="paginate.links" class="my-4"/>

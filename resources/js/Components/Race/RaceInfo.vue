@@ -1,4 +1,7 @@
 <script setup>
+import { NButton } from 'naive-ui'
+import { Link } from '@inertiajs/vue3'
+
 defineProps({
     race: {
         type: Object,
@@ -37,6 +40,14 @@ defineProps({
         <div v-if="race.isParent" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.races') }}:</div>
             <div class="">{{ race.races }}</div>
+        </div>
+        <div v-if="race.parentName" class="my-2">
+            <div class="font-bold">{{ $t('race.parentRace') }}:</div>
+            <Link :href="route('races.show', { race: race.parentSlug })">
+                <NButton size="small" secondary round type="info">
+                    {{ race.parentName }}
+                </NButton>
+            </Link>
         </div>
     </section>
 </template>

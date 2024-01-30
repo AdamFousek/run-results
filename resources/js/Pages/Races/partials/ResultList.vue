@@ -2,6 +2,10 @@
 import { Link } from '@inertiajs/vue3'
 
 defineProps({
+    selectedRunner: {
+        type: Number,
+        required: false,
+    },
     results: {
         type: Array,
         required: true,
@@ -20,8 +24,14 @@ defineProps({
             <div class="font-bold p-3 md:px-4">{{ $t('result.categoryPosition') }}</div>
             <div class="col-span-3 font-bold p-3 md:px-4">{{ $t('runner.club') }}</div>
         </div>
-        <Link v-for="(result, index) in results" :key="result.id" :href="route('runners.show', { runner: result.runner_id })" class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100"
-           :class="{ 'bg-gray-50': index%2 === 0}">
+        <Link v-for="(result, index) in results" :key="result.id"
+              :href="route('runners.show', { runner: result.runner_id })"
+              class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100"
+              :class="{
+                  'bg-gray-50': index%2 === 0,
+                  'bg-violet-100': selectedRunner === result.runner_id,
+              }"
+        >
             <div class="p-3 md:px-4 text-center">{{ result.position }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.starting_number }}</div>
             <div class="col-span-3 p-3 md:px-4">{{ result.last_name }} {{ result.first_name }} ({{ result.year }})</div>

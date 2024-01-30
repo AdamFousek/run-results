@@ -55,7 +55,6 @@ class RaceController extends Controller
         [$sortColumn, $sortDirection] = explode(':', $sort);
         if ($search !== '') {
             $races = Race::search($search)
-                ->where('is_parent', 0)
                 ->orderBy($sortColumn, $sortDirection)
                 ->paginate(self::LIMIT);
         } else {
@@ -83,6 +82,7 @@ class RaceController extends Controller
     public function show(Request $request, Race $race): Response
     {
         $search = trim($request->get('query'));
+        $runnerId = (int)$request->get('runnerId');
         $page = (int)$request->get('page', 1);
 
         $results = null;
@@ -110,7 +110,8 @@ class RaceController extends Controller
             'head' => [
                 'title' => $race->name,
                 'description' => $metaDescription,
-            ]
+            ],
+            'selectedRunner' => $runnerId === 0 ? null : $runnerId,
         ];
 
 

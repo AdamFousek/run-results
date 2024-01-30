@@ -65,7 +65,7 @@ const searchRaces = () => {
                     />
                 </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <ResultList :results="results"/>
+                    <ResultList :results="results" :runner="runner" />
                     <section v-if="results.length === 0" class="p-4 text-center">{{ $t('noResults') }}</section>
                 </div>
             </div>

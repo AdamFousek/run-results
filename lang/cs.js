@@ -107,6 +107,7 @@ export default {
     races: 'Počet závodů',
     childRaces: 'Závody',
     resultsCount: 'Počet výsledků',
+    parentRace: 'Nadřazený závod',
   },
   result: {
     runner: 'Běžec',

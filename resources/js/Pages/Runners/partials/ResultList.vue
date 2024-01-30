@@ -2,6 +2,10 @@
 import { Link } from '@inertiajs/vue3'
 
 defineProps({
+    runner: {
+        type: Object,
+        required: true,
+    },
     results: {
         type: Array,
         required: true,
@@ -18,9 +22,9 @@ defineProps({
             <div class="font-bold p-3 md:px-4">{{ $t('race.distance') }}</div>
             <div class="font-bold p-3 md:px-4">{{ $t('result.time') }}</div>
             <div class="font-bold p-3 md:px-4">{{ $t('result.position') }}</div>
-            <div class="col-span-2 font-bold p-3 md:px-4">{{ $t('runner.categoryPosition') }}</div>
+            <div class="col-span-2 font-bold p-3 md:px-4">{{ $t('result.categoryPosition') }}</div>
         </div>
-        <Link v-for="(result, index) in results" :key="result.id" :href="route('races.show', { race: result.raceSlug })" class="grid grid-cols-11 gap-2 md:gap-4 hover:bg-gray-100"
+        <Link v-for="(result, index) in results" :key="result.id" :href="route('races.show', { race: result.raceSlug, runnerId: runner.id })" class="grid grid-cols-11 gap-2 md:gap-4 hover:bg-gray-100"
               :class="{ 'bg-gray-50': index%2 === 0}">
             <div class="p-3 md:px-4 text-center">{{ result.date }}</div>
             <div class="col-span-3 p-3 md:px-4">{{ result.name }}</div>

@@ -34,6 +34,7 @@ class RaceTransformer
             'isParent' => $race->is_parent,
             'parentId' => $race->parent_id,
             'parentName' => $race->parent?->name,
+            'parentSlug' => $race->parent?->slug,
         ];
     }
 }
