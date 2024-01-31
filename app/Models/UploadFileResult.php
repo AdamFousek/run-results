@@ -50,6 +50,11 @@ class UploadFileResult extends Model
         'race_id',
     ];
 
+    protected $casts = [
+        'processed_at' => 'datetime',
+        'create_at' => 'datetime',
+    ];
+
     public function race(): BelongsTo
     {
         return $this->belongsTo(Race::class);

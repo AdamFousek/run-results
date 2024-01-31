@@ -29,7 +29,7 @@ defineProps({
               class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100"
               :class="{
                   'bg-gray-50': index%2 === 0,
-                  'bg-violet-100': selectedRunner === result.runner_id,
+                  'bg-violet-100 hover:bg-violet-200': selectedRunner === result.runner_id,
               }"
         >
             <div class="p-3 md:px-4 text-center">{{ result.position }}</div>

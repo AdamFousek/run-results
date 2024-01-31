@@ -15,9 +15,12 @@ use App\Http\Requests\UploadResultRequest;
 use App\Http\Transformers\Race\RaceResultsTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Result\ResultTransformer;
+use App\Http\Transformers\Result\ResultUploadsTransformer;
 use App\Jobs\ProcessResults;
 use App\Models\Race;
 use App\Models\Result;
+use App\Models\UploadFileResult;
+use App\Models\UploadFileResultRow;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,7 +31,7 @@ use Inertia\Response;
 
 class ResultController extends Controller
 {
-    const LIMIT = 30;
+    private const LIMIT = 30;
 
     public function __construct(
         private readonly RaceResultsTransformer $transformer,
@@ -38,6 +41,7 @@ class ResultController extends Controller
         private readonly CreateResultCommand $createResultCommand,
         private readonly UpdateResultHandler $updateResultHandler,
         private readonly CreateUploadFileResultHandler $createUploadFileResultHandler,
+        private readonly ResultUploadsTransformer $resultUploadsTransformer,
     )
     {
     }
@@ -53,6 +57,7 @@ class ResultController extends Controller
         } else {
             $races = Race::query()->paginate(self::LIMIT);
         }
+        $races->loadCount('results');
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Admin/Results/Index', [
@@ -104,9 +109,12 @@ class ResultController extends Controller
     {
         $results = $race->results()->with('runner')->orderBy('position')->get();
 
+        $uploads = UploadFileResult::whereRaceId($race->id)->orderBy('processed_at', 'desc')->with('rows')->get();
+
         return Inertia::render('Admin/Results/Show', [
             'race' => $this->raceTransformer->transform($race),
-            'results' => $this->resultTransformer->transform($results)
+            'results' => $this->resultTransformer->transform($results),
+            'uploads' => $this->resultUploadsTransformer->transform($uploads),
         ]);
     }
 

@@ -63,6 +63,7 @@ class RaceController extends Controller
                 ->orderBy($sortColumn, $sortDirection)
                 ->paginate(self::LIMIT);
         }
+        $races->loadCount('results');
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Races/Index', [

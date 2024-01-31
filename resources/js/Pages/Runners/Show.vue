@@ -64,9 +64,11 @@ const searchRaces = () => {
                             round
                     />
                 </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <ResultList :results="results" :runner="runner" />
-                    <section v-if="results.length === 0" class="p-4 text-center">{{ $t('noResults') }}</section>
+                <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
+                    <div class="md:w-full flex-shrink-0">
+                        <ResultList :results="results" :runner="runner" />
+                        <section v-if="results.length === 0" class="p-4 text-center">{{ $t('noResults') }}</section>
+                    </div>
                 </div>
             </div>
         </div>

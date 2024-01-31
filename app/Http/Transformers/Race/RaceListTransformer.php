@@ -45,6 +45,7 @@ class RaceListTransformer
             'type' => $race->type,
             'distance' => $race->distance,
             'distanceRaw' => $race->getRawOriginal('distance'),
+            'resultsCount' => $race->results_count,
         ];
     }
 }

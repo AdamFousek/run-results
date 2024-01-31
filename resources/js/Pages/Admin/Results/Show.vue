@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { Head, useForm, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { NButton, NIcon, NModal, NCard } from 'naive-ui';
@@ -7,6 +7,8 @@ import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp, RemoveRe
 import ResultList from '@/Pages/Admin/Results/Partials/ResultList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import CreateForm from '@/Pages/Admin/Results/Partials/ResultForm.vue'
+import MyLink from '@/Components/MyLink.vue'
+import UploadsList from '@/Pages/Admin/Results/Partials/UploadsList.vue'
 
 const props = defineProps({
     race: {
@@ -16,11 +18,15 @@ const props = defineProps({
     results: {
         type: Array,
     },
+    uploads: {
+        type: Array,
+    },
 })
 
 const eraseModal = ref(false)
 const openModalSingleResult = ref(false)
 const uploadResultsModal = ref(false)
+const uploadsLogModal = ref(false)
 
 const uploadForm = useForm({
     results: null,
@@ -38,17 +44,24 @@ const addSingleResult = () => {
     openModalSingleResult.value = true
 }
 
+let interval = null;
+
 function upload() {
     uploadForm.post(route('admin.results.upload', {race: props.race.id}), {
         onSuccess: () => {
             uploadForm.reset()
             uploadResultsModal.value = false
+            interval = setInterval(() => router.reload({ only: ['results', 'uploads'] }), 2000)
         },
     })
 }
 
-const visitRace = () => {
-    router.visit(route('races.show', {race: props.race.slug}))
+onBeforeUnmount(() => {
+    clearInterval(interval)
+})
+
+const openUploadsLogModal = () => {
+    uploadsLogModal.value = true
 }
 </script>
 
@@ -57,9 +70,17 @@ const visitRace = () => {
 
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.admin.results') }} {{
-                    race.name
-                }}</h2>
+            <div class="flex justify-between items-center gap-4">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ $t('head.admin.results') }} {{race.name }}
+                </h2>
+                <MyLink :href="route('races.show', { race: race.slug })" type="button" class="flex items-center gap-3">
+                    <NIcon>
+                        <RemoveRedEyeOutlined/>
+                    </NIcon>
+                    <span class="hidden md:block">{{ $t('admin.results.showRace') }}</span>
+                </MyLink>
+            </div>
         </template>
 
         <div class="md:py-4">
@@ -83,13 +104,13 @@ const visitRace = () => {
                             </template>
                             {{ $t('admin.results.createSingle') }}
                         </NButton>
-                        <NButton round type="warning" @click="visitRace">
+                        <NButton v-if="uploads.length" round type="warning" @click="openUploadsLogModal">
                             <template #icon>
                                 <NIcon>
                                     <RemoveRedEyeOutlined/>
                                 </NIcon>
                             </template>
-                            {{ $t('admin.results.showRace') }}
+                            {{ $t('admin.results.showResultsLog') }}
                         </NButton>
                     </div>
                 </div>
@@ -122,6 +143,21 @@ const visitRace = () => {
                     </div>
                 </template>
                 <CreateForm :race="race" @submitted="openModalSingleResult = false"/>
+            </NCard>
+        </NModal>
+        <NModal v-model:show="uploadsLogModal" size="huge">
+            <NCard
+                    class="max-w-3xl bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                    :title="$t('admin.results.uploads')"
+                    :bordered="false"
+                    aria-modal="true"
+            >
+                <template #header-extra>
+                    <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="uploadsLogModal = false">
+                        <CloseSharp/>
+                    </div>
+                </template>
+                <UploadsList :uploads="uploads"/>
             </NCard>
         </NModal>
         <NModal v-model:show="uploadResultsModal" size="huge">

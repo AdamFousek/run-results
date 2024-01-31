@@ -27,4 +27,7 @@ return [
     'result_delete_success' => 'Vysledek byl odstraněn',
 
     'result_file_could_not_be_uploaded' => 'Soubor s výsledky se nepodařilo nahrát',
+
+    'result_row.did_not_match_date' => 'Nalezen závodník, ale datum nesedí - možná shoda jmen a ročníku.',
+    'result_row.not_sure' => 'Hodnota scorej je na 0, je vytvořen nový závodník i když se našel jiný s jménem a ročníkem.',
 ];

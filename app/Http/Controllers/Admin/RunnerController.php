@@ -8,6 +8,7 @@ use App\Commands\Runner\UpdateRunner;
 use App\Commands\Runner\UpdateRunnerHandler;
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
+use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
@@ -120,6 +121,8 @@ class RunnerController extends AdminController
             $request->validate([
                 'runnerId' => 'required|exists:runners,id',
             ]);
+
+            Result::whereRunnerId($runner->id)->delete();
 
             $runner->delete();
 

@@ -108,6 +108,7 @@ export default {
     childRaces: 'Závody',
     resultsCount: 'Počet výsledků',
     parentRace: 'Nadřazený závod',
+    runnersCount: 'Počet závodníků',
   },
   result: {
     runner: 'Běžec',
@@ -176,6 +177,11 @@ export default {
       delete: 'Smazat výsledek?',
       uploadWillRemoveAllResults: 'Nahrání nových výsledků vymaže všechny stávající výsledky!',
       showRace: 'Zobrazit závod',
+      showResultsLog: 'Zobrazit log výsledků',
+      processedRows: 'Zpracováno řádků',
+      failedRows: 'Chybných řádků',
+      uploads: 'Nahrané výsledky',
+      rowNumber: 'Číslo řádku',
     }
   },
   user: {

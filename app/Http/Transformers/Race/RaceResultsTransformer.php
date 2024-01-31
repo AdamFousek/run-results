@@ -39,7 +39,7 @@ class RaceResultsTransformer
             'name' => $race->name,
             'date' => $race->date?->format('j. n. Y'),
             'location' => $race->location,
-            'resultsCount' => $race->results()->count(),
+            'resultsCount' => $race->results_count,
         ];
     }
 }
