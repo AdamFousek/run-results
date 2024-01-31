@@ -70,6 +70,7 @@ export default {
       races_create: 'Administrace - Vytvořit závod',
       races_update: 'Administrace - Upravit závod',
       results: 'Administrace - Výsledky',
+      measurement: 'Administrace - Měření',
     }
   },
   menu: {
@@ -80,6 +81,7 @@ export default {
     races: 'Závody',
     users: 'Uživatelé',
     results: 'Výsledky',
+    measurement: 'Měření',
   },
   runner: {
     name: 'Jméno',

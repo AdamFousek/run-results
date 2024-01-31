@@ -48,6 +48,9 @@ const alert = computed(() => {
                 <NavLink :href="route('admin.results.index')" :active="route().current('admin.results.*')">
                   {{ $t('menu.results') }}
                 </NavLink>
+                <NavLink :href="route('admin.measurement.index')" :active="route().current('admin.measurement.*')">
+                  {{ $t('menu.measurement') }}
+                </NavLink>
               </div>
             </div>
 
