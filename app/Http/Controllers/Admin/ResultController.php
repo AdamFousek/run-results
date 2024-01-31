@@ -197,4 +197,20 @@ class ResultController extends Controller
             return redirect()->back();
         }
     }
+
+    public function destroyAll(Race $race): RedirectResponse
+    {
+        $this->authorize('deleteAll', Result::class);
+        try {
+            $results = Result::whereRaceId($race->id)->delete();
+
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.result_delete_success'));
+
+            return back();
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
+        }
+    }
 }

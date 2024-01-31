@@ -16,14 +16,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('welcome');
+Route::get('/', \App\Http\Controllers\WelcomeController::class)->name('welcome');
 
 Route::get('/zavodnici', [\App\Http\Controllers\RunnerController::class, 'index'])->name('runners.index');
 Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class, 'show'])->name('runners.show');
@@ -60,6 +53,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vysledky/vytvorit', [\App\Http\Controllers\Admin\ResultController::class, 'store'])->name('admin.results.store');
     Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
     Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
+    Route::delete('/admin/vysledky/{race}/smazat-vsechny', [\App\Http\Controllers\Admin\ResultController::class, 'destroyAll'])->name('admin.results.destroyAll');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

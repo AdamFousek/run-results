@@ -40,7 +40,7 @@ class ResultTransformer
             'name' => $result->runner->first_name,
             'lastName' => $result->runner->last_name,
             'startingNumber' => $result->starting_number,
-            'time' => explode('.', $result->time)[0],
+            'time' => explode('.', $result->time ?? '')[0],
             'position' => $result->position,
             'categoryPosition' => $result->category_position,
             'category' => $result->category,

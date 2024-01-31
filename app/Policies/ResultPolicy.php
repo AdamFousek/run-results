@@ -63,4 +63,9 @@ class ResultPolicy
     {
         return $user->isAdmin();
     }
+
+    public function deleteAll(User $user): bool
+    {
+        return $user->isAdmin();
+    }
 }

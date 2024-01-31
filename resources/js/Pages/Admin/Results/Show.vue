@@ -32,6 +32,8 @@ const uploadForm = useForm({
     results: null,
 })
 
+const deleteForm = useForm({})
+
 const openEraseModal = () => {
     eraseModal.value = true
 }
@@ -51,7 +53,7 @@ function upload() {
         onSuccess: () => {
             uploadForm.reset()
             uploadResultsModal.value = false
-            interval = setInterval(() => router.reload({ only: ['results', 'uploads'] }), 2000)
+            interval = setInterval(() => router.reload({only: ['results', 'uploads']}), 2000)
         },
     })
 }
@@ -63,6 +65,14 @@ onBeforeUnmount(() => {
 const openUploadsLogModal = () => {
     uploadsLogModal.value = true
 }
+
+const deleteResults = () => {
+    deleteForm.delete(route('admin.results.destroyAll', { race: props.race.id }), {
+        onSuccess: () => {
+            eraseModal.value = false
+        },
+    })
+}
 </script>
 
 <template>
@@ -72,7 +82,7 @@ const openUploadsLogModal = () => {
         <template #header>
             <div class="flex justify-between items-center gap-4">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ $t('head.admin.results') }} {{race.name }}
+                    {{ $t('head.admin.results') }} {{ race.name }}
                 </h2>
                 <MyLink :href="route('races.show', { race: race.slug })" type="button" class="flex items-center gap-3">
                     <NIcon>
@@ -130,6 +140,24 @@ const openUploadsLogModal = () => {
                 </div>
             </div>
         </div>
+        <NModal v-model:show="eraseModal" size="huge">
+            <NCard
+                    class="max-w-3xl bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                    :title="$t('admin.results.removeAllResults')"
+                    :bordered="false"
+                    aria-modal="true"
+            >
+                <template #header-extra>
+                    <div class="w-8 hover:text-gray-500 hover:cursor-pointer" @click="eraseModal = false">
+                        <CloseSharp/>
+                    </div>
+                </template>
+                <NButton attr-type="submit" :class="{ 'opacity-25': deleteForm.processing }" @click="deleteResults" type="error" round
+                         :disabled="deleteForm.processing">
+                    {{ $t('admin.results.deleteAll') }}
+                </NButton>
+            </NCard>
+        </NModal>
         <NModal v-model:show="openModalSingleResult" size="huge">
             <NCard
                     class="max-w-3xl bg-white overflow-hidden shadow-sm sm:rounded-lg"

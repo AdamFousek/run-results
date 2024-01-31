@@ -7,6 +7,10 @@ export default {
   actions: 'Akce',
   yes: 'Ano',
   no: 'Ne',
+  welcome: 'Novinky',
+  news: {
+    races: 'Nejnovější závody',
+  },
   profile: {
     information: 'Informace o profilu',
     informationDescription: 'Aktualizujte svojí emailovou adresu',
@@ -182,6 +186,8 @@ export default {
       failedRows: 'Chybných řádků',
       uploads: 'Nahrané výsledky',
       rowNumber: 'Číslo řádku',
+      removeAllResults: 'Smazat všechny výsledky',
+      deleteAll: 'Smazat všechny výsledky!',
     }
   },
   user: {

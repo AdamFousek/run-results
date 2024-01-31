@@ -29,7 +29,7 @@ class RunnerRaceListTransformer
                 'date' => $result->race->date->format('j.n.Y'),
                 'location' => $result->race->location,
                 'distance' => $result->race->distance,
-                'time' => explode('.', $result->time)[0],
+                'time' => explode('.', $result->time ?? '')[0],
                 'position' => $result->position,
                 'category' => $result->category,
                 'category_position' => $result->category_position,
