@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Models\MeasurementEvent;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Crypt;
 
 class LogRequest
 {
@@ -24,7 +24,7 @@ class LogRequest
                 'type' => 'pageview',
                 'attribute' => $request->path(),
                 'useragent' => $request->userAgent(),
-                'visitorid' => Crypt::encryptString($request->ip()),
+                'visitorid' => Hash::make($request->ip()),
             ]);
 
             return $response;
