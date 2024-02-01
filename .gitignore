@@ -21,3 +21,4 @@ yarn-error.log
 bootstrap
 
 resources/js/ziggy.js
+package-lock.json
