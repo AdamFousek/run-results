@@ -24,7 +24,7 @@ class LogRequest
                 'type' => 'pageview',
                 'attribute' => $request->path(),
                 'useragent' => $request->userAgent(),
-                'visitorid' => Hash::make($request->ip()),
+                'visitorid' => crypt($request->ip(), 'measurement'),
             ]);
 
             return $response;
