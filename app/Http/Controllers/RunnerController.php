@@ -46,14 +46,14 @@ class RunnerController extends Controller
         $search = trim($request->get('query'));
         if ($search !== '') {
             $raceIds = Race::search($search)->get()->pluck('id');
-            $results = Result::whereRunnerId($runner->id)
+            $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
                 ->join('races', 'results.race_id', '=', 'races.id')
                 ->orderBy('races.date', 'desc')
                 ->whereIn('races.id', $raceIds)
                 ->with('race')
                 ->get();
         } else {
-            $results = Result::whereRunnerId($runner->id)
+            $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
                 ->join('races', 'results.race_id', '=', 'races.id')
                 ->orderBy('races.date', 'desc')
                 ->with('race')

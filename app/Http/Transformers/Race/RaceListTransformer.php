@@ -43,6 +43,7 @@ class RaceListTransformer
             'location' => $race->location,
             'surface' => $race->surface,
             'type' => $race->type,
+            'tag' => $race->tag,
             'distance' => $race->distance,
             'distanceRaw' => $race->getRawOriginal('distance'),
             'resultsCount' => $race->results_count ?? 0,

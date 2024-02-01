@@ -29,6 +29,7 @@ class RaceTransformer
             'rawDistance' => $race->getRawOriginal('distance'),
             'surface' => $race->surface,
             'type' => $race->type,
+            'tag' => $race->tag,
             'runners' => $race->runners()->count(),
             'races' => $race->children()->count(),
             'isParent' => $race->is_parent,

@@ -20,6 +20,7 @@ readonly class UpdateRace
         public float $distance,
         public string $surface,
         public string $type,
+        public string $tag,
         public bool $isParent,
         public ?int $parentId,
     ) {

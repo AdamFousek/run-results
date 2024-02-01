@@ -18,6 +18,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    optionsTag: {
+        type: Array,
+        required: true,
+    },
     optionsSurface: {
         type: Array,
         required: true,
@@ -39,6 +43,7 @@ const form = useForm({
     distance: props.race.rawDistance,
     surface: props.race.surface,
     type: props.race.type,
+    tag: props.race.tag,
     isParent: !!props.race.isParent,
 });
 
@@ -55,6 +60,7 @@ const fillValueFromParent = (value) => {
         form.distance = selectedRace.distanceRaw
         form.surface = selectedRace.surface
         form.type = selectedRace.type
+        form.tag = selectedRace.tag
     }
 }
 </script>
@@ -218,6 +224,16 @@ const fillValueFromParent = (value) => {
                                          :options="optionsType" class="mt-1 block w-full"/>
 
                                 <InputError class="mt-2" :message="form.errors.type"/>
+                            </div>
+
+                            <div class="mt-4">
+                                <InputLabel for="type" :value="$t('race.tag')"/>
+
+                                <NSelect v-model:value="form.tag" :input-props="{ id: 'tag' }" filterable tag
+                                         clearable
+                                         :options="optionsTag" class="mt-1 block w-full"/>
+
+                                <InputError class="mt-2" :message="form.errors.tag"/>
                             </div>
 
                             <div class="flex items-center justify-between mt-4 gap-4">

@@ -83,6 +83,7 @@ class Race extends Model
         'surface',
         'is_parent',
         'type',
+        'tag',
     ];
 
     protected $casts = [

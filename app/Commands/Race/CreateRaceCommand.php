@@ -30,6 +30,7 @@ class CreateRaceCommand
         $race->distance = $command->distance > 0 ? $command->distance : null;
         $race->surface = $command->surface;
         $race->type = $command->type;
+        $race->tag = $command->tag;
         $race->is_parent = $command->isParent;
         $race->parent_id = $command->parentId;
 

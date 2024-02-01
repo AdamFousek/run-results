@@ -14,7 +14,6 @@ use App\Models\Race;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -57,6 +56,7 @@ class RaceController extends AdminController
         $this->authorize('create', Race::class);
 
         $optionsType = DB::table('races')->select(DB::raw('distinct type'))->get();
+        $optionsTag = DB::table('races')->select(DB::raw('distinct tag'))->get();
         $optionsSurface = DB::table('races')->select(DB::raw('distinct surface'))->get();
 
         $parentRaces = Race::whereIsParent(true)->get();
@@ -64,6 +64,7 @@ class RaceController extends AdminController
         return Inertia::render('Admin/Races/Create', [
             'parentRaces' => $this->transformer->transform($parentRaces),
             'optionsType' => $this->transformOptions($optionsType, 'type'),
+            'optionsTag' => $this->transformOptions($optionsTag, 'tag'),
             'optionsSurface' => $this->transformOptions($optionsSurface, 'surface'),
         ]);
     }
@@ -82,6 +83,7 @@ class RaceController extends AdminController
                 distance: $validated['distance'] ?? 0,
                 surface: $validated['surface'] ?? '',
                 type: $validated['type'] ?? '',
+                tag: $validated['tag'] ?? '',
                 isParent: $validated['isParent'] ?? false,
                 parentId: $validated['parentId'] ?? null,
             ));
@@ -99,6 +101,7 @@ class RaceController extends AdminController
     public function edit(Race $race): Response
     {
         $optionsType = DB::table('races')->select(DB::raw('distinct type'))->get();
+        $optionsTag = DB::table('races')->select(DB::raw('distinct tag'))->get();
         $optionsSurface = DB::table('races')->select(DB::raw('distinct surface'))->get();
 
         $parentRaces = Race::whereIsParent(true)->get();
@@ -107,6 +110,7 @@ class RaceController extends AdminController
             'parentRaces' => $this->transformer->transform($parentRaces),
             'race' => $this->raceTransformer->transform($race),
             'optionsType' => $this->transformOptions($optionsType, 'type'),
+            'optionsTag' => $this->transformOptions($optionsTag, 'tag'),
             'optionsSurface' => $this->transformOptions($optionsSurface, 'surface'),
         ]);
     }
@@ -126,6 +130,7 @@ class RaceController extends AdminController
                 distance: $validated['distance'] ?? '',
                 surface: $validated['surface'] ?? '',
                 type: $validated['type'] ?? '',
+                tag: $validated['tag'] ?? '',
                 isParent: $validated['isParent'],
                 parentId: $validated['parentId'],
             ));
@@ -162,6 +167,11 @@ class RaceController extends AdminController
         }
     }
 
+    /**
+     * @param Collection $optionsType
+     * @param string $column
+     * @return array<array<string, string>>
+     */
     private function transformOptions(Collection $optionsType, string $column): array
     {
         $result = [];

@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Models\MeasurementEvent;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogRequest

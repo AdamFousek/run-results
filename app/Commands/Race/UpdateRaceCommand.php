@@ -31,6 +31,7 @@ class UpdateRaceCommand
         $race->distance = $command->distance;
         $race->surface = $command->surface;
         $race->type = $command->type;
+        $race->tag = $command->tag;
         $race->is_parent = $command->isParent;
         $race->parent_id = $command->parentId;
 

@@ -33,6 +33,10 @@ defineProps({
             <div class="font-bold">{{ $t('race.surface') }}:</div>
             <div class="">{{ race.surface }}</div>
         </div>
+        <div v-if="race.tag" class="flex my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.tag') }}:</div>
+            <div class="">{{ race.tag }}</div>
+        </div>
         <div v-if="!race.isParent" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.runners') }}:</div>
             <div class="">{{ race.runners }}</div>

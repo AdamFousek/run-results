@@ -98,6 +98,7 @@ export default {
     chart: {
       distance: 'Počet závodu podle vzdálenosti',
       races: 'Počet závodu podle závodů',
+      surface: 'Počet závodu podle povrchu',
       notEnoughData: 'Nedostatek dat',
     }
   },
@@ -111,6 +112,7 @@ export default {
     description: 'Popis',
     surface: 'Povrch',
     type: 'Typ',
+    tag: 'Tag',
     search: 'Vyhledat závod',
     sort: 'Řadit',
     information: 'Informace o závodě',

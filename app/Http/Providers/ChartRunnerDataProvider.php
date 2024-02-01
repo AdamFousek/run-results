@@ -17,6 +17,8 @@ class ChartRunnerDataProvider
         return [
             'distance' => $this->resolveDistanceChart($runner),
             'races' => $this->resolveRacesChart($runner),
+            'surface' => $this->resolveSurfaceChart($runner),
+            // 'compare' => $this->resolveCompareChart($runner),
         ];
     }
 
@@ -78,6 +80,51 @@ class ChartRunnerDataProvider
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
             ];
         }
+
+        return $chartData;
+    }
+
+    private function resolveSurfaceChart(Runner $runner): array
+    {
+        $results = Result::query()
+            ->selectRaw('count(*) as count, races.surface')
+            ->join('races', 'races.id', '=', 'results.race_id')
+            ->whereRunnerId($runner->id)
+            ->groupBy('surface')
+            ->get();
+
+        $chartData = [];
+        foreach ($results as $result) {
+            $chartData[] = [
+                'label' => $result->surface,
+                'data' => $result->count,
+                'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
+            ];
+        }
+
+        return $chartData;
+    }
+
+    private function resolveCompareChart(Runner $runner): array
+    {
+        return [];
+        $results = Result::query()->selectRaw('results.*, races.tag, races.date')->whereRunnerId($runner->id)
+            ->join('races', 'races.id', '=', 'results.race_id')
+            ->get()
+            ->groupBy('tag');
+
+        $chartData = [];
+        foreach ($results as $key => $result) {
+            foreach ($result as $item) {
+                $chartData[$key][] = [
+                    'label' => $item->date,
+                    'data' => $item->time,
+                    'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
+                ];
+            }
+        }
+
+        dd($chartData);
 
         return $chartData;
     }

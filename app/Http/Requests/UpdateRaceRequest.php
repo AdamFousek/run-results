@@ -32,6 +32,7 @@ class UpdateRaceRequest extends FormRequest
             'distance' => 'nullable|numeric',
             'surface' => 'nullable|string|max:255',
             'type' => 'nullable|string|max:255',
+            'tag' => 'nullable|string|max:255',
             'isParent' => 'boolean',
         ];
     }
