@@ -12,7 +12,7 @@ class DistanceCast implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function get(Model $model, string $key, mixed $value, array $attributes): string
     {
         if ($value < 1000) {
             return sprintf('%.2f m', $value);
@@ -26,7 +26,7 @@ class DistanceCast implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
         return $value;
     }

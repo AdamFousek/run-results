@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Providers\ChartRunnerDataProvider;
 use App\Http\Transformers\Runner\RunnerRaceListTransformer;
 use App\Models\Race;
 use App\Models\Result;
@@ -18,6 +19,7 @@ class RunnerController extends Controller
     public function __construct(
         private readonly PaginateService $paginateService,
         private readonly RunnerRaceListTransformer $runnerRaceListTransformer,
+        private readonly ChartRunnerDataProvider $chartRunnerDataProvider,
     ) {
     }
 
@@ -58,11 +60,13 @@ class RunnerController extends Controller
                 ->get();
         }
 
+        $chartData = $this->chartRunnerDataProvider->provide($runner);
 
         return Inertia::render('Runners/Show', [
             'runner' => $runner,
             'results' => $this->runnerRaceListTransformer->transform($results),
             'search' => $search,
+            'chartData' => $chartData,
         ]);
     }
 }

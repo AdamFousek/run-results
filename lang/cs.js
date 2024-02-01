@@ -93,6 +93,13 @@ export default {
     search: 'Vyhledat závodníka',
     day: 'Den',
     month: 'Měsíc',
+    tabRaces: 'Závody',
+    tabCharts: 'Statistiky',
+    chart: {
+      distance: 'Počet závodu podle vzdálenosti',
+      races: 'Počet závodu podle závodů',
+      notEnoughData: 'Nedostatek dat',
+    }
   },
   race: {
     name: 'Název',
