@@ -198,9 +198,15 @@ class HandleUploadFileResultService
     private function createNewRunner(array $data): Runner
     {
         $birthDate = explode('.', $data[self::DATE_OF_BIRTH] ?? '0.0.0');
-        $year = (int)($birthDate[2] ?? 0);
-        $month = (int)($birthDate[1] ?? 0);
-        $day = (int)($birthDate[0] ?? 0);
+        $month = 0;
+        $day = 0;
+        if (count($birthDate) < 3) {
+            $year = (int)$data[self::DATE_OF_BIRTH];
+        } else {
+            $year = (int)($birthDate[2] ?? 0);
+            $month = (int)($birthDate[1] ?? 0);
+            $day = (int)($birthDate[0] ?? 0);
+        }
 
         $runner = new Runner();
         $runner->first_name = ucfirst($data[self::FIRST_NAME]);
