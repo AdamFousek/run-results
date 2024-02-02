@@ -121,12 +121,14 @@ class ChartRunnerDataProvider
                     ->orWhere('tag', '!=', '');
             })
             ->orderBy('races.date')
-            ->get()
-            ->groupBy('tag');
+            ->get();
+
+        $raceIds = $results->pluck('race_id');
 
         $averageResults = Result::query()->selectRaw('avg(results.time) as time, tag, date')
             ->join('races', 'races.id', '=', 'results.race_id')
             ->groupBy(['races.date', 'races.tag'])
+            ->whereIn('race_id', $raceIds)
             ->where(function($query) {
                 return $query->where('tag', '!=', null)
                     ->orWhere('tag', '!=', '');
@@ -134,6 +136,8 @@ class ChartRunnerDataProvider
             ->orderBy('races.date')
             ->get()
             ->groupBy('tag');
+
+        $results = $results->groupBy('tag');
 
         $chartData = [];
         foreach ($results as $key => $result) {
