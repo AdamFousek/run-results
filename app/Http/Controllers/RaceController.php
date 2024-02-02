@@ -170,6 +170,6 @@ class RaceController extends Controller
             return $race->name;
         }
 
-        return $race->name . ' ' . $race->date->format('j. n. Y');
+        return $race->name . ' ' . $race->date->format('j. n. Y') . $race->description->toPlainText();
     }
 }

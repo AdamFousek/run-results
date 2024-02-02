@@ -200,6 +200,7 @@ export default {
       rowNumber: 'Číslo řádku',
       removeAllResults: 'Smazat všechny výsledky',
       deleteAll: 'Smazat všechny výsledky!',
+      showRunner: 'Zobrazit běžce',
     }
   },
   user: {

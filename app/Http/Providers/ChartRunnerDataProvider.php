@@ -109,10 +109,10 @@ class ChartRunnerDataProvider
 
     /**
      * @param Runner $runner
-     * @return array
+     * @return array|null
      * @throws RandomException
      */
-    private function resolveCompareChart(Runner $runner): array
+    private function resolveCompareChart(Runner $runner): ?array
     {
         $results = Result::query()->selectRaw('results.*, races.tag, races.date')->whereRunnerId($runner->id)
             ->join('races', 'races.id', '=', 'results.race_id')
@@ -165,6 +165,10 @@ class ChartRunnerDataProvider
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
                 'data' => $averageData,
             ];
+        }
+
+        if ($chartData === []) {
+            return null;
         }
 
         return $chartData;

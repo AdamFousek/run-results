@@ -1,13 +1,14 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
-import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker } from 'naive-ui'
+import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker, NIcon } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
 import { ref, watch } from 'vue'
 import DeleteRaceForm from '@/Pages/Admin/Races/Partials/DeleteRaceForm.vue'
 import MyTrixEditor from '@/Components/MyTrixEditor.vue'
+import { RemoveRedEyeOutlined } from '@vicons/material'
 
 const props = defineProps({
     race: {
@@ -69,7 +70,17 @@ const fillValueFromParent = (value) => {
     <Head :title="$t('head.admin.races_update')"/>
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.admin.races_update') }}</h2>
+            <div class="flex justify-between items-center gap-4">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ $t('head.admin.races_update') }}
+                </h2>
+                <MyLink :href="route('races.show', { race: race.slug })" type="button" class="flex items-center gap-3">
+                    <NIcon>
+                        <RemoveRedEyeOutlined/>
+                    </NIcon>
+                    <span class="hidden md:block">{{ $t('admin.results.showRace') }}</span>
+                </MyLink>
+            </div>
         </template>
 
         <div class="py-4 md:py-12">

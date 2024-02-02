@@ -30,7 +30,7 @@ defineProps({
         </div>
         <div class="md:col-span-3">
             <h2 class="text-center text-lg">{{ $t('runner.chart.compare') }}</h2>
-            <CompareByTagChart v-if="data.compare.lenght" :data="data.compare" />
+            <CompareByTagChart v-if="data.compare" :data="data.compare" />
             <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
     </div>
