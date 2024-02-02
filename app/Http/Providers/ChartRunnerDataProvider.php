@@ -116,12 +116,22 @@ class ChartRunnerDataProvider
     {
         $results = Result::query()->selectRaw('results.*, races.tag, races.date')->whereRunnerId($runner->id)
             ->join('races', 'races.id', '=', 'results.race_id')
+            ->where(function($query) {
+                return $query->where('tag', '!=', null)
+                    ->orWhere('tag', '!=', '');
+            })
+            ->orderBy('races.date')
             ->get()
             ->groupBy('tag');
 
         $averageResults = Result::query()->selectRaw('avg(results.time) as time, tag, date')
             ->join('races', 'races.id', '=', 'results.race_id')
             ->groupBy(['races.date', 'races.tag'])
+            ->where(function($query) {
+                return $query->where('tag', '!=', null)
+                    ->orWhere('tag', '!=', '');
+            })
+            ->orderBy('races.date')
             ->get()
             ->groupBy('tag');
 

@@ -16,22 +16,22 @@ defineProps({
         <div class="">
             <h2 class="text-center text-lg">{{ $t('runner.chart.distance') }}</h2>
             <DistanceChart v-if="data.distance" :data="data.distance" />
-            <div v-else>{{ $t('runner.chart.notEnoughData') }}</div>
+            <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
         <div class="">
             <h2 class="text-center text-lg">{{ $t('runner.chart.races') }}</h2>
             <RaceChart v-if="data.races" :data="data.races" />
-            <div v-else>{{ $t('runner.chart.notEnoughData') }}</div>
+            <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
         <div class="">
             <h2 class="text-center text-lg">{{ $t('runner.chart.surface') }}</h2>
             <DistanceChart v-if="data.surface" :data="data.surface" />
-            <div v-else>{{ $t('runner.chart.notEnoughData') }}</div>
+            <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
         <div class="md:col-span-3">
             <h2 class="text-center text-lg">{{ $t('runner.chart.compare') }}</h2>
-            <CompareByTagChart v-if="data.compare" :data="data.compare" />
-            <div v-else>{{ $t('runner.chart.notEnoughData') }}</div>
+            <CompareByTagChart v-if="data.compare.lenght" :data="data.compare" />
+            <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
     </div>
 </template>
