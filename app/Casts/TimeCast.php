@@ -42,6 +42,10 @@ class TimeCast implements CastsAttributes
                 default => 0,
             };
 
+            if ($value === 0) {
+                return null;
+            }
+
             return $value * 1000;
         }
 

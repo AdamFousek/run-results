@@ -99,6 +99,7 @@ export default {
       distance: 'Počet závodu podle vzdálenosti',
       races: 'Počet závodu podle závodů',
       surface: 'Počet závodu podle povrchu',
+      compare: 'Porovnat ročníky',
       notEnoughData: 'Nedostatek dat',
     }
   },

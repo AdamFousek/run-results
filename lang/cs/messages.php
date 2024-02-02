@@ -30,4 +30,6 @@ return [
 
     'result_row.did_not_match_date' => 'Nalezen závodník, ale datum nesedí - možná shoda jmen a ročníku.',
     'result_row.not_sure' => 'Hodnota scorej je na 0, je vytvořen nový závodník i když se našel jiný s jménem a ročníkem.',
+
+    'chart_average' => 'Průměrný čas',
 ];

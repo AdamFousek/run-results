@@ -11,6 +11,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { createI18n } from 'vue-i18n';
 import Messages from './lang.js';
 import { Ziggy } from './ziggy';
+import 'chartjs-adapter-moment';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

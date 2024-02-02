@@ -8,7 +8,9 @@ namespace App\Http\Providers;
 use App\Casts\DistanceCast;
 use App\Models\Result;
 use App\Models\Runner;
+use Illuminate\Support\Carbon;
 use Random\RandomException;
+use stdClass;
 
 class ChartRunnerDataProvider
 {
@@ -18,7 +20,7 @@ class ChartRunnerDataProvider
             'distance' => $this->resolveDistanceChart($runner),
             'races' => $this->resolveRacesChart($runner),
             'surface' => $this->resolveSurfaceChart($runner),
-            // 'compare' => $this->resolveCompareChart($runner),
+            'compare' => $this->resolveCompareChart($runner),
         ];
     }
 
@@ -105,26 +107,55 @@ class ChartRunnerDataProvider
         return $chartData;
     }
 
+    /**
+     * @param Runner $runner
+     * @return array
+     * @throws RandomException
+     */
     private function resolveCompareChart(Runner $runner): array
     {
-        return [];
         $results = Result::query()->selectRaw('results.*, races.tag, races.date')->whereRunnerId($runner->id)
             ->join('races', 'races.id', '=', 'results.race_id')
             ->get()
             ->groupBy('tag');
 
+        $averageResults = Result::query()->selectRaw('avg(results.time) as time, tag, date')
+            ->join('races', 'races.id', '=', 'results.race_id')
+            ->groupBy(['races.date', 'races.tag'])
+            ->get()
+            ->groupBy('tag');
+
         $chartData = [];
         foreach ($results as $key => $result) {
+            $runnerData = [];
+            /** @var stdClass $item */
             foreach ($result as $item) {
-                $chartData[$key][] = [
-                    'label' => $item->date,
-                    'data' => $item->time,
-                    'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
+                $runnerData[] = [
+                    'y' => $item->getRawOriginal('time'),
+                    'x' => (new Carbon($item->date))->format('j.n.Y'),
                 ];
             }
-        }
 
-        dd($chartData);
+            $averageData = [];
+            /** @var stdClass $averageResult */
+            foreach($averageResults->get($key) as $averageResult) {
+                $averageData[] = [
+                    'y' => (int)$averageResult->time,
+                    'x' => (new Carbon($averageResult->date))->format('j.n.Y'),
+                ];
+            }
+
+            $chartData[$key][] = [
+                'label' => $runner->last_name . ' ' . $runner->first_name,
+                'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
+                'data' => $runnerData,
+            ];
+            $chartData[$key][] = [
+                'label' => trans('messages.chart_average'),
+                'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
+                'data' => $averageData,
+            ];
+        }
 
         return $chartData;
     }

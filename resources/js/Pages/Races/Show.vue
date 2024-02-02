@@ -1,8 +1,8 @@
 <script setup>
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NDataTable, NInput } from 'naive-ui'
-import { h, ref, watch } from 'vue'
+import { NInput } from 'naive-ui'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
