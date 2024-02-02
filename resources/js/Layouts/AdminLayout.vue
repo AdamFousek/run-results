@@ -27,7 +27,7 @@ const alert = computed(() => {
             <div class="flex">
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
-                <Link :href="route('welcome')">
+                <Link :href="route('welcome')" :aria-label="$t('welcome')">
                   <ApplicationLogo
                     class="block w-auto fill-current text-gray-800"
                   />
@@ -72,6 +72,7 @@ const alert = computed(() => {
                         <button
                           type="button"
                           class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                          aria-label="menu"
                         >
                             {{ $page.props.auth.user.username }}
 

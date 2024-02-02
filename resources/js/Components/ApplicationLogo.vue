@@ -4,7 +4,7 @@
 
 <style>
 .logo {
-  background-image: url('/logo.svg');
+  background-image: url("@/../images/logo.svg");
   background-size: contain;
   width: 64px;
   height: 64px;

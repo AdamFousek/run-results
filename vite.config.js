@@ -24,4 +24,9 @@ export default defineConfig({
     ssr: {
         noExternal: ['naive-ui', 'vueuc', 'css-render', 'date-fns'],
     },
+    resolve: {
+        alias: {
+            '@': '/resources/js',
+        },
+    },
 });
