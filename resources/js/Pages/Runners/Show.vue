@@ -90,7 +90,7 @@ const justifyContent = computed(() => {
                             </div>
                         </div>
                     </NTabPane>
-                    <NTabPane :name="$t('runner.tabCharts')" :tab="$t('runner.tabCharts')">
+                    <NTabPane :name="$t('runner.tabCharts')" :tab="$t('runner.tabCharts')" display-directive="show:lazy">
                         <ChartIndex :data="chartData" />
                     </NTabPane>
                 </NTabs>
