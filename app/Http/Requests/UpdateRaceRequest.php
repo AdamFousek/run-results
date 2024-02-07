@@ -33,6 +33,10 @@ class UpdateRaceRequest extends FormRequest
             'surface' => 'nullable|string|max:255',
             'type' => 'nullable|string|max:255',
             'tag' => 'nullable|string|max:255',
+            'vintage' => 'nullable|integer',
+            'region' => 'nullable|string|max:255',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'isParent' => 'boolean',
         ];
     }

@@ -32,6 +32,10 @@ class UpdateRaceCommand
         $race->surface = $command->surface;
         $race->type = $command->type;
         $race->tag = $command->tag;
+        $race->vintage = $command->vintage;
+        $race->region = $command->region;
+        $race->latitude = $command->latitude;
+        $race->longitude = $command->longitude;
         $race->is_parent = $command->isParent;
         $race->parent_id = $command->parentId;
 

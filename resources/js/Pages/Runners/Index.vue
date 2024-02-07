@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui';
@@ -42,6 +42,14 @@ const searchRunners = () => {
         preserveState: true,
     })
 }
+
+const pagination = computed(() => {
+    if (props.paginate.total < props.paginate.limit) {
+        return `${props.paginate.total} / ${props.paginate.total}`
+    }
+
+    return `${props.paginate.limit} / ${props.paginate.total}`
+})
 </script>
 
 <template>
@@ -68,6 +76,7 @@ const searchRunners = () => {
                     <div class="md:w-full flex-shrink-0">
                         <RunnerList :runners="runners" />
                         <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
+                        <div class="flex justify-end px-4">{{ pagination }}</div>
 
                         <Pagination v-if="runners.length" :pages="paginate.links" class="my-4"/>
                     </div>

@@ -14,7 +14,7 @@ use Inertia\Response;
 
 class RunnerController extends Controller
 {
-    private const LIMIT = 30;
+    private const LIMIT = 50;
 
     public function __construct(
         private readonly PaginateService $paginateService,

@@ -84,6 +84,10 @@ class Race extends Model
         'is_parent',
         'type',
         'tag',
+        'region',
+        'vintage',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [

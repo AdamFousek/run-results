@@ -45,8 +45,12 @@ const form = useForm({
     surface: props.race.surface,
     type: props.race.type,
     tag: props.race.tag,
+    vintage: props.race.vintage,
+    region: props.race.region,
+    longitude: props.race.longitude,
+    latitude: props.race.latitude,
     isParent: !!props.race.isParent,
-});
+})
 
 const submit = () => {
     form.post(route('admin.races.update', {race: props.race.id}))
@@ -164,6 +168,18 @@ const fillValueFromParent = (value) => {
 
                             <div class="mt-4 flex justify-between gap-4 w-full">
                                 <div class="flex-1">
+                                    <InputLabel for="vintage" :value="$t('race.vintage')"/>
+
+                                    <NInputNumber
+                                            :input-props="{ type: 'number', id: 'vintage' }"
+                                            :placeholder="$t('race.vintage')"
+                                            class="mt-1 block w-full"
+                                            v-model:value="form.vintage"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.vintage"/>
+                                </div>
+                                <div class="flex-1">
                                     <InputLabel for="date" :value="$t('race.date')"/>
 
                                     <NInput
@@ -191,17 +207,31 @@ const fillValueFromParent = (value) => {
                                 </div>
                             </div>
 
-                            <div class="mt-4">
-                                <InputLabel for="location" :value="$t('race.location')"/>
+                            <div class="mt-4 flex justify-between gap-4 w-full">
+                                <div class="flex-1">
+                                    <InputLabel for="location" :value="$t('race.location')"/>
 
-                                <NInput
-                                        :input-props="{ type: 'text', id: 'location' }"
-                                        :placeholder="$t('race.location')"
-                                        class="mt-1 block w-full"
-                                        v-model:value="form.location"
-                                />
+                                    <NInput
+                                            :input-props="{ type: 'text', id: 'location' }"
+                                            :placeholder="$t('race.location')"
+                                            class="mt-1 block w-full"
+                                            v-model:value="form.location"
+                                    />
 
-                                <InputError class="mt-2" :message="form.errors.location"/>
+                                    <InputError class="mt-2" :message="form.errors.location"/>
+                                </div>
+                                <div class="flex-1">
+                                    <InputLabel for="location" :value="$t('race.region')"/>
+
+                                    <NInput
+                                            :input-props="{ type: 'text', id: 'region' }"
+                                            :placeholder="$t('race.region')"
+                                            class="mt-1 block w-full"
+                                            v-model:value="form.region"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.region"/>
+                                </div>
                             </div>
 
                             <div class="mt-4">

@@ -28,7 +28,7 @@ const props = defineProps({
     },
     activeSort: {
         type: String,
-    }
+    },
 })
 
 const search = ref(props.search)
@@ -100,7 +100,6 @@ const searchRaces = () => {
                     <div class="md:w-full flex-shrink-0">
                         <RaceList :races="races"/>
                         <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
-
 
                         <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>
                     </div>

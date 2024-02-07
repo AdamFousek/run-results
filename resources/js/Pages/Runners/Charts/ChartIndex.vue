@@ -12,13 +12,13 @@ defineProps({
 </script>
 
 <template>
-    <div class="grid md:grid-cols-3 gap-4 md:gap-8">
+    <div class="grid md:grid-cols-2 gap-4 md:gap-8">
         <div class="">
             <h2 class="text-center text-lg">{{ $t('runner.chart.distance') }}</h2>
             <DistanceChart v-if="data.distance" :data="data.distance" />
             <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>
         </div>
-        <div class="">
+        <div v-if="false" class="">
             <h2 class="text-center text-lg">{{ $t('runner.chart.races') }}</h2>
             <RaceChart v-if="data.races" :data="data.races" />
             <div v-else class="text-center text-violet-600">{{ $t('runner.chart.notEnoughData') }}</div>

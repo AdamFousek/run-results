@@ -12,8 +12,8 @@ defineProps({
 
 <template>
   <nav class="flex justify-center items-center p-4" aria-label="Page navigation example">
-    <ul class="inline-flex justify-center -space-x-px text-sm w-full overflow-x-auto">
-      <li v-for="(link, index ) in pages" :key="index">
+    <ul class="inline-flex flex-wrap justify-center -space-x-px text-sm w-full overflow-x-auto">
+      <li class="mb-2" v-for="(link, index ) in pages" :key="index">
         <Link v-if="link.active"
               href="#"
               aria-current="page"

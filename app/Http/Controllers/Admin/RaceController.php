@@ -84,6 +84,10 @@ class RaceController extends AdminController
                 surface: $validated['surface'] ?? '',
                 type: $validated['type'] ?? '',
                 tag: $validated['tag'] ?? '',
+                vintage: $validated['vintage'] ?? null,
+                region: $validated['region'] ?? '',
+                latitude: $validated['latitude'] ?? null,
+                longitude: $validated['longitude'] ?? null,
                 isParent: $validated['isParent'] ?? false,
                 parentId: $validated['parentId'] ?? null,
             ));
@@ -131,6 +135,10 @@ class RaceController extends AdminController
                 surface: $validated['surface'] ?? '',
                 type: $validated['type'] ?? '',
                 tag: $validated['tag'] ?? '',
+                vintage: $validated['vintage'] ?? null,
+                region: $validated['region'] ?? '',
+                latitude: $validated['latitude'] ?? null,
+                longitude: $validated['longitude'] ?? null,
                 isParent: $validated['isParent'],
                 parentId: $validated['parentId'],
             ));

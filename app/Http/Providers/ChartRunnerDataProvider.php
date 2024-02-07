@@ -18,7 +18,7 @@ class ChartRunnerDataProvider
     {
         return [
             'distance' => $this->resolveDistanceChart($runner),
-            'races' => $this->resolveRacesChart($runner),
+             // 'races' => $this->resolveRacesChart($runner),
             'surface' => $this->resolveSurfaceChart($runner),
             'compare' => $this->resolveCompareChart($runner),
         ];
@@ -140,12 +140,25 @@ class ChartRunnerDataProvider
         $results = $results->groupBy('tag');
 
         $chartData = [];
+        $fastestTime = null;
+        $slowestTime = 0;
         foreach ($results as $key => $result) {
             $runnerData = [];
             /** @var stdClass $item */
             foreach ($result as $item) {
+                $time = (int)$item->getRawOriginal('time');
+                if ($fastestTime === null) {
+                    $fastestTime = $time;
+                } else {
+                    if ($fastestTime > $time) {
+                        $fastestTime = $time;
+                    }
+                }
+                if ($slowestTime < $time) {
+                    $slowestTime = $time;
+                }
                 $runnerData[] = [
-                    'y' => $item->getRawOriginal('time'),
+                    'y' => $time,
                     'x' => (new Carbon($item->date))->format('j.n.Y'),
                 ];
             }
@@ -153,22 +166,35 @@ class ChartRunnerDataProvider
             $averageData = [];
             /** @var stdClass $averageResult */
             foreach($averageResults->get($key) as $averageResult) {
+                $time = (int)$averageResult->time;
+                if ($fastestTime === null) {
+                    $fastestTime = $time;
+                } else {
+                    if ($fastestTime > $time) {
+                        $fastestTime = $time;
+                    }
+                }
+                if ($slowestTime < $time) {
+                    $slowestTime = $time;
+                }
                 $averageData[] = [
                     'y' => (int)$averageResult->time,
                     'x' => (new Carbon($averageResult->date))->format('j.n.Y'),
                 ];
             }
 
-            $chartData[$key][] = [
+            $chartData[$key]['datasets'][] = [
                 'label' => $runner->last_name . ' ' . $runner->first_name,
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
                 'data' => $runnerData,
             ];
-            $chartData[$key][] = [
+            $chartData[$key]['datasets'][] = [
                 'label' => trans('messages.chart_average'),
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
                 'data' => $averageData,
             ];
+            $chartData[$key]['slowestTime'] = $slowestTime;
+            $chartData[$key]['fastestTime'] = $fastestTime;
         }
 
         if ($chartData === []) {

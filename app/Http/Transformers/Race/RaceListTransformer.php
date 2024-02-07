@@ -44,6 +44,8 @@ class RaceListTransformer
             'surface' => $race->surface,
             'type' => $race->type,
             'tag' => $race->tag,
+            'vintage' => $race->vintage,
+            'region' => $race->region,
             'distance' => $race->distance,
             'distanceRaw' => $race->getRawOriginal('distance'),
             'resultsCount' => $race->results_count ?? 0,

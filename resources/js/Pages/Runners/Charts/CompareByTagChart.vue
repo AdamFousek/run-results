@@ -1,14 +1,14 @@
 <script setup>
-import { ref } from 'vue'
-import { CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, TimeScale, Title, Tooltip } from 'chart.js'
-import { Line } from 'vue-chartjs'
+import { computed, ref } from 'vue'
+import { CategoryScale, Chart as ChartJS, Legend, LinearScale, BarElement, PointElement, TimeScale, Title, Tooltip } from 'chart.js'
+import { Bar } from 'vue-chartjs'
 import { NButton } from 'naive-ui'
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
-    LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend,
@@ -21,6 +21,9 @@ const props = defineProps({
         required: true,
     }
 })
+
+const slowestTime = ref(0)
+const fastestTime = ref(0)
 
 const formatTime = (value) => {
     let seconds = parseInt((value / 1000) % 60);
@@ -36,34 +39,39 @@ const formatTime = (value) => {
     return `${hours}:${minutes}:${seconds}`
 }
 
-const options = {
-    responsive: true,
-    hoverMode: "index",
-    stacked: false,
-    scales: {
-        y: {
-            display: true,
-            type: 'linear',
-            ticks: {
-                callback: function(val) {
-                    return formatTime(val)
+const options = computed(() => {
+    return {
+        responsive: true,
+        hoverMode: "index",
+        stacked: false,
+        scales: {
+            y: {
+                display: true,
+                type: 'linear',
+                ticks: {
+                    callback: function(val) {
+                        return formatTime(val)
+                    },
+                    stepSize: 60000,
                 },
-            }
+                max: slowestTime.value + 600000,
+                min: fastestTime.value - 600000,
+            },
         },
-    },
-    plugins: {
-        tooltip: {
-            callbacks: {
-                label: function(context) {
-                    const label = context.dataset.label || ''
-                    const time = formatTime(context.parsed.y)
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const label = context.dataset.label || ''
+                        const time = formatTime(context.parsed.y)
 
-                    return `${label}: ${time}`;
+                        return `${label}: ${time}`;
+                    }
                 }
             }
         }
     }
-}
+})
 
 const compareChart = ref(null)
 
@@ -72,9 +80,9 @@ const setData = (value) => {
         return null
     }
 
-    console.log(value);
+    console.log(value)
     const datasets = []
-    for (const dataset of value) {
+    for (const dataset of value.datasets) {
         datasets.push({
             label: dataset.label,
             data: dataset.data,
@@ -82,6 +90,9 @@ const setData = (value) => {
             borderColor: dataset.color,
         })
     }
+
+    slowestTime.value = value.slowestTime
+    fastestTime.value = value.fastestTime
 
     compareChart.value = {
         datasets: datasets,
@@ -96,7 +107,7 @@ const setData = (value) => {
                 {{ tag }}
             </NButton>
         </div>
-        <Line v-if="compareChart" :data="compareChart" :options="options" />
+        <Bar v-if="compareChart" :data="compareChart" :options="options" />
     </div>
 </template>
 

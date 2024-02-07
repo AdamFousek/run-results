@@ -125,6 +125,8 @@ export default {
     resultsCount: 'Počet výsledků',
     parentRace: 'Nadřazený závod',
     runnersCount: 'Počet závodníků',
+    vintage: 'Ročník',
+    region: 'Kraj',
   },
   result: {
     runner: 'Běžec',
