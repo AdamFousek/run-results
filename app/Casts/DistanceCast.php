@@ -28,6 +28,6 @@ class DistanceCast implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
-        return $value;
+        return $value ?? 0;
     }
 }
