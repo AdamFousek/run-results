@@ -94,6 +94,7 @@ export default {
     day: 'Den',
     month: 'Měsíc',
     tabRaces: 'Závody',
+    races: 'Počet závodů',
     tabCharts: 'Statistiky',
     chart: {
       distance: 'Počet závodu podle vzdálenosti',

@@ -71,9 +71,10 @@ const searchRaces = (searchTerm) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h1 class="font-semibold text-xl md:text-2xl text-gray-800 leading-tight">
-                {{ race.date }} {{ race.name }}
-                <span v-if="race.vintage"> {{ race.vintage }}. {{ $t('race.vintage')}}</span>
+            <h1 class="font-semibold text-lg md:text-2xl text-gray-800 leading-tight">
+                <span v-if="race.date">{{ race.date }}&nbsp;-&nbsp;</span>
+                <span v-if="race.vintage">{{ race.vintage }}.&nbsp;{{ $t('race.vintage')}}&nbsp;-&nbsp;</span>
+                <span>{{ race.name }}</span>
             </h1>
         </template>
         <div class="py-4">

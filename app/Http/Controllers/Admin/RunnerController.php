@@ -8,6 +8,9 @@ use App\Commands\Runner\UpdateRunner;
 use App\Commands\Runner\UpdateRunnerHandler;
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
+use App\Http\Transformers\Runner\RunnerListTransformer;
+use App\Http\Transformers\Runner\RunnerTransformer;
+use App\Models\Enums\RunnerSortEnum;
 use App\Models\Result;
 use App\Models\Runner;
 use App\Services\PaginateService;
@@ -25,17 +28,21 @@ class RunnerController extends AdminController
         private readonly PaginateService $paginateService,
         private readonly CreateRunnerHandler $createRunnerHandler,
         private readonly UpdateRunnerHandler $updateRunnerHandler,
+        private readonly RunnerTransformer $runnerListTransformer,
     ) {
     }
 
     public function index(Request $request): Response
     {
         $search = $request->get('query');
+        $sort = (string)($request->get('sort') ?? RunnerSortEnum::SORT_NAME_ASC->value);
+        $sortedBy = RunnerSortEnum::from($sort);
         $runners = Runner::search($search)->paginate(self::LIMIT);
+        $runners->loadCount('results');
         $page = (int)$request->get('page', 1);
 
         return Inertia::render('Admin/Runners/Index', [
-            'runners' => $runners->items(),
+            'runners' => array_map(fn(Runner $runner) => $this->runnerListTransformer->transform($runner), $runners->items()),
             'paginate' => [
                 'links' => $this->paginateService->resolveLinks($runners),
                 'page' => $page,
@@ -43,6 +50,8 @@ class RunnerController extends AdminController
                 'limit' => self::LIMIT
             ],
             'search' => $search,
+            'sort' => $sortedBy->value,
+            'sorts' => RunnerSortEnum::cases(),
         ]);
     }
 

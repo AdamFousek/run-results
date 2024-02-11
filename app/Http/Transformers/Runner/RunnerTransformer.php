@@ -22,6 +22,7 @@ class RunnerTransformer
             'year' => $runner->year,
             'city' => $runner->city,
             'club' => $runner->club,
+            'results_count' => $runner->results_count ?? 0,
         ];
     }
 }

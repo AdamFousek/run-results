@@ -15,7 +15,7 @@ defineProps({
         <h2 class="text-xl">{{ $t('race.information') }}</h2>
         <div v-if="race.location" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.location') }}:</div>
-            <div class="">{{ race.location }}</div>
+            <div class="">{{ race.location }}<span v-if="race.region">,&nbsp;{{ race.region }}</span></div>
         </div>
         <div v-if="race.distance" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.distance') }}:</div>
