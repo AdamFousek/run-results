@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Enums\ResultRowEnum;
-use App\Models\Result;
-use App\Models\Runner;
-use App\Models\UploadFileResult;
-use App\Models\UploadFileResultRow;
+use App\Models\Illuminate\Enums\ResultRowEnum;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
+use App\Models\Illuminate\UploadFileResult;
+use App\Models\Illuminate\UploadFileResultRow;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

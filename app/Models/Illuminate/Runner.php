@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Runner
+ * App\Models\Illuminate\Runner
  *
  * @property int $id
  * @property int|null $user_id
@@ -26,11 +26,11 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Race> $races
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Race> $races
  * @property-read int|null $races_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
- * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Illuminate\User|null $user
  * @method static \Database\Factories\RunnerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newQuery()

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Race;
+use App\Models\Illuminate\Race;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRaceRequest extends FormRequest

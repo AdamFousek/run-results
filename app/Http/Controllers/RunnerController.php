@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Providers\ChartRunnerDataProvider;
 use App\Http\Transformers\Runner\RunnerRaceListTransformer;
-use App\Models\Race;
-use App\Models\Result;
-use App\Models\Runner;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

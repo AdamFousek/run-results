@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Result;
-use App\Models\User;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\User;
 use Illuminate\Auth\Access\Response;
 
 class ResultPolicy

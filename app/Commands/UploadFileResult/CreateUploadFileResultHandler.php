@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Commands\UploadFileResult;
 
-use App\Models\UploadFileResult;
+use App\Models\Illuminate\UploadFileResult;
 use Illuminate\Support\Facades\Storage;
 
 class CreateUploadFileResultHandler

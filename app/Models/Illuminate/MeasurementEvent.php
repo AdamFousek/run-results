@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MeasurementEvent extends Model

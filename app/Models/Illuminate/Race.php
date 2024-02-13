@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
 use App\Casts\DistanceCast;
 use Carbon\Carbon;
@@ -16,7 +16,7 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 
 /**
- * App\Models\Race
+ * App\Models\Illuminate\Race
  *
  * @property int $id
  * @property int|null $parent_id
@@ -33,9 +33,9 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @property-read Race|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $records
  * @property-read int|null $records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Runner> $runners
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Runner> $runners
  * @property-read int|null $runners_count
  * @method static \Database\Factories\RaceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Race newModelQuery()

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\UploadFileResult;
+use App\Models\Illuminate\UploadFileResult;
 use App\Services\HandleUploadFileResultService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

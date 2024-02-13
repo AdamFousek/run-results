@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\User\UserListTransformer;
-use App\Models\User;
+use App\Models\Illuminate\User;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

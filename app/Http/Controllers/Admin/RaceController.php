@@ -10,7 +10,7 @@ use App\Http\Requests\StoreRaceRequest;
 use App\Http\Requests\UpdateRaceRequest;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
-use App\Models\Race;
+use App\Models\Illuminate\Race;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

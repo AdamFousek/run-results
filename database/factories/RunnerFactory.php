@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Runner>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Illuminate\Runner>
  */
 class RunnerFactory extends Factory
 {

@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Race;
-use App\Models\Runner;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Runner;
 
 return [
 

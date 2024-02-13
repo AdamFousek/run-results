@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUploadFileResultRequest;
 use App\Http\Requests\UpdateUploadFileResultRequest;
-use App\Models\UploadFileResult;
+use App\Models\Illuminate\UploadFileResult;
 
 class UploadFileResultController extends Controller
 {

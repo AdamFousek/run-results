@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Http\Transformers\Result;
 
-use App\Models\UploadFileResult;
+use App\Models\Illuminate\UploadFileResult;
 use Illuminate\Support\Collection;
 
 class ResultUploadsTransformer

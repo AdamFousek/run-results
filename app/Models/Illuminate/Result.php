@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
 use App\Casts\TimeCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Result
+ * App\Models\Illuminate\Result
  *
  * @property int $id
  * @property int $runner_id
@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $DNF
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Race $race
- * @property-read \App\Models\Runner $runner
+ * @property-read \App\Models\Illuminate\Race $race
+ * @property-read \App\Models\Illuminate\Runner $runner
  * @method static \Database\Factories\ResultFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Result newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Result newQuery()

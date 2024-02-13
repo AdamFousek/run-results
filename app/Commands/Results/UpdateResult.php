@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Results;
 
-use App\Models\Result;
+use App\Models\Illuminate\Result;
 
 readonly class UpdateResult
 {

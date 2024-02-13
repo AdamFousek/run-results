@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Runner;
+use App\Models\Illuminate\Runner;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;

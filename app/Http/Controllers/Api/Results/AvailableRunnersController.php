@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\Results;
 
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\Runner\RunnerListTransformer;
-use App\Models\Race;
-use App\Models\Result;
-use App\Models\Runner;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
 use Illuminate\Http\Request;
 
 class AvailableRunnersController extends Controller

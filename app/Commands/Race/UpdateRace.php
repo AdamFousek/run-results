@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Race;
 
-use App\Models\Race;
+use App\Models\Illuminate\Race;
 use Illuminate\Support\Carbon;
 
 readonly class UpdateRace

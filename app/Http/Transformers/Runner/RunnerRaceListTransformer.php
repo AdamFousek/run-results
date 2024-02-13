@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Http\Transformers\Runner;
 
-use App\Models\Result;
+use App\Models\Illuminate\Result;
 use Illuminate\Database\Eloquent\Collection;
 
 class RunnerRaceListTransformer
