@@ -7,6 +7,8 @@ use App\Http\Transformers\Runner\RunnerRaceListTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
+use App\Queries\RunnerSearch;
+use App\Queries\RunnerSearchQuery;
 use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,17 +22,19 @@ class RunnerController extends Controller
         private readonly PaginateService $paginateService,
         private readonly RunnerRaceListTransformer $runnerRaceListTransformer,
         private readonly ChartRunnerDataProvider $chartRunnerDataProvider,
+        private readonly RunnerSearchQuery $runnerSearchQuery,
     ) {
     }
 
     public function index(Request $request): Response
     {
-        $search = $request->get('query');
-        $runners = Runner::search($search)->paginate(self::LIMIT);
+        $search = trim($request->get('query', ''));
         $page = (int)$request->get('page', 1);
 
+        $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT));
+
         return Inertia::render('Runners/Index', [
-            'runners' => $runners->items(),
+            'runners' => $runners->items,
             'paginate' => [
                 'links' => $this->paginateService->resolveLinks($runners),
                 'page' => $page,

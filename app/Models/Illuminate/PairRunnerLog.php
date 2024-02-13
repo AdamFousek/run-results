@@ -2,6 +2,7 @@
 
 namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|PairRunnerLog whereUserId($value)
  * @mixin \Eloquent
  */
-class PairRunnerLog extends Model
+class PairRunnerLog extends IlluminateModel
 {
     use HasFactory;
 

@@ -2,9 +2,9 @@
 
 namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,7 +52,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Runner withoutTrashed()
  * @mixin \Eloquent
  */
-class Runner extends Model
+class Runner extends IlluminateModel
 {
     use HasFactory, SoftDeletes, Searchable;
 
@@ -78,6 +78,10 @@ class Runner extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected array $makeAllSearchableWith = [
+        'results'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -94,21 +98,8 @@ class Runner extends Model
         return $this->hasMany(Result::class);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
+    public function getSerializer(): ?string
     {
-        return [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'year' => $this->year,
-            'city' => $this->city,
-            'club' => $this->club,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'upserted_at' => new Carbon(),
-        ];
+        return \App\Serializer\RunnerSerializer::class;
     }
 }

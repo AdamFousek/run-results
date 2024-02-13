@@ -2,11 +2,11 @@
 
 namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class MeasurementEvent extends Model
+class MeasurementEvent extends IlluminateModel
 {
     use HasFactory;
 

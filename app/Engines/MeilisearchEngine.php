@@ -34,7 +34,15 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
         }
 
         $objects = $models->map(function ($model) {
-            if (empty($searchableData = $model->toSearchableArray())) {
+            if ($model->getSerializer() !== null) {
+                $serializer = app($model->getSerializer());
+
+                $searchableData = $serializer->serialize($model);
+            } else {
+                $searchableData = $model->toSearchableArray();
+            }
+
+            if (empty($searchableData)) {
                 return;
             }
 

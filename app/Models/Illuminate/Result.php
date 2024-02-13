@@ -3,6 +3,7 @@
 namespace App\Models\Illuminate;
 
 use App\Casts\TimeCast;
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Result extends Model
+class Result extends IlluminateModel
 {
     use HasFactory;
 

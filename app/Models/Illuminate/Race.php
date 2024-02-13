@@ -3,6 +3,7 @@
 namespace App\Models\Illuminate;
 
 use App\Casts\DistanceCast;
+use App\Models\IlluminateModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,7 +68,7 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereTime($value)
  * @mixin \Eloquent
  */
-class Race extends Model
+class Race extends IlluminateModel
 {
     use HasFactory, SoftDeletes, Searchable, HasRichText;
 
@@ -105,7 +106,9 @@ class Race extends Model
         'description',
     ];
 
-    protected array $makeAllSearchableWith = ['results'];
+    protected array $makeAllSearchableWith = [
+        'results'
+    ];
 
     public function parent(): BelongsTo
     {
@@ -131,22 +134,6 @@ class Race extends Model
     public function scopeNotParents(Builder $query): Builder
     {
         return $query->whereNot('is_parent', true);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getRichTextFieldsSearchable(): array
-    {
-        return $this->richTextFields;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getAllSearchableWith(): array
-    {
-        return $this->makeAllSearchableWith;
     }
 
     /**

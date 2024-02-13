@@ -2,6 +2,7 @@
 
 namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResultRow whereUploadFileResultId($value)
  * @mixin \Eloquent
  */
-class UploadFileResultRow extends Model
+class UploadFileResultRow extends IlluminateModel
 {
     use HasFactory;
 
