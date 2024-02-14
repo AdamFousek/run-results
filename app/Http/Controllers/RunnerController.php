@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Providers\ChartRunnerDataProvider;
+use App\Http\Transformers\Meilisearch\RunnerListTransformer;
 use App\Http\Transformers\Runner\RunnerRaceListTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use App\Queries\RunnerSearch;
 use App\Queries\RunnerSearchQuery;
-use App\Services\PaginateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,10 +19,10 @@ class RunnerController extends Controller
     private const LIMIT = 50;
 
     public function __construct(
-        private readonly PaginateService $paginateService,
         private readonly RunnerRaceListTransformer $runnerRaceListTransformer,
         private readonly ChartRunnerDataProvider $chartRunnerDataProvider,
         private readonly RunnerSearchQuery $runnerSearchQuery,
+        private readonly RunnerListTransformer $runnerListTransformer,
     ) {
     }
 
@@ -34,12 +34,11 @@ class RunnerController extends Controller
         $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT));
 
         return Inertia::render('Runners/Index', [
-            'runners' => $runners->items,
+            'runners' => $this->runnerListTransformer->transform($runners->items),
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($runners),
                 'page' => $page,
-                'total' => $runners->total(),
-                'limit' => self::LIMIT
+                'total' => $runners->estimatedTotal,
+                'limit' => $runners->total,
             ],
             'search' => $search,
         ]);

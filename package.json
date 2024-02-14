@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && vite build --ssr"
+        "build": "npm run type-check && vite build && vite build --ssr",
+        "type-check": "vue-tsc --noEmit"
     },
     "devDependencies": {
         "@css-render/vue3-ssr": "^0.15.12",
@@ -13,19 +14,23 @@
         "@vicons/utils": "^0.1.4",
         "@vitejs/plugin-vue": "^4.0.0",
         "@vue/server-renderer": "^3.4.15",
+        "@vue/tsconfig": "^0.5.1",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.1",
+        "chart.js": "^4.4.1",
+        "chartjs-adapter-moment": "^1.0.1",
         "laravel-vite-plugin": "^0.8.0",
+        "moment": "^2.30.1",
         "naive-ui": "^2.35.0",
         "postcss": "^8.4.18",
         "tailwindcss": "^3.2.1",
         "trix": "^1.3.1",
+        "typescript": "^5.3.3",
         "vite": "^4.0.0",
         "vue": "^3.2.41",
+        "vue-chartjs": "^5.3.0",
         "vue-i18n": "^9.7.0",
-        "chart.js": "^4.4.1",
-        "chartjs-adapter-moment": "^1.0.1",
-        "moment": "^2.30.1",
-        "vue-chartjs": "^5.3.0"
+        "vue-tsc": "^1.8.27",
+        "ziggy-js": "^1.8.1"
     }
 }
