@@ -1,17 +1,15 @@
-<script setup>
-import { computed, ref, watch } from "vue";
+<script setup lang="ts">
+import {computed, type PropType, ref, watch} from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui';
-import { useI18n } from 'vue-i18n'
-import Pagination from '@/Components/Pagination.vue'
-import RunnerList from '@/Pages/Runners/partials/RunnerList.vue'
-
-const {t} = useI18n();
+import RunnerList from '../Runners/partials/RunnerList.vue'
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import type Runner from "@/Models/List/Runner";
 
 const props = defineProps({
     runners: {
-        type: Array,
+        type: Array as PropType<Runner[]>,
     },
     paginate: {
         type: Object,
@@ -78,7 +76,7 @@ const pagination = computed(() => {
                         <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
                         <div class="flex justify-end px-4">{{ pagination }}</div>
 
-                        <Pagination v-if="runners.length" :pages="paginate.links" class="my-4"/>
+                        <MeilisearchPagination v-if="runners.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" class="my-4"/>
                     </div>
                 </div>
             </div>
