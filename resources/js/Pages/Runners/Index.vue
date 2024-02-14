@@ -74,11 +74,10 @@ const pagination = computed(() => {
                     <div class="md:w-full flex-shrink-0">
                         <RunnerList :runners="runners" />
                         <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
-                        <div class="flex justify-end px-4">{{ pagination }}</div>
-
-                        <MeilisearchPagination v-if="runners.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" class="my-4"/>
+                        <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>
                 </div>
+                <MeilisearchPagination v-if="runners.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" class="my-4"/>
             </div>
         </div>
     </AppLayout>

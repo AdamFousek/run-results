@@ -38,7 +38,8 @@ class RunnerController extends Controller
             'paginate' => [
                 'page' => $page,
                 'total' => $runners->estimatedTotal,
-                'limit' => $runners->total,
+                'limit' => self::LIMIT,
+                'onPage' => $runners->total,
             ],
             'search' => $search,
         ]);
