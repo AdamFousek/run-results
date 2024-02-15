@@ -107,6 +107,7 @@ class RaceController extends AdminController
         $optionsType = DB::table('races')->select(DB::raw('distinct type'))->get();
         $optionsTag = DB::table('races')->select(DB::raw('distinct tag'))->get();
         $optionsSurface = DB::table('races')->select(DB::raw('distinct surface'))->get();
+        $files = $race->files;
 
         $parentRaces = Race::whereIsParent(true)->get();
 
@@ -116,6 +117,7 @@ class RaceController extends AdminController
             'optionsType' => $this->transformOptions($optionsType, 'type'),
             'optionsTag' => $this->transformOptions($optionsTag, 'tag'),
             'optionsSurface' => $this->transformOptions($optionsSurface, 'surface'),
+            'files' => $files,
         ]);
     }
 

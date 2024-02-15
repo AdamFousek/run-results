@@ -187,6 +187,9 @@ export default {
             deleteDescription: 'Závod vymaže i výsledky závodníků!',
             delete: 'Smazat',
             deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
+            uploadedFiles: 'Nahrané soubory',
+            uploadedFilesDescription: 'Název souboru bude zobrazen v seznamu nahraných souborů.',
+            uploadFile: 'Nahrát soubor',
         },
         results: {
             create: 'Vytvořit výsledky',

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
@@ -134,6 +135,11 @@ class Race extends IlluminateModel
     public function scopeNotParents(Builder $query): Builder
     {
         return $query->whereNot('is_parent', true);
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(UploadedFiles::class, 'filable');
     }
 
     /**

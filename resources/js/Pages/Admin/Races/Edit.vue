@@ -9,6 +9,7 @@ import { ref, watch } from 'vue'
 import DeleteRaceForm from '@/Pages/Admin/Races/Partials/DeleteRaceForm.vue'
 import MyTrixEditor from '@/Components/MyTrixEditor.vue'
 import { RemoveRedEyeOutlined } from '@vicons/material'
+import UploadFileForm from '@/Pages/Admin/Races/Partials/UploadFileForm.vue'
 
 const props = defineProps({
     race: {
@@ -28,6 +29,10 @@ const props = defineProps({
         required: true,
     },
     parentRaces: {
+        type: Array,
+        required: true,
+    },
+    files: {
         type: Array,
         required: true,
     },
@@ -290,7 +295,10 @@ const fillValueFromParent = (value) => {
                         </form>
                     </div>
                     <div class="col-span-1">
-                        <DeleteRaceForm :race="race"/>
+                        <div class="grid gap-4">
+                            <UploadFileForm :files="files" />
+                            <DeleteRaceForm :race="race"/>
+                        </div>
                     </div>
                 </div>
             </div>

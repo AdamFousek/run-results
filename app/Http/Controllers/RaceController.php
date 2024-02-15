@@ -7,7 +7,9 @@ use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
-use App\Models\Illuminate\Runner;
+use App\Models\Meilisearch\Runner;
+use App\Queries\RunnerSearch;
+use App\Queries\RunnerSearchQuery;
 use App\Services\PaginateService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -45,6 +47,7 @@ class RaceController extends Controller
         private readonly RaceListTransformer $transformer,
         private readonly RaceRunnerListTransformer $raceRunnerListTransformer,
         private readonly RaceTransformer $raceTransformer,
+        private readonly RunnerSearchQuery $runnerSearchQuery,
     ) {
     }
 
@@ -90,7 +93,7 @@ class RaceController extends Controller
         $childRaces = null;
         $paginate = null;
         if (!$race->is_parent) {
-            $results = $this->resolveResults($race, $search);
+            $results = $this->resolveResults($race, $search, $page);
             $paginate = [
                 'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
@@ -146,14 +149,15 @@ class RaceController extends Controller
         return $sort;
     }
 
-    private function resolveResults(Race $race, string $search): LengthAwarePaginator
+    private function resolveResults(Race $race, string $search, int $page): LengthAwarePaginator
     {
         if ($search !== '') {
             if (is_numeric($search)) {
                 return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->with('runner')->paginate(self::LIMIT_RUNNERS);
             }
 
-            $runnerIds = Runner::search($search)->get()->pluck('id');
+            $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT_RUNNERS));
+            $runnerIds = $runners->items->map(fn(Runner $runner) => $runner->getId())->toArray();
             return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
         }
 

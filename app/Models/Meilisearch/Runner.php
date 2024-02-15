@@ -10,15 +10,15 @@ use Illuminate\Support\Carbon;
 class Runner
 {
     private int $id;
-    private ?int $userId;
+    private ?int $userId = null;
     private string $firstName;
     private string $lastName;
     private int $year;
-    private ?string $city;
-    private ?string $club;
+    private ?string $city = null;
+    private ?string $club = null;
     private int $resultsCount;
-    private ?Carbon $createdAt;
-    private ?Carbon $updatedAt;
+    private ?Carbon $createdAt = null;
+    private ?Carbon $updatedAt = null;
     private Carbon $upsertedAt;
 
     public function getId(): int

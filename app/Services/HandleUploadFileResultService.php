@@ -35,10 +35,14 @@ class HandleUploadFileResultService
             return;
         }
 
+        $processedRows = $results->processed_rows;
         $this->row = 0;
         while (($data = fgetcsv($file, 1000, ",")) !== false )
         {
             $this->row++;
+            if ($processedRows > $this->row) {
+                continue;
+            }
             $runner = $this->resolveRunner($data, $results);
             if ($runner === null) {
                 $runner = $this->createNewRunner($data);
@@ -52,13 +56,13 @@ class HandleUploadFileResultService
             $result->category = $data[self::CATEGORY];
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->save();
+
+            $results->increment('processed_rows');
         }
 
         fclose($file);
 
         Storage::delete($results->file_path);
-
-        $results->processed_rows = $this->row;
         $results->failed_rows = UploadFileResultRow::query()
             ->whereUploadFileResultId($results->id)
             ->count();
