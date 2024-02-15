@@ -67,6 +67,19 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $children
  * @property-read int|null $children_count
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereTime($value)
+ * @property int|null $vintage
+ * @property string $region
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property string|null $tag
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\UploadedFiles> $files
+ * @property-read int|null $files_count
+ * @method static Builder|Race notParents()
+ * @method static Builder|Race whereLatitude($value)
+ * @method static Builder|Race whereLongitude($value)
+ * @method static Builder|Race whereRegion($value)
+ * @method static Builder|Race whereTag($value)
+ * @method static Builder|Race whereVintage($value)
  * @mixin \Eloquent
  */
 class Race extends IlluminateModel

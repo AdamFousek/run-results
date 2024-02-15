@@ -6,17 +6,22 @@ use App\Commands\Race\CreateRace;
 use App\Commands\Race\CreateRaceCommand;
 use App\Commands\Race\UpdateRace;
 use App\Commands\Race\UpdateRaceCommand;
+use App\Commands\UploadedFile\CreateUploadedFile;
+use App\Commands\UploadedFile\CreateUploadedFileHandler;
 use App\Http\Requests\StoreRaceRequest;
 use App\Http\Requests\UpdateRaceRequest;
+use App\Http\Requests\UploadFileRequest;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Illuminate\Race;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,6 +35,7 @@ class RaceController extends AdminController
         private readonly RaceTransformer $raceTransformer,
         private readonly CreateRaceCommand $createRaceCommand,
         private readonly UpdateRaceCommand $updateRaceCommand,
+        private readonly CreateUploadedFileHandler $createUploadedFileHandler,
     ) {
     }
 
@@ -177,6 +183,36 @@ class RaceController extends AdminController
         }
     }
 
+    public function uploadFile(Race $race, UploadFileRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        try {
+            $file = $data['file'];
+            $name = $data['name'] ?? '';
+            $isPublic = $data['isPublic'] ?? false;
+            if (!$file instanceof UploadedFile) {
+                throw new \Exception(trans('result_file_could_not_be_uploaded'));
+            }
+
+            $path = '/files/' . $race->id . '/' . Str::slug($name) . '.' . $file->getClientOriginalExtension();
+            $file->storePubliclyAs($path);
+
+            $uploadedFile = $this->createUploadedFileHandler->handle(new CreateUploadedFile(
+                path: $path,
+                name: $name,
+                isPublic: $isPublic,
+                filableId: $race->id,
+                filableType: get_class($race),
+            ));
+
+            return back();
+        } catch (\Throwable $th) {
+            $this->withMessage(self::ALERT_ERROR, $th->getMessage());
+
+            return back();
+        }
+    }
     /**
      * @param Collection $optionsType
      * @param string $column

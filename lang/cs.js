@@ -129,6 +129,7 @@ export default {
         vintage: 'ročník',
         vintageUpper: 'Ročník',
         region: 'Kraj',
+        filesToDownload: 'Soubory ke stažení',
     },
     result: {
         runner: 'Běžec',
@@ -208,6 +209,11 @@ export default {
             removeAllResults: 'Smazat všechny výsledky',
             deleteAll: 'Smazat všechny výsledky!',
             showRunner: 'Zobrazit běžce',
+        },
+        file: {
+            name: 'Název souboru',
+            isPublic: 'Je veřejný',
+            isNotPublic: 'Není veřejný',
         }
     },
     user: {

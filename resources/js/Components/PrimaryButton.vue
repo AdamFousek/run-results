@@ -5,11 +5,11 @@ import {computed} from "vue";
 const props = defineProps({
     type: {
         type: String,
-        default: 'submit',
+        default: 'button',
     },
     color: {
         type: String,
-        default: 'blue',
+        default: 'default',
     },
     size: {
         type: String,
@@ -49,13 +49,28 @@ const sizeClasses = computed(() => {
 const roundedClasses = computed(() => {
     return props.rounded ? 'rounded-full' : 'rounded';
 });
+
+const outline = computed(() => {
+    return {
+        'blue': 'text-indigo-500 border border-indigo-500 hover:bg-indigo-500 hover:text-white active:bg-indigo-600',
+        'yellow': 'text-amber-500 border border-amber-500 hover:bg-amber-500 hover:text-white active:bg-amber-600',
+        'red': 'text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600',
+        'primary': 'text-emerald-500 border border-emerald-500 hover:bg-emerald-500 hover:text-white active:bg-emerald-600',
+        'default': 'inline-flex items-center bg-violet-950 border border-transparent text-white tracking-widest hover:bg-violet-800 active:bg-violet-900',
+    }[props.color];
+});
+
+let defaultClass = classes.value;
+if (props.outline) {
+    defaultClass = outline.value;
+}
 </script>
 
 <template>
     <button
             :type="type"
             class="transition-all duration-150 disabled:opacity-25 ease-linear outline-none focus:outline-none font-semibold"
-            :class="[classes, sizeClasses, roundedClasses]"
+            :class="[defaultClass, sizeClasses, roundedClasses]"
     >
         <slot/>
     </button>

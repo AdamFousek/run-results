@@ -7,6 +7,7 @@ use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
+use App\Models\Illuminate\UploadedFiles;
 use App\Models\Meilisearch\Runner;
 use App\Queries\RunnerSearch;
 use App\Queries\RunnerSearchQuery;
@@ -89,6 +90,11 @@ class RaceController extends Controller
         $runnerId = (int)$request->get('runnerId');
         $page = (int)$request->get('page', 1);
 
+        $files = $race->files->filter(fn(UploadedFiles $file) => $file->is_public)->map(fn(UploadedFiles $file) => [
+            'name' => $file->name,
+            'url' => $file->file_path,
+        ]);
+
         $results = null;
         $childRaces = null;
         $paginate = null;
@@ -116,6 +122,7 @@ class RaceController extends Controller
                 'description' => $metaDescription,
             ],
             'selectedRunner' => $runnerId === 0 ? null : $runnerId,
+            'files' => $files,
         ];
 
 

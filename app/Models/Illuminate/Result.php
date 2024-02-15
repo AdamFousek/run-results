@@ -39,6 +39,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereStartingNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereUpdatedAt($value)
+ * @property int $DNS
+ * @method static \Illuminate\Database\Eloquent\Builder|Result whereDNS($value)
  * @mixin \Eloquent
  */
 class Result extends IlluminateModel

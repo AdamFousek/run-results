@@ -94,7 +94,7 @@ const fillValueFromParent = (value) => {
 
         <div class="py-4 md:py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div class="col-span-1 md:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6">
                         <div class="flex justify-end">
                             <MyLink :href="route('races.show', { race: race.slug })">
@@ -294,9 +294,9 @@ const fillValueFromParent = (value) => {
                             </div>
                         </form>
                     </div>
-                    <div class="col-span-1">
+                    <div class="col-span-1 md:col-span-2">
                         <div class="grid gap-4">
-                            <UploadFileForm :files="files" />
+                            <UploadFileForm :race="race" :files="files" />
                             <DeleteRaceForm :race="race"/>
                         </div>
                     </div>

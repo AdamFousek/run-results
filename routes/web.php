@@ -46,6 +46,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'edit'])->name('admin.races.edit');
     Route::post('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'update'])->name('admin.races.update');
     Route::delete('/admin/zavody/{race}/smazat', [\App\Http\Controllers\Admin\RaceController::class, 'destroy'])->name('admin.races.destroy');
+    Route::post('/admin/zavody/{race}/upload-file', [\App\Http\Controllers\Admin\RaceController::class, 'uploadFile'])->name('admin.races.fileUpload');
 
     Route::get('/admin/vysledky', [\App\Http\Controllers\Admin\ResultController::class, 'index'])->name('admin.results.index');
     Route::get('/admin/vysledky/{race}', [\App\Http\Controllers\Admin\ResultController::class, 'show'])->name('admin.results.show');
@@ -54,6 +55,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
     Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
     Route::delete('/admin/vysledky/{race}/smazat-vsechny', [\App\Http\Controllers\Admin\ResultController::class, 'destroyAll'])->name('admin.results.destroyAll');
+
+    Route::post('/admin/soubory/{uploadedFiles}/togglePublicity', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'togglePublicity'])->name('admin.uploadedFiles.togglePublicity');
+    Route::delete('/admin/soubory/{uploadedFiles}/smazat', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'destroy'])->name('admin.uploadedFiles.destroy');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

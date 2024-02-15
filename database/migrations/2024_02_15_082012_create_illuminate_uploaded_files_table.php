@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('file_path');
+            $table->boolean('is_public')->default(true);
             $table->unsignedBigInteger('downloaded')->default(0);
             $table->unsignedBigInteger('filable_id');
             $table->string('filable_type');

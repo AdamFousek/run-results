@@ -1,16 +1,14 @@
 <script setup>
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NInput } from 'naive-ui'
+import { NIcon, NInput } from 'naive-ui'
 import { ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import ResultList from '@/Pages/Races/partials/ResultList.vue'
-
-const {t} = useI18n();
-
+import { CloudDownloadOutlined } from '@vicons/material'
+import MyLink from '@/Components/MyLink.vue'
 
 const props = defineProps({
     race: {
@@ -39,6 +37,9 @@ const props = defineProps({
     selectedRunner: {
         type: Number,
         required: false,
+    },
+    files: {
+        type: Array,
     },
 })
 
@@ -81,10 +82,21 @@ const searchRaces = (searchTerm) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-between gap-4 flex-wrap p-2">
-                    <div class="bg-white col-span-1 md:col-span-3 p-4 shadow-sm rounded-xl self-start trix-content"
+                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
+                    <div class="bg-white p-4 shadow-sm rounded-xl">
+                        <h2 class="text-xl mb-2">{{ $t('race.filesToDownload') }}</h2>
+                        <div v-for="file in files" :key="file.name" class="mb-2">
+                            <MyLink :href="file.url" download external class="text-base flex justify-between items-center">
+                                {{ file.name }}
+                                <NIcon class="text-2xl">
+                                    <CloudDownloadOutlined />
+                                </NIcon>
+                            </MyLink>
+                        </div>
+                    </div>
+                    <div class="bg-white col-span-1 md:col-span-2 p-4 shadow-sm rounded-xl self-start trix-content"
                          v-html="race.description">
                     </div>
-                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
                 </div>
 
                 <section v-if="!race.isParent">

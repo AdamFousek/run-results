@@ -7,6 +7,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\IlluminateModel
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|IlluminateModel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IlluminateModel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IlluminateModel query()
+ * @mixin \Eloquent
+ */
 class IlluminateModel extends Model
 {
 
