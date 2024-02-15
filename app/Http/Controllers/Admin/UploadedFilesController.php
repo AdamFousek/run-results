@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Illuminate\UploadedFiles;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class UploadedFilesController extends AdminController
 {
 
-    public function togglePublicity(UploadedFiles $uploadedFiles): \Illuminate\Http\RedirectResponse
+    public function togglePublicity(UploadedFiles $uploadedFiles): RedirectResponse
     {
         $this->authorize('update', $uploadedFiles);
 
@@ -25,10 +26,20 @@ class UploadedFilesController extends AdminController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UploadedFiles $uploadedFiles)
+    public function destroy(UploadedFiles $uploadedFiles): RedirectResponse
     {
         $this->authorize('delete', $uploadedFiles);
 
-        Storage::delete($uploadedFiles->file_path);
+        try {
+            Storage::delete($uploadedFiles->file_path);
+            $uploadedFiles->delete();
+
+            $this->withMessage(self::ALERT_SUCCESS, 'file_removed_successfuly');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            $this->withMessage(self::ALERT_ERROR, $e->getMessage());
+            return redirect()->back();
+        }
     }
 }

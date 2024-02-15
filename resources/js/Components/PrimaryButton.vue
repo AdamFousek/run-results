@@ -17,11 +17,11 @@ const props = defineProps({
     },
     rounded: {
         type: Boolean,
-        default: true,
+        default: false,
     },
     outline: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 });
 

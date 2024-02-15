@@ -45,11 +45,15 @@ const upload = () => {
     })
 }
 
-const togglePublicity = (file) => {
-    router.post(route('admin.uploadedFiles.togglePublicity', {uploadedFiles: file.id}))
+const togglePublicity = (id: number) => {
+    router.post(route('admin.uploadedFiles.togglePublicity', {uploadedFiles: id}))
     router.reload()
 }
 
+const removeFile = (id: number) => {
+    router.delete(route('admin.uploadedFiles.destroy', {uploadedFiles: id}))
+    router.reload()
+}
 </script>
 
 <template>
@@ -57,7 +61,7 @@ const togglePublicity = (file) => {
         <header>
             <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.races.uploadedFiles') }}</h2>
-                <PrimaryButton @click="openUploadModal">
+                <PrimaryButton @click="openUploadModal" color="blue" rounded>
                     {{ $t('admin.races.uploadFile') }}
                 </PrimaryButton>
             </div>
@@ -73,13 +77,13 @@ const togglePublicity = (file) => {
                     <div class="flex gap-4 text-2xl items-center">
                         <NPopover v-if="file.is_public" trigger="hover">
                             <template #trigger>
-                                <NIcon class="text-indigo-500 hover:text-indigo-800 cursor-pointer" @click="togglePublicity(file)"> <LockOpenFilled /> </NIcon>
+                                <NIcon class="text-indigo-500 hover:text-indigo-800 cursor-pointer" @click="togglePublicity(file.id)"> <LockOpenFilled /> </NIcon>
                             </template>
                             <span>{{ $t('admin.file.isPublic') }}</span>
                         </NPopover>
                         <NPopover v-else trigger="hover">
                             <template #trigger>
-                                <NIcon class="text-indigo-500 hover:text-indigo-800 cursor-pointer" @click="togglePublicity(file)"> <LockOutlined /> </NIcon>
+                                <NIcon class="text-indigo-500 hover:text-indigo-800 cursor-pointer" @click="togglePublicity(file.id)"> <LockOutlined /> </NIcon>
                             </template>
                             <span>{{ $t('admin.file.isNotPublic') }}</span>
                         </NPopover>

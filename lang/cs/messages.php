@@ -34,4 +34,5 @@ return [
     'chart_average' => 'Průměrný čas',
 
     'file_updated_successfuly' => 'Soubor byl úspěšně aktualizován',
+    'file_removed_successfuly' => 'Soubor byl úspěšně smazán',
 ];
