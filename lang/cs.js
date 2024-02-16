@@ -130,6 +130,8 @@ export default {
         vintageUpper: 'Ročník',
         region: 'Kraj',
         filesToDownload: 'Soubory ke stažení',
+        longitude: 'Zeměpisná délka',
+        latitude: 'Zeměpisná šířka',
     },
     result: {
         runner: 'Běžec',

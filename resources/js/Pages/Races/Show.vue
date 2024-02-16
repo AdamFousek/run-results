@@ -9,6 +9,7 @@ import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import ResultList from '@/Pages/Races/partials/ResultList.vue'
 import { CloudDownloadOutlined } from '@vicons/material'
 import MyLink from '@/Components/MyLink.vue'
+import Map from '@/Components/Map.vue'
 
 const props = defineProps({
     race: {
@@ -80,10 +81,19 @@ const searchRaces = (searchTerm) => {
         </template>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-between gap-4 flex-wrap p-2">
-                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl" />
-                    <div class="bg-white p-4 shadow-sm rounded-xl">
+                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl self-start" />
+                    <div class="bg-white col-span-1 p-4 shadow-sm rounded-xl self-start">
+                        <h2 class="text-xl mb-2">{{ $t('race.location') }}</h2>
+                        <div class="">{{ race.location }}<span v-if="race.region">,&nbsp;{{ race.region }}</span></div>
+                        <div v-if="race.latitude || race.longitude" class="text-xs">{{ race.latitude }}, {{ race.longitude }}</div>
+                        <div v-if="race.latitude || race.longitude" class="w-full mt-2">
+                            <MyLink :href="`http://www.mapy.cz/?query=${race.latitude},${race.longitude}`" target="_blank" external>
+                                <Map :name="race.name" :x="race.latitude" :y="race.longitude" />
+                            </MyLink>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.filesToDownload') }}</h2>
                         <div v-for="file in files" :key="file.name" class="mb-2">
                             <MyLink :href="file.url" download external class="text-base flex justify-between items-center">
@@ -94,8 +104,9 @@ const searchRaces = (searchTerm) => {
                             </MyLink>
                         </div>
                     </div>
-                    <div class="bg-white col-span-1 md:col-span-2 p-4 shadow-sm rounded-xl self-start trix-content"
-                         v-html="race.description">
+                    <div class="bg-white col-span-1 p-4 shadow-sm rounded-xl self-start">
+                        <h2 class="text-xl mb-2">{{ $t('race.description') }}</h2>
+                        <div class="trix-content" v-html="race.description"></div>
                     </div>
                 </div>
 
