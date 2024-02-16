@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Queries;
+namespace App\Queries\Runner;
 
 use App\Repositories\Meilisearch\Results\RunnerCollection;
 use App\Repositories\RunnerRepository;

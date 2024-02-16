@@ -9,8 +9,10 @@ use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\UploadedFiles;
 use App\Models\Meilisearch\Runner;
-use App\Queries\RunnerSearch;
-use App\Queries\RunnerSearchQuery;
+use App\Queries\Race\RaceSearch;
+use App\Queries\Race\RaceSearchHandler;
+use App\Queries\Runner\RunnerSearch;
+use App\Queries\Runner\RunnerSearchQuery;
 use App\Services\PaginateService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -19,7 +21,7 @@ use Inertia\Response;
 
 class RaceController extends Controller
 {
-    private const LIMIT = 20;
+    private const LIMIT = 30;
 
     private const LIMIT_RUNNERS = 50;
 
@@ -49,34 +51,32 @@ class RaceController extends Controller
         private readonly RaceRunnerListTransformer $raceRunnerListTransformer,
         private readonly RaceTransformer $raceTransformer,
         private readonly RunnerSearchQuery $runnerSearchQuery,
+        private readonly RaceSearchHandler $raceSearchHandler,
+        private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
     ) {
     }
 
     public function index(Request $request): Response
     {
         $search = trim($request->get('query'));
+        $page = (int)$request->get('page', 1);
         $sort = $this->resolveSort($request);
         [$sortColumn, $sortDirection] = explode(':', $sort);
-        if ($search !== '') {
-            $races = Race::search($search)
-                ->orderBy($sortColumn, $sortDirection)
-                ->paginate(self::LIMIT);
-        } else {
-            $races = Race::query()
-                ->where('is_parent', 0)
-                ->orderBy($sortColumn, $sortDirection)
-                ->paginate(self::LIMIT);
-        }
-        $races->loadCount('results');
-        $page = (int)$request->get('page', 1);
+
+        $races = $this->raceSearchHandler->handle(new RaceSearch(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            wihtoutParent: $search === '',
+        ));
 
         return Inertia::render('Races/Index', [
-            'races' => $this->transformer->transform($races->items()),
+            'races' => $this->meilisearchRaceListTransformer->transform($races->items),
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($races),
                 'page' => $page,
-                'total' => $races->total(),
-                'limit' => self::LIMIT
+                'total' => $races->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $races->total,
             ],
             'search' => $search,
             'sortOptions' => $this->buildSort(),

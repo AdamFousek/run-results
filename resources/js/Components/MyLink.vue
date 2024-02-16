@@ -12,11 +12,12 @@ const props = defineProps({
         required: false,
         default: 'link',
     },
-    href: {
-        type: String,
-        required: true,
-    },
     external: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    withoutClasses: {
         type: Boolean,
         required: false,
         default: false,
@@ -38,20 +39,21 @@ const typeClasses = {
 const defaultTypeClasses = typeClasses[props.color]
 
 const defaultClasses = colorClasses[props.type] ?? 'text-violet-950 hover:text-violet-800'
+
+const classes = defaultClasses + ' ' + defaultTypeClasses
 </script>
 
 <template>
     <Link
             v-if="!external"
-            :href="href"
             class="cursor-pointer"
-            :class="defaultClasses + ' ' + defaultTypeClasses"
+            :class="withoutClasses ? '' : classes"
     >
         <slot/>
     </Link>
-    <a v-else :href="href"
+    <a v-else
        class="cursor-pointer"
-       :class="defaultClasses + ' ' + defaultTypeClasses">
+       :class="withoutClasses ? '' : classes">
         <slot />
     </a>
 </template>

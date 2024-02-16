@@ -1,5 +1,6 @@
 <script setup>
 import {computed} from "vue";
+import MyLink from '@/Components/MyLink.vue'
 
 
 const props = defineProps({
@@ -20,6 +21,10 @@ const props = defineProps({
         default: false,
     },
     outline: {
+        type: Boolean,
+        default: false,
+    },
+    link: {
         type: Boolean,
         default: false,
     },
@@ -68,10 +73,17 @@ if (props.outline) {
 
 <template>
     <button
+            v-if="!link"
             :type="type"
             class="transition-all duration-150 disabled:opacity-25 ease-linear outline-none focus:outline-none font-semibold"
             :class="[defaultClass, sizeClasses, roundedClasses]"
     >
         <slot/>
     </button>
+    <MyLink v-else
+            without-classes
+            class="transition-all duration-150 disabled:opacity-25 ease-linear outline-none focus:outline-none font-semibold"
+            :class="[defaultClass, sizeClasses, roundedClasses]">
+        <slot/>
+    </MyLink>
 </template>

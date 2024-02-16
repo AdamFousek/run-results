@@ -121,7 +121,9 @@ class Race extends IlluminateModel
     ];
 
     protected array $makeAllSearchableWith = [
-        'results'
+        'results',
+        'parent',
+        'files',
     ];
 
     public function parent(): BelongsTo
@@ -155,26 +157,8 @@ class Race extends IlluminateModel
         return $this->morphMany(UploadedFiles::class, 'filable');
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
+    public function getSerializer(): ?string
     {
-        return [
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'date' => $this->date?->timestamp,
-            'location' => $this->location,
-            'distance' => $this->getRawOriginal('distance'),
-            'surface' => $this->surface,
-            'runnerCount' => $this->results->count(),
-            'type' => $this->type,
-            'is_parent' => $this->is_parent,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'upserted_at' => new Carbon(),
-        ];
+        return \App\Serializer\RaceSerializer::class;
     }
 }

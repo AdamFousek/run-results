@@ -3,12 +3,9 @@ import { onMounted, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput, NSelect } from 'naive-ui';
-import { useI18n } from 'vue-i18n'
-import Pagination from '@/Components/Pagination.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import RaceList from '@/Pages/Races/partials/RaceList.vue'
-
-const {t} = useI18n();
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const props = defineProps({
     races: {
@@ -33,6 +30,7 @@ const props = defineProps({
 
 const search = ref(props.search)
 const sort = ref(props.activeSort)
+const searching = ref(false)
 const loaded = ref(false)
 
 watch(search, (value) => {
@@ -52,6 +50,7 @@ onMounted(() => {
 })
 
 const searchRaces = () => {
+    searching.value = true
     router.reload({
         data: {
             query: search.value,
@@ -59,7 +58,9 @@ const searchRaces = () => {
             page: 1,
         },
         only: ['races', 'paginate'],
-        preserveState: true,
+        onFinish() {
+            searching.value = false
+        }
     })
 }
 </script>
@@ -100,10 +101,9 @@ const searchRaces = () => {
                     <div class="md:w-full flex-shrink-0">
                         <RaceList :races="races"/>
                         <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
-
-                        <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>
                     </div>
                 </div>
+                <MeilisearchPagination v-if="races.length && !searching" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" class="my-4"/>
             </div>
         </div>
     </AppLayout>

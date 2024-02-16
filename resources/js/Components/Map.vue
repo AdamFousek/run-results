@@ -28,6 +28,9 @@ onMounted(() => {
     const map = L.map(props.name, {
         zoomControl: false,
         dragging: false,
+        boxZoom: false,
+        doubleClickZoom: false,
+        scrollWheelZoom: false,
     }).setView([props.x, props.y], props.zoom);
 
     L.tileLayer(`https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${mapyApi}`, {
@@ -62,7 +65,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div :id="name" class="maps-wrapper overflow-hidden"></div>
+    <div class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
+        <div :id="name" class="maps-wrapper hover:scale-125 duration-150 overflow-hidden"></div>
+    </div>
 </template>
 
 <style scoped>

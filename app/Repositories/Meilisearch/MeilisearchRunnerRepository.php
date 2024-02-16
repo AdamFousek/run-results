@@ -7,7 +7,7 @@ namespace App\Repositories\Meilisearch;
 
 use App\Deserializer\RunnerDeserializer;
 use App\Models\Illuminate\Runner;
-use App\Queries\RunnerSearch;
+use App\Queries\Runner\RunnerSearch;
 use App\Repositories\Meilisearch\Results\RunnerCollection;
 use App\Repositories\RunnerRepository;
 use Meilisearch\Client;

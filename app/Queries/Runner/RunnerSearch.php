@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Queries;
+namespace App\Queries\Runner;
 
 readonly class RunnerSearch
 {

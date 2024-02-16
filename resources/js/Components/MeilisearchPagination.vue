@@ -26,6 +26,7 @@ const startPage = props.page > 3 ? props.page - 2 : 1
 const lastPage = Math.ceil(props.total / props.perPage)
 const endPage = startPage + 4 < lastPage ? startPage + 4 : lastPage
 const query = (usePage().props.ziggy as any).query;
+const current = (usePage().props.ziggy as any).current ?? '#';
 </script>
 
 <template>
@@ -40,7 +41,7 @@ const query = (usePage().props.ziggy as any).query;
                               d="M5 1 1 5l4 4"/>
                     </svg>
                 </span>
-                <Link v-else :href="route('runners.index', {
+                <Link v-else :href="route(current, {
                     _query: {
                         ...query,
                         page: page - 1,
@@ -57,7 +58,7 @@ const query = (usePage().props.ziggy as any).query;
             </li>
             <template v-if="startPage > 1">
                 <li>
-                    <Link :href="route('runners.index', {
+                    <Link :href="route(current, {
                     _query: {
                         ...query,
                         page: 1,
@@ -72,7 +73,7 @@ const query = (usePage().props.ziggy as any).query;
             </template>
             <template v-for="index in lastPage" :key="index">
             <li v-if="index <= endPage && index >= startPage">
-                <Link :href="route('runners.index', {
+                <Link :href="route(current, {
                     _query: {
                         ...query,
                         page: index,
@@ -94,7 +95,7 @@ const query = (usePage().props.ziggy as any).query;
                     <span class="flex items-center justify-center px-3 h-8 leading-tight bg-white text-gray-500 border border-gray-300 hover:text-gray-700 cursor-not-allowed">...</span>
                 </li>
                 <li>
-                    <Link :href="route('runners.index', {
+                    <Link :href="route(current, {
                         _query: {
                             ...query,
                             page: lastPage,
@@ -113,7 +114,7 @@ const query = (usePage().props.ziggy as any).query;
                               d="m1 9 4-4-4-4"/>
                     </svg>
                 </span>
-                <Link v-else :href="route('runners.index', {
+                <Link v-else :href="route(current, {
                     _query: {
                         ...query,
                         page: page + 1,
