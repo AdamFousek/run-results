@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('races', function (Blueprint $table) {
-            $table->double('latitude', 15, 8)->change();
-            $table->double('longitude', 15, 8)->change();
+            $table->double('latitude', 15, 8)->nullable()->change();
+            $table->double('longitude', 15, 8)->nullable()->change();
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('races', function (Blueprint $table) {
-            $table->float('latitude')->change();
-            $table->float('longitude')->change();
+            $table->float('latitude')->nullable()->change();
+            $table->float('longitude')->nullable()->change();
         });
     }
 };

@@ -140,9 +140,9 @@ class ChartRunnerDataProvider
         $results = $results->groupBy('tag');
 
         $chartData = [];
-        $fastestTime = null;
-        $slowestTime = 0;
         foreach ($results as $key => $result) {
+            $fastestTime = null;
+            $slowestTime = 0;
             $runnerData = [];
             /** @var stdClass $item */
             foreach ($result as $item) {

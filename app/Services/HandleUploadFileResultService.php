@@ -68,6 +68,9 @@ class HandleUploadFileResultService
             ->count();
         $results->processed_at = now();
         $results->save();
+
+        // Refresh model in meilisearch
+        $results->race->searchable();
     }
 
     /**

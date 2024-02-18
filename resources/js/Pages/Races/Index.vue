@@ -2,8 +2,7 @@
 import { onMounted, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { NInput, NSelect } from 'naive-ui';
-import InputLabel from '@/Components/InputLabel.vue'
+import { NInput } from 'naive-ui';
 import RaceList from '@/Pages/Races/partials/RaceList.vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
@@ -19,9 +18,6 @@ const props = defineProps({
         type: String,
         required: false,
         default: '',
-    },
-    sortOptions: {
-        type: Array,
     },
     activeSort: {
         type: String,
@@ -54,7 +50,6 @@ const searchRaces = () => {
     router.reload({
         data: {
             query: search.value,
-            sort: sort.value,
             page: 1,
         },
         only: ['races', 'paginate'],
@@ -76,10 +71,8 @@ const searchRaces = () => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div class="m-2 flex justify-between flex-wrap">
+                <div class="m-2 flex justify-center flex-wrap">
                     <div class="md:my-3 w-full md:w-1/2">
-                        <InputLabel for="username" :value="$t('race.search')"/>
-
                         <NInput type="text"
                                 class=""
                                 v-model:value="search"
@@ -88,18 +81,10 @@ const searchRaces = () => {
                                 round
                         />
                     </div>
-
-                    <div class="my-3 w-full md:w-1/6">
-                        <InputLabel for="username" :value="$t('race.sort')"/>
-
-                        <NSelect v-if="loaded" class="w-1/12" round :placeholder="$t('race.sort')" v-model:value="sort"
-                                 :options="sortOptions"/>
-                    </div>
-
                 </div>
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
-                        <RaceList :races="races"/>
+                        <RaceList :races="races" :sort="activeSort" />
                         <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
                     </div>
                 </div>

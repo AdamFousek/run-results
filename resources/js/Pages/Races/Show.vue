@@ -7,7 +7,7 @@ import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import ResultList from '@/Pages/Races/partials/ResultList.vue'
-import { CloudDownloadOutlined } from '@vicons/material'
+import { CloudDownloadOutlined, MapOutlined } from '@vicons/material'
 import MyLink from '@/Components/MyLink.vue'
 import Map from '@/Components/Map.vue'
 
@@ -45,6 +45,7 @@ const props = defineProps({
 })
 
 const search = ref(props.search)
+const searching = ref(false)
 
 watch(search, (value) => {
     if (value !== '') {
@@ -55,12 +56,16 @@ watch(search, (value) => {
 })
 
 const searchRaces = (searchTerm) => {
+    searching.value = true
     router.reload({
         data: {
             query: searchTerm,
         },
-        only: ['results'],
+        only: ['results', 'paginate'],
         preserveState: true,
+        onFinish() {
+            searching.value = false
+        }
     })
 }
 </script>
@@ -86,7 +91,12 @@ const searchRaces = (searchTerm) => {
                     <div class="bg-white col-span-1 p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.location') }}</h2>
                         <div class="">{{ race.location }}<span v-if="race.region">,&nbsp;{{ race.region }}</span></div>
-                        <div v-if="race.latitude || race.longitude" class="text-xs">{{ race.latitude }}, {{ race.longitude }}</div>
+                        <MyLink :href="`http://www.mapy.cz/?query=${race.latitude},${race.longitude}`" v-if="race.latitude || race.longitude" class="flex items-center gap-2 text-xs">
+                            <NIcon>
+                                <MapOutlined />
+                            </NIcon>
+                            {{ race.latitude }}, {{ race.longitude }}
+                        </MyLink>
                         <div v-if="race.latitude || race.longitude" class="w-full mt-2">
                             <MyLink :href="`http://www.mapy.cz/?query=${race.latitude},${race.longitude}`" target="_blank" external>
                                 <Map :name="race.name" :x="race.latitude" :y="race.longitude" />
@@ -123,10 +133,9 @@ const searchRaces = (searchTerm) => {
                         <div class="md:w-full flex-shrink-0">
                             <ResultList :results="results" :selected-runner="selectedRunner" />
                             <section class="p-4 text-center" v-if="results.length === 0">{{ $t('noResults') }}</section>
-
-                            <Pagination v-if="results.length" :pages="paginate.links" class="my-4"/>
                         </div>
                     </div>
+                    <Pagination v-if="!searching && results.length" :pages="paginate.links" class="my-4"/>
                 </section>
                 <ChildRaceList v-if="childRaces.length > 0" :races="childRaces" />
             </div>

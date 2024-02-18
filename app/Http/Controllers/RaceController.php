@@ -33,8 +33,10 @@ class RaceController extends Controller
     public const SORT_LOCATION_DESC = 'location:desc';
     public const SORT_DISTANCE_ASC = 'distance:asc';
     public const SORT_DISTANCE_DESC = 'distance:desc';
+    public const SORT_RESULTS_COUNT_ASC = 'runnerCount:asc';
+    public const SORT_RESULTS_COUNT_DESC = 'runnerCount:desc';
 
-    public const SORTS = [
+    public const AVAILABLE_SORTS = [
         self::SORT_NAME_ASC => 'sort.name_asc',
         self::SORT_NAME_DESC => 'sort.name_desc',
         self::SORT_DATE_ASC => 'sort.date_asc',
@@ -43,6 +45,8 @@ class RaceController extends Controller
         self::SORT_LOCATION_DESC => 'sort.location_desc',
         self::SORT_DISTANCE_ASC => 'sort.distance_asc',
         self::SORT_DISTANCE_DESC => 'sort.distance_desc',
+        self::SORT_RESULTS_COUNT_ASC => 'sort.resultsCount_asc',
+        self::SORT_RESULTS_COUNT_DESC => 'sort.resultsCount_desc',
     ];
 
     public function __construct(
@@ -68,6 +72,8 @@ class RaceController extends Controller
             page: $page,
             perPage: self::LIMIT,
             wihtoutParent: $search === '',
+            filterBy: $sortColumn,
+            filterDirection: $sortDirection,
         ));
 
         return Inertia::render('Races/Index', [
@@ -79,7 +85,6 @@ class RaceController extends Controller
                 'onPage' => $races->total,
             ],
             'search' => $search,
-            'sortOptions' => $this->buildSort(),
             'activeSort' => $this->resolveSort($request),
         ]);
     }
@@ -129,27 +134,11 @@ class RaceController extends Controller
         return Inertia::render('Races/Show', $data);
     }
 
-    /**
-     * @return array<int, array<string, string>>
-     */
-    private function buildSort(): array
-    {
-        $sorts = [];
-        foreach (self::SORTS as $key => $value) {
-            $sorts[] = [
-                'label' => trans($value),
-                'value' => $key,
-            ];
-        }
-
-        return $sorts;
-    }
-
     private function resolveSort(Request $request): string
     {
         $sort = $request->get('sort', self::SORT_DATE_DESC);
 
-        if (!array_key_exists($sort, self::SORTS)) {
+        if (!array_key_exists($sort, self::AVAILABLE_SORTS)) {
             $sort = self::SORT_DATE_DESC;
         }
 

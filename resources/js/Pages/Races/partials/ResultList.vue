@@ -1,5 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
+import { NIcon } from 'naive-ui'
+import { EmojiEventsOutlined } from '@vicons/material'
 
 defineProps({
     selectedRunner: {
@@ -29,16 +31,38 @@ defineProps({
               class="grid grid-cols-10 md:grid-cols-11 gap-2 md:gap-4 hover:bg-gray-100"
               :class="{
                   'bg-gray-50': index%2 === 0,
-                  'bg-violet-100 hover:bg-violet-200': selectedRunner === result.runner_id,
+                  'bg-indigo-100 hover:bg-indigo-200': selectedRunner === result.runner_id,
               }"
         >
-            <div class="p-3 md:px-4 text-center">{{ result.position }}</div>
+            <div class="p-3 md:px-4 flex flex-start items-center gap-2">
+                <span>{{ result.position }}</span>
+                <NIcon v-if="result.position < 4"
+                       :class="{
+                            'text-2xl text-gold-500': result.position === 1,
+                            'text-xl text-silver-500': result.position === 2,
+                            'text-lg text-bronze-500': result.position === 3,
+                       }"
+                >
+                    <EmojiEventsOutlined />
+                </NIcon>
+            </div>
             <div class="col-span-2 md:col-span-3 p-3 md:px-4">{{ result.last_name }} {{ result.first_name }} ({{ result.year }})</div>
             <div v-if="result.DNF" class="col-span-2 p-3 md:px-4">{{ $t('result.DNF') }}</div>
             <div v-else-if="result.DNS" class="col-span-2 p-3 md:px-4">{{ $t('result.DNS') }}</div>
             <div v-else class="col-span-2 p-3 md:px-4">{{ result.time }}</div>
             <div class="p-3 md:px-4">{{ result.category }}</div>
-            <div class="p-3 md:px-4 text-center">{{ result.category_position }}</div>
+            <div class="p-3 md:px-4 flex flex-start items-center gap-2">
+                <span>{{ result.category_position }}</span>
+                <NIcon v-if="result.category_position < 4"
+                       :class="{
+                            'text-base text-gold-500': result.category_position === 1,
+                            'text-base text-silver-500': result.category_position === 2,
+                            'text-base text-bronze-500': result.category_position === 3,
+                       }"
+                >
+                    <EmojiEventsOutlined />
+                </NIcon>
+            </div>
             <div class="col-span-2 p-3 md:px-4">{{ result.club }}</div>
             <div class="p-3 md:px-4 text-center">{{ result.starting_number }}</div>
         </Link>

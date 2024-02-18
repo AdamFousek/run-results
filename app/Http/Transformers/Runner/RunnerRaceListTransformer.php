@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Collection;
 class RunnerRaceListTransformer
 {
     /**
-     * @param Collection $results
+     * @param Collection|Result[] $results
      * @return array<int, array<string, mixed>>
      */
-    public function transform(Collection $results): array
+    public function transform(Collection|array $results): array
     {
         $transformedData = [];
         foreach ($results as $result) {

@@ -1,13 +1,12 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
   pages: {
     type: Array,
     required: true,
   }
 })
-
 </script>
 
 <template>

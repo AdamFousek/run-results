@@ -3,13 +3,10 @@ import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { NInput, NTabs, NTabPane } from 'naive-ui'
 import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import ResultList from '@/Pages/Runners/partials/ResultList.vue'
 import useIsMobile from '@/Comp/useIsMobile.js'
 import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
-
-const {t} = useI18n();
-
+import Pagination from '@/Components/Pagination.vue'
 
 const props = defineProps({
     runner: {
@@ -26,7 +23,11 @@ const props = defineProps({
     },
     chartData: {
         type: Object,
-    }
+    },
+    paginate: {
+        type: Object,
+        required: true,
+    },
 })
 
 const search = ref(props.search)
@@ -89,6 +90,7 @@ const justifyContent = computed(() => {
                                 </section>
                             </div>
                         </div>
+                        <Pagination v-if="results.length" :pages="paginate.links" class="my-4" />
                     </NTabPane>
                     <NTabPane :name="$t('runner.tabCharts')" :tab="$t('runner.tabCharts')" display-directive="show:lazy">
                         <ChartIndex :data="chartData" />

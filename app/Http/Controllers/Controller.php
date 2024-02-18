@@ -23,10 +23,7 @@ class Controller extends BaseController
 
     protected function withMessage(string $type, string $message): void
     {
-        if (!str_contains($message, 'messages.')) {
-            $message = 'messages.' . $message;
-        }
-        request()->session()->flash('alert', [
+        request()?->session()->flash('alert', [
             'type' => $type,
             'header' => trans('messages.' . ucfirst($type)),
             'message' => trans($message),

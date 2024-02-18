@@ -7,6 +7,7 @@ namespace App\Repositories\Meilisearch;
 
 use App\Deserializer\RaceDeserializer;
 use App\Models\Illuminate\Race;
+use App\Queries\Race\GetRaceIdsBySearch;
 use App\Queries\Race\RaceSearch;
 use App\Repositories\Meilisearch\Results\RaceCollection;
 use App\Repositories\RaceRepository;
@@ -29,6 +30,10 @@ class MeilisearchRaceRepository implements RaceRepository
         $filter['offset'] = ($query->page - 1) * $query->perPage;
         if ($query->wihtoutParent) {
             $filter['filter'] = ['isParent = false'];
+        }
+
+        if ($query->filterBy !== '') {
+            $filter['sort'] = [$query->filterBy . ':' . $query->filterDirection];
         }
 
         $search = $index->search($query->search, $filter);
@@ -72,6 +77,23 @@ class MeilisearchRaceRepository implements RaceRepository
             total: $search->getHitsCount(),
             estimatedTotal: $search->getEstimatedTotalHits(),
         );
+    }
+
+    /**
+     * @param GetRaceIdsBySearch $search
+     * @return array
+     */
+    public function getIds(GetRaceIdsBySearch $search): array
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $filter = [];
+        $filter['limit'] =  100000;
+        $filter['offset'] = 0;
+
+        $result = $index->search($search->search, $filter);
+
+        return collect($result->getHits())->pluck('id')->toArray();
     }
 
     private function getIndex(): string

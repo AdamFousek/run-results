@@ -14,7 +14,7 @@ const props = defineProps({
     zoom: {
         type: Number,
         required: false,
-        default: 14,
+        default: 13,
     },
     name: {
         type: String,

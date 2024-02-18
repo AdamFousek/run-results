@@ -54,8 +54,8 @@ const options = computed(() => {
                     },
                     stepSize: 60000,
                 },
-                max: slowestTime.value + 600000,
-                min: fastestTime.value - 600000 < 0 ? 0 : fastestTime.value - 600000,
+                max: slowestTime.value + (60000 * 5),
+                min: fastestTime.value - (60000 * 5) < 0 ? 0 : fastestTime.value - 600000,
             },
         },
         plugins: {
