@@ -20,6 +20,9 @@ const props = defineProps({
         required: false,
         default: '',
     },
+    activeSort: {
+        type: String,
+    },
 })
 
 const search = ref(props.search)
@@ -72,7 +75,7 @@ const pagination = computed(() => {
                 </div>
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
-                        <RunnerList :runners="runners" />
+                        <RunnerList :runners="runners" :sort="activeSort" />
                         <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
                         <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>

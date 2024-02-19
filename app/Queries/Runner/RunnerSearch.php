@@ -11,6 +11,8 @@ readonly class RunnerSearch
         public string $search,
         public int $page,
         public int $perPage,
+        public string $sortBy = '',
+        public string $sortDirection = '',
     ) {
     }
 }

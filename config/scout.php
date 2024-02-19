@@ -140,8 +140,8 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Runner::class => [
-                'filterableAttributes'=> ['id', 'first_name', 'last_name', 'year', 'club', 'city'],
-                'sortableAttributes'=> ['first_name', 'last_name', 'year', 'club', 'city', 'resultsCount'],
+                'filterableAttributes'=> ['id', 'firstName', 'lastName', 'year', 'club', 'city'],
+                'sortableAttributes'=> ['firstName', 'lastName', 'year', 'club', 'city', 'resultsCount'],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]

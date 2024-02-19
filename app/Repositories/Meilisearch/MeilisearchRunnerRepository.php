@@ -28,6 +28,10 @@ class MeilisearchRunnerRepository implements RunnerRepository
         $filter['limit'] = $query->perPage;
         $filter['offset'] = ($query->page - 1) * $query->perPage;
 
+        if ($query->sortBy !== '') {
+            $filter['sort'] = [$query->sortBy . ':' . $query->sortDirection];
+        }
+
         $search = $index->search($query->search, $filter);
 
         $items = collect();

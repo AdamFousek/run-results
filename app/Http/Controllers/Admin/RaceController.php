@@ -14,7 +14,10 @@ use App\Http\Requests\UploadFileRequest;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Illuminate\Race;
+use App\Queries\Race\RaceSearch;
+use App\Queries\Race\RaceSearchHandler;
 use App\Services\PaginateService;
+use App\Services\RaceSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -30,30 +33,44 @@ class RaceController extends AdminController
     private const LIMIT = 50;
 
     public function __construct(
-        private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
         private readonly RaceTransformer $raceTransformer,
         private readonly CreateRaceCommand $createRaceCommand,
         private readonly UpdateRaceCommand $updateRaceCommand,
         private readonly CreateUploadedFileHandler $createUploadedFileHandler,
+        private readonly RaceSortService $sortService,
+        private readonly RaceSearchHandler $raceSearchHandler,
+        private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
     ) {
     }
 
     public function index(Request $request): Response
     {
         $search = trim($request->get('query'));
-        $races = Race::search($search)->paginate(self::LIMIT);
         $page = (int)$request->get('page', 1);
+        $requestSort = $request->get('sort', RaceSortService::DEFAULT_SORT);
+        $sort = $this->sortService->resolveSort($requestSort);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
+
+        $races = $this->raceSearchHandler->handle(new RaceSearch(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            wihtoutParent: $search === '',
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection,
+        ));
 
         return Inertia::render('Admin/Races/Index', [
-            'races' => $this->transformer->transform($races->items()),
+            'races' => $this->meilisearchRaceListTransformer->transform($races->items),
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($races),
                 'page' => $page,
-                'total' => $races->total(),
-                'limit' => self::LIMIT
+                'total' => $races->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $races->total,
             ],
             'search' => $search,
+            'activeSort' => $sort,
         ]);
     }
 

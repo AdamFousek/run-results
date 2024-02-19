@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui';
@@ -52,12 +52,19 @@ const searchRaces = () => {
             query: search.value,
             page: 1,
         },
-        only: ['races', 'paginate'],
         onFinish() {
             searching.value = false
         }
     })
 }
+
+const pagination = computed(() => {
+    if (props.paginate.total < props.paginate.limit) {
+        return `${props.paginate.total} / ${props.paginate.total}`
+    }
+
+    return `${props.paginate.limit} / ${props.paginate.total}`
+})
 </script>
 
 <template>
@@ -86,6 +93,7 @@ const searchRaces = () => {
                     <div class="md:w-full flex-shrink-0">
                         <RaceList :races="races" :sort="activeSort" />
                         <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
+                        <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>
                 </div>
                 <MeilisearchPagination v-if="races.length && !searching" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" class="my-4"/>

@@ -32,8 +32,8 @@ class MeilisearchRaceRepository implements RaceRepository
             $filter['filter'] = ['isParent = false'];
         }
 
-        if ($query->filterBy !== '') {
-            $filter['sort'] = [$query->filterBy . ':' . $query->filterDirection];
+        if ($query->sortBy !== '') {
+            $filter['sort'] = [$query->sortBy . ':' . $query->sortDirection];
         }
 
         $search = $index->search($query->search, $filter);

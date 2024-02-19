@@ -12,6 +12,8 @@ use App\Queries\Race\GetRaceIdsBySearchHandler;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
 use App\Services\PaginateService;
+use App\Services\RaceSortService;
+use App\Services\RunnerSortService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -27,6 +29,8 @@ class RunnerController extends Controller
         private readonly RunnerListTransformer $runnerListTransformer,
         private readonly GetRaceIdsBySearchHandler $getRaceIdsBySearchHandler,
         private readonly PaginateService $paginateService,
+        private readonly RunnerSortService $sortService,
+        private readonly RaceSortService $raceSortService,
     ) {
     }
 
@@ -34,8 +38,17 @@ class RunnerController extends Controller
     {
         $search = trim($request->get('query', ''));
         $page = (int)$request->get('page', 1);
+        $requestSort = $request->get('sort', RunnerSortService::DEFAULT_SORT);
+        $sort = $this->sortService->resolveSort($requestSort);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
 
-        $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT));
+        $runners = $this->runnerSearchQuery->handle(new RunnerSearch(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection
+        ));
 
         return Inertia::render('Runners/Index', [
             'runners' => $this->runnerListTransformer->transform($runners->items),
@@ -46,6 +59,7 @@ class RunnerController extends Controller
                 'onPage' => $runners->total,
             ],
             'search' => $search,
+            'activeSort' => $sort,
         ]);
     }
 
@@ -53,18 +67,23 @@ class RunnerController extends Controller
     {
         $page = (int)$request->get('page', 1);
         $search = trim($request->get('query'));
+        $requestSort = $request->get('sort', RunnerSortService::DEFAULT_SORT);
+        $sort = $this->raceSortService->resolveSort($requestSort);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
+        $orderBy = 'races.' . $sortColumn;
+
         if ($search !== '') {
             $raceIds = $this->getRaceIdsBySearchHandler->handle(new GetRaceIdsBySearch($search));
             $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
                 ->join('races', 'results.race_id', '=', 'races.id')
-                ->orderBy('races.date', 'desc')
+                ->orderBy($orderBy, $sortDirection)
                 ->whereIn('races.id', $raceIds)
                 ->with('race')
                 ->paginate(self::LIMIT);
         } else {
             $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
                 ->join('races', 'results.race_id', '=', 'races.id')
-                ->orderBy('races.date', 'desc')
+                ->orderBy($orderBy, $sortDirection)
                 ->with('race')
                 ->paginate(self::LIMIT);
         }

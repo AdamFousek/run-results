@@ -8,11 +8,12 @@ use App\Commands\Runner\UpdateRunner;
 use App\Commands\Runner\UpdateRunnerHandler;
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
-use App\Http\Transformers\Runner\RunnerTransformer;
-use App\Models\Illuminate\Enums\RunnerSortEnum;
+use App\Http\Transformers\Meilisearch\RunnerListTransformer;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
-use App\Services\PaginateService;
+use App\Queries\Runner\RunnerSearch;
+use App\Queries\Runner\RunnerSearchQuery;
+use App\Services\RunnerSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -24,33 +25,40 @@ class RunnerController extends AdminController
     private const LIMIT = 50;
 
     public function __construct(
-        private readonly PaginateService $paginateService,
         private readonly CreateRunnerHandler $createRunnerHandler,
         private readonly UpdateRunnerHandler $updateRunnerHandler,
-        private readonly RunnerTransformer $runnerListTransformer,
+        private readonly RunnerSortService $sortService,
+        private readonly RunnerSearchQuery $runnerSearchQuery,
+        private readonly RunnerListTransformer $runnerListTransformer,
     ) {
     }
 
     public function index(Request $request): Response
     {
-        $search = $request->get('query');
-        $sort = (string)($request->get('sort') ?? RunnerSortEnum::SORT_NAME_ASC->value);
-        $sortedBy = RunnerSortEnum::from($sort);
-        $runners = Runner::search($search)->paginate(self::LIMIT);
-        $runners->loadCount('results');
+        $search = trim($request->get('query', ''));
         $page = (int)$request->get('page', 1);
+        $requestSort = $request->get('sort', RunnerSortService::DEFAULT_SORT);
+        $sort = $this->sortService->resolveSort($requestSort);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
+
+        $runners = $this->runnerSearchQuery->handle(new RunnerSearch(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection
+        ));
 
         return Inertia::render('Admin/Runners/Index', [
-            'runners' => array_map(fn(Runner $runner) => $this->runnerListTransformer->transform($runner), $runners->items()),
+            'runners' => $this->runnerListTransformer->transform($runners->items),
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($runners),
                 'page' => $page,
-                'total' => $runners->total(),
-                'limit' => self::LIMIT
+                'total' => $runners->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $runners->total,
             ],
             'search' => $search,
-            'sort' => $sortedBy->value,
-            'sorts' => RunnerSortEnum::cases(),
+            'activeSort' => $sort,
         ]);
     }
 

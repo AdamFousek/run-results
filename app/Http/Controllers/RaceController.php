@@ -14,6 +14,7 @@ use App\Queries\Race\RaceSearchHandler;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
 use App\Services\PaginateService;
+use App\Services\RaceSortService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,30 +26,6 @@ class RaceController extends Controller
 
     private const LIMIT_RUNNERS = 50;
 
-    public const SORT_NAME_ASC = 'name:asc';
-    public const SORT_NAME_DESC = 'name:desc';
-    public const SORT_DATE_ASC = 'date:asc';
-    public const SORT_DATE_DESC = 'date:desc';
-    public const SORT_LOCATION_ASC = 'location:asc';
-    public const SORT_LOCATION_DESC = 'location:desc';
-    public const SORT_DISTANCE_ASC = 'distance:asc';
-    public const SORT_DISTANCE_DESC = 'distance:desc';
-    public const SORT_RESULTS_COUNT_ASC = 'runnerCount:asc';
-    public const SORT_RESULTS_COUNT_DESC = 'runnerCount:desc';
-
-    public const AVAILABLE_SORTS = [
-        self::SORT_NAME_ASC => 'sort.name_asc',
-        self::SORT_NAME_DESC => 'sort.name_desc',
-        self::SORT_DATE_ASC => 'sort.date_asc',
-        self::SORT_DATE_DESC => 'sort.date_desc',
-        self::SORT_LOCATION_ASC => 'sort.location_asc',
-        self::SORT_LOCATION_DESC => 'sort.location_desc',
-        self::SORT_DISTANCE_ASC => 'sort.distance_asc',
-        self::SORT_DISTANCE_DESC => 'sort.distance_desc',
-        self::SORT_RESULTS_COUNT_ASC => 'sort.resultsCount_asc',
-        self::SORT_RESULTS_COUNT_DESC => 'sort.resultsCount_desc',
-    ];
-
     public function __construct(
         private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
@@ -57,6 +34,7 @@ class RaceController extends Controller
         private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly RaceSearchHandler $raceSearchHandler,
         private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
+        private readonly RaceSortService $sortService,
     ) {
     }
 
@@ -64,7 +42,8 @@ class RaceController extends Controller
     {
         $search = trim($request->get('query'));
         $page = (int)$request->get('page', 1);
-        $sort = $this->resolveSort($request);
+        $requestSort = $request->get('sort', RaceSortService::DEFAULT_SORT);
+        $sort = $this->sortService->resolveSort($requestSort);
         [$sortColumn, $sortDirection] = explode(':', $sort);
 
         $races = $this->raceSearchHandler->handle(new RaceSearch(
@@ -72,8 +51,8 @@ class RaceController extends Controller
             page: $page,
             perPage: self::LIMIT,
             wihtoutParent: $search === '',
-            filterBy: $sortColumn,
-            filterDirection: $sortDirection,
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection,
         ));
 
         return Inertia::render('Races/Index', [
@@ -85,7 +64,7 @@ class RaceController extends Controller
                 'onPage' => $races->total,
             ],
             'search' => $search,
-            'activeSort' => $this->resolveSort($request),
+            'activeSort' => $sort,
         ]);
     }
 
@@ -132,17 +111,6 @@ class RaceController extends Controller
 
 
         return Inertia::render('Races/Show', $data);
-    }
-
-    private function resolveSort(Request $request): string
-    {
-        $sort = $request->get('sort', self::SORT_DATE_DESC);
-
-        if (!array_key_exists($sort, self::AVAILABLE_SORTS)) {
-            $sort = self::SORT_DATE_DESC;
-        }
-
-        return $sort;
     }
 
     private function resolveResults(Race $race, string $search, int $page): LengthAwarePaginator

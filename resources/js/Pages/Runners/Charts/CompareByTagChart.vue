@@ -80,7 +80,6 @@ const setData = (value) => {
         return null
     }
 
-    console.log(value)
     const datasets = []
     for (const dataset of value.datasets) {
         datasets.push({
