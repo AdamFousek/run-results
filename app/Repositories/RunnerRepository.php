@@ -11,4 +11,6 @@ use App\Repositories\Meilisearch\Results\RunnerCollection;
 interface RunnerRepository
 {
     public function search(RunnerSearch $query): RunnerCollection;
+
+    public function searchByNameAndYear(string $lastName, string $firstName, int $year): RunnerCollection;
 }

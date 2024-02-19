@@ -14,7 +14,7 @@ class RunnerDeserializer
     /**
      * @param array{
      *     id: int,
-     *     userId: int,
+     *     userId: int|null,
      *     firstName: string,
      *     lastName: string,
      *     year: int,

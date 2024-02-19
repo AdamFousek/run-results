@@ -37,16 +37,55 @@ class MeilisearchRunnerRepository implements RunnerRepository
         $items = collect();
         /** @var array{
          * id: int,
-         * userId: int,
+         * userId: int|null,
          * firstName: string,
          * lastName: string,
          * year: int,
          * city: string|null,
          * club: string|null,
          * resultsCount: int,
-         * createdAt: string,
-         * updatedAt: string,
-         * upsertedAt: string
+         * createdAt: ?int,
+         * updatedAt: ?int,
+         * upsertedAt: int
+         * } $hit
+         */
+        foreach ($search->getHits() as $hit) {
+            $items->add($this->runnerDeserializer->deserialize($hit));
+        }
+
+        return new RunnerCollection(
+            items: $items,
+            total: $search->getHitsCount(),
+            estimatedTotal: $search->getEstimatedTotalHits(),
+        );
+    }
+
+    public function searchByNameAndYear(string $lastName, string $firstName, int $year): RunnerCollection
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $filter = [];
+        $filter['limit'] = 100000;
+        $filter['filter'] = [
+            'lastName = ' . $lastName,
+            'year = ' . $year,
+        ];
+
+        $search = $index->search($lastName . ' ' . $firstName, $filter);
+
+        $items = collect();
+        /** @var array{
+         * id: int,
+         * userId: int|null,
+         * firstName: string,
+         * lastName: string,
+         * year: int,
+         * city: string|null,
+         * club: string|null,
+         * resultsCount: int,
+         * createdAt: ?int,
+         * updatedAt: ?int,
+         * upsertedAt: int
          * } $hit
          */
         foreach ($search->getHits() as $hit) {
