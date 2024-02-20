@@ -30,7 +30,7 @@ const searchRunner = () => {
     state.loading = true;
     axios.post(route('api.admin.runners.search', { runner: props.runnerId }), {
         'search': search.value,
-        '_token': usePage().props.auth.token,
+        '_token': (usePage().props.auth as any).token,
     }).then((response) => {
         state.runners = response.data.runners
         state.loading = false;
@@ -76,7 +76,7 @@ const mergeRunner = () => {
                 </p>
 
                 <p class="my-1">
-                    {{ $t('admin.runner.mergeRunnerCount', runnerCount) }}
+                    {{ $t('admin.runner.mergeRunnerCount') }} {{ runnerCount }}
                 </p>
 
                 <div>

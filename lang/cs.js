@@ -183,7 +183,7 @@ export default {
             mergeRunner: 'Sloučit závodníka',
             mergeDescription: 'Závodník bude smazán a výsledky budou přiřazeny pod vybraného závodníka.',
             mergeConfirmation: 'Sloučit závodnika',
-            mergeRunnerCount: 'Aktuální závodník má {count} výsledků.',
+            mergeRunnerCount: 'Aktuální závodník má počet výsledků:',
             resultCount: 'Počet výsledků',
             selectedRunner: 'Vybraný závodník',
             changeRunner: 'Změnit závodníka',
