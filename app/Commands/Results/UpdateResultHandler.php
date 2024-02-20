@@ -7,7 +7,7 @@ namespace App\Commands\Results;
 
 class UpdateResultHandler
 {
-    public function handle(UpdateResult $command): \App\Models\Result
+    public function handle(UpdateResult $command): \App\Models\Illuminate\Result
     {
         $result = $command->result;
 

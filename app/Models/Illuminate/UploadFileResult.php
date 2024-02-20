@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * App\Models\UploadFileResult
+ * App\Models\Illuminate\UploadFileResult
  *
  * @property int $id
  * @property string $file_path
@@ -30,14 +31,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResult whereProcessedRows($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResult whereTotalRows($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResult whereUpdatedAt($value)
- * @property-read \App\Models\Race $race
+ * @property-read \App\Models\Illuminate\Race $race
  * @property int $race_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UploadFileResultRow> $rows
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\UploadFileResultRow> $rows
  * @property-read int|null $rows_count
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResult whereRaceId($value)
  * @mixin \Eloquent
  */
-class UploadFileResult extends Model
+class UploadFileResult extends IlluminateModel
 {
     use HasFactory;
 

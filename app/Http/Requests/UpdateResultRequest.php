@@ -22,8 +22,8 @@ class UpdateResultRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'raceId' => 'required|integer|exists:App\Models\Race,id',
-            'runnerId' => 'required|integer|exists:App\Models\Runner,id',
+            'raceId' => 'required|integer|exists:App\Models\Illuminate\Race,id',
+            'runnerId' => 'required|integer|exists:App\Models\Illuminate\Runner,id',
             'time' => 'nullable|string',
             'startingNumber' => 'nullable|integer',
             'position' => 'nullable|integer',

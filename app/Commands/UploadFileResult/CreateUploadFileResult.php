@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Commands\UploadFileResult;
 
-use App\Models\Race;
+use App\Models\Illuminate\Race;
 
 readonly class CreateUploadFileResult
 {

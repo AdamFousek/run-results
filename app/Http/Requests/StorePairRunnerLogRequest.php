@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\PairRunnerLog;
+use App\Models\Illuminate\PairRunnerLog;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePairRunnerLogRequest extends FormRequest

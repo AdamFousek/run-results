@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Transformers\Runner\RunnerTransformer;
-use App\Models\PairRunnerLog;
-use App\Models\User;
+use App\Models\Illuminate\PairRunnerLog;
+use App\Models\Illuminate\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

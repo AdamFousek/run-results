@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
 use App\Casts\DistanceCast;
+use App\Models\IlluminateModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,13 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 
 /**
- * App\Models\Race
+ * App\Models\Illuminate\Race
  *
  * @property int $id
  * @property int|null $parent_id
@@ -33,9 +35,9 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @property-read Race|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $records
  * @property-read int|null $records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Runner> $runners
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Runner> $runners
  * @property-read int|null $runners_count
  * @method static \Database\Factories\RaceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Race newModelQuery()
@@ -65,9 +67,22 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $children
  * @property-read int|null $children_count
  * @method static \Illuminate\Database\Eloquent\Builder|Race whereTime($value)
+ * @property int|null $vintage
+ * @property string $region
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property string|null $tag
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\UploadedFiles> $files
+ * @property-read int|null $files_count
+ * @method static Builder|Race notParents()
+ * @method static Builder|Race whereLatitude($value)
+ * @method static Builder|Race whereLongitude($value)
+ * @method static Builder|Race whereRegion($value)
+ * @method static Builder|Race whereTag($value)
+ * @method static Builder|Race whereVintage($value)
  * @mixin \Eloquent
  */
-class Race extends Model
+class Race extends IlluminateModel
 {
     use HasFactory, SoftDeletes, Searchable, HasRichText;
 
@@ -105,7 +120,11 @@ class Race extends Model
         'description',
     ];
 
-    protected array $makeAllSearchableWith = ['results'];
+    protected array $makeAllSearchableWith = [
+        'results',
+        'parent',
+        'files',
+    ];
 
     public function parent(): BelongsTo
     {
@@ -133,42 +152,13 @@ class Race extends Model
         return $query->whereNot('is_parent', true);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getRichTextFieldsSearchable(): array
+    public function files(): MorphMany
     {
-        return $this->richTextFields;
+        return $this->morphMany(UploadedFiles::class, 'filable');
     }
 
-    /**
-     * @return string[]
-     */
-    public function getAllSearchableWith(): array
+    public function getSerializer(): ?string
     {
-        return $this->makeAllSearchableWith;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'date' => $this->date?->timestamp,
-            'location' => $this->location,
-            'distance' => $this->getRawOriginal('distance'),
-            'surface' => $this->surface,
-            'runnerCount' => $this->results->count(),
-            'type' => $this->type,
-            'is_parent' => $this->is_parent,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'upserted_at' => new Carbon(),
-        ];
+        return \App\Serializer\RaceSerializer::class;
     }
 }

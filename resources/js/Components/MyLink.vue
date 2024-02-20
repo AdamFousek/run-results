@@ -12,9 +12,15 @@ const props = defineProps({
         required: false,
         default: 'link',
     },
-    href: {
-        type: String,
-        required: true,
+    external: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    withoutClasses: {
+        type: Boolean,
+        required: false,
+        default: false,
     },
 })
 
@@ -22,7 +28,7 @@ const colorClasses = {
     primary: 'text-violet-950 hover:text-violet-800',
     secondary: 'bg-white hover:bg-gray-50 text-gray-700',
     danger: 'bg-red-600 hover:bg-red-700',
-    link: 'text-sea-pink-600 hover:text-sea-pink-700 ',
+    link: 'text-indigo-500 hover:text-indigo-800',
 }
 
 const typeClasses = {
@@ -30,19 +36,26 @@ const typeClasses = {
     link: 'underline',
 }
 
-const defaultTypeClasses = typeClasses[props.type] ?? 'text-violet-950 hover:text-violet-800'
+const defaultTypeClasses = typeClasses[props.color]
 
-const defaultClasses = colorClasses[props.color] ?? 'text-violet-950 hover:text-violet-800'
+const defaultClasses = colorClasses[props.type] ?? 'text-violet-950 hover:text-violet-800'
+
+const classes = defaultClasses + ' ' + defaultTypeClasses
 </script>
 
 <template>
     <Link
-            :href="href"
-            class=""
-            :class="defaultClasses + ' ' + defaultTypeClasses"
+            v-if="!external"
+            class="cursor-pointer"
+            :class="withoutClasses ? '' : classes"
     >
         <slot/>
     </Link>
+    <a v-else
+       class="cursor-pointer"
+       :class="withoutClasses ? '' : classes">
+        <slot />
+    </a>
 </template>
 
 <style scoped>

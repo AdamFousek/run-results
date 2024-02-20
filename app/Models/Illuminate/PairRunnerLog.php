@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\PairRunnerLog
+ * App\Models\Illuminate\PairRunnerLog
  *
  * @property int $id
  * @property int $runner_id
@@ -16,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $error
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Runner $runner
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\Illuminate\Runner $runner
+ * @property-read \App\Models\Illuminate\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|PairRunnerLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PairRunnerLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PairRunnerLog query()
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|PairRunnerLog whereUserId($value)
  * @mixin \Eloquent
  */
-class PairRunnerLog extends Model
+class PairRunnerLog extends IlluminateModel
 {
     use HasFactory;
 

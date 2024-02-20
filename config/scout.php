@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Race;
-use App\Models\Runner;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Runner;
 
 return [
 
@@ -140,15 +140,15 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Runner::class => [
-                'filterableAttributes'=> ['id', 'first_name', 'last_name', 'year', 'club', 'city'],
-                'sortableAttributes'=> ['first_name', 'last_name', 'year', 'club', 'city'],
+                'filterableAttributes'=> ['id', 'firstName', 'lastName', 'year', 'club', 'city'],
+                'sortableAttributes'=> ['firstName', 'lastName', 'year', 'club', 'city', 'resultsCount'],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]
             ],
             Race::class => [
-                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'is_parent'],
-                'sortableAttributes'=> ['name', 'location', 'distance', 'date'],
+                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'isParent'],
+                'sortableAttributes'=> ['name', 'location', 'distance', 'date', 'runnerCount'],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]

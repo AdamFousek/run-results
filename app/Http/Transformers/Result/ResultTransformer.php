@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Http\Transformers\Result;
 
-use App\Models\Result;
+use App\Models\Illuminate\Result;
 use Illuminate\Support\Collection;
 
 class ResultTransformer

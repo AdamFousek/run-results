@@ -1,14 +1,10 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { NInput, NSelect } from 'naive-ui';
-import { useI18n } from 'vue-i18n'
-import Pagination from '@/Components/Pagination.vue'
-import InputLabel from '@/Components/InputLabel.vue'
+import { NInput } from 'naive-ui';
 import RaceList from '@/Pages/Races/partials/RaceList.vue'
-
-const {t} = useI18n();
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const props = defineProps({
     races: {
@@ -23,9 +19,6 @@ const props = defineProps({
         required: false,
         default: '',
     },
-    sortOptions: {
-        type: Array,
-    },
     activeSort: {
         type: String,
     },
@@ -33,6 +26,7 @@ const props = defineProps({
 
 const search = ref(props.search)
 const sort = ref(props.activeSort)
+const searching = ref(false)
 const loaded = ref(false)
 
 watch(search, (value) => {
@@ -52,16 +46,25 @@ onMounted(() => {
 })
 
 const searchRaces = () => {
+    searching.value = true
     router.reload({
         data: {
             query: search.value,
-            sort: sort.value,
             page: 1,
         },
-        only: ['races', 'paginate'],
-        preserveState: true,
+        onFinish() {
+            searching.value = false
+        }
     })
 }
+
+const pagination = computed(() => {
+    if (props.paginate.total < props.paginate.limit) {
+        return `${props.paginate.total} / ${props.paginate.total}`
+    }
+
+    return `${props.paginate.limit} / ${props.paginate.total}`
+})
 </script>
 
 <template>
@@ -75,10 +78,8 @@ const searchRaces = () => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div class="m-2 flex justify-between flex-wrap">
+                <div class="m-2 flex justify-center flex-wrap">
                     <div class="md:my-3 w-full md:w-1/2">
-                        <InputLabel for="username" :value="$t('race.search')"/>
-
                         <NInput type="text"
                                 class=""
                                 v-model:value="search"
@@ -87,23 +88,15 @@ const searchRaces = () => {
                                 round
                         />
                     </div>
-
-                    <div class="my-3 w-full md:w-1/6">
-                        <InputLabel for="username" :value="$t('race.sort')"/>
-
-                        <NSelect v-if="loaded" class="w-1/12" round :placeholder="$t('race.sort')" v-model:value="sort"
-                                 :options="sortOptions"/>
-                    </div>
-
                 </div>
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
-                        <RaceList :races="races"/>
+                        <RaceList :races="races" :sort="activeSort" />
                         <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
-
-                        <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>
+                        <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>
                 </div>
+                <MeilisearchPagination v-if="races.length && !searching" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" class="my-4"/>
             </div>
         </div>
     </AppLayout>

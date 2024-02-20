@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $error
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\UploadFileResult $uploadFileResult
+ * @property-read \App\Models\Illuminate\UploadFileResult $uploadFileResult
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResultRow whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResultRow whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResultRow whereError($value)
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|UploadFileResultRow whereUploadFileResultId($value)
  * @mixin \Eloquent
  */
-class UploadFileResultRow extends Model
+class UploadFileResultRow extends IlluminateModel
 {
     use HasFactory;
 

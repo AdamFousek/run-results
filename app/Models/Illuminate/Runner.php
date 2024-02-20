@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Illuminate;
 
+use App\Models\IlluminateModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Runner
+ * App\Models\Illuminate\Runner
  *
  * @property int $id
  * @property int|null $user_id
@@ -26,11 +26,11 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Race> $races
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Race> $races
  * @property-read int|null $races_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
- * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Illuminate\User|null $user
  * @method static \Database\Factories\RunnerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newQuery()
@@ -52,7 +52,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Runner withoutTrashed()
  * @mixin \Eloquent
  */
-class Runner extends Model
+class Runner extends IlluminateModel
 {
     use HasFactory, SoftDeletes, Searchable;
 
@@ -78,6 +78,10 @@ class Runner extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected array $makeAllSearchableWith = [
+        'results'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -94,21 +98,8 @@ class Runner extends Model
         return $this->hasMany(Result::class);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
+    public function getSerializer(): ?string
     {
-        return [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'year' => $this->year,
-            'city' => $this->city,
-            'club' => $this->club,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'upserted_at' => new Carbon(),
-        ];
+        return \App\Serializer\RunnerSerializer::class;
     }
 }

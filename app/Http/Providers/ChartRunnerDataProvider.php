@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace App\Http\Providers;
 
 use App\Casts\DistanceCast;
-use App\Models\Result;
-use App\Models\Runner;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
 use Illuminate\Support\Carbon;
 use Random\RandomException;
 use stdClass;
@@ -140,9 +140,9 @@ class ChartRunnerDataProvider
         $results = $results->groupBy('tag');
 
         $chartData = [];
-        $fastestTime = null;
-        $slowestTime = 0;
         foreach ($results as $key => $result) {
+            $fastestTime = null;
+            $slowestTime = 0;
             $runnerData = [];
             /** @var stdClass $item */
             foreach ($result as $item) {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Commands\PairRunnerLog\PairRunnerLogCreate;
 use App\Commands\PairRunnerLog\PairRunnerLogCreateHandler;
 use App\Http\Requests\StorePairRunnerLogRequest;
-use App\Models\PairRunnerLog;
+use App\Models\Illuminate\PairRunnerLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 

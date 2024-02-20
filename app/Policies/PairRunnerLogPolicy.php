@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PairRunnerLog;
-use App\Models\User;
+use App\Models\Illuminate\PairRunnerLog;
+use App\Models\Illuminate\User;
 use Illuminate\Auth\Access\Response;
 
 class PairRunnerLogPolicy

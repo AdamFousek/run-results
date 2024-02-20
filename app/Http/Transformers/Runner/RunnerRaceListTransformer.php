@@ -5,16 +5,16 @@ declare(strict_types=1);
 
 namespace App\Http\Transformers\Runner;
 
-use App\Models\Result;
+use App\Models\Illuminate\Result;
 use Illuminate\Database\Eloquent\Collection;
 
 class RunnerRaceListTransformer
 {
     /**
-     * @param Collection $results
+     * @param Collection|Result[] $results
      * @return array<int, array<string, mixed>>
      */
-    public function transform(Collection $results): array
+    public function transform(Collection|array $results): array
     {
         $transformedData = [];
         foreach ($results as $result) {

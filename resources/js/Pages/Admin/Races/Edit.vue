@@ -9,6 +9,8 @@ import { ref, watch } from 'vue'
 import DeleteRaceForm from '@/Pages/Admin/Races/Partials/DeleteRaceForm.vue'
 import MyTrixEditor from '@/Components/MyTrixEditor.vue'
 import { RemoveRedEyeOutlined } from '@vicons/material'
+import UploadFileForm from '@/Pages/Admin/Races/Partials/UploadFileForm.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const props = defineProps({
     race: {
@@ -28,6 +30,10 @@ const props = defineProps({
         required: true,
     },
     parentRaces: {
+        type: Array,
+        required: true,
+    },
+    files: {
         type: Array,
         required: true,
     },
@@ -78,24 +84,19 @@ const fillValueFromParent = (value) => {
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ $t('head.admin.races_update') }}
                 </h2>
-                <MyLink :href="route('races.show', { race: race.slug })" type="button" class="flex items-center gap-3">
+                <PrimaryButton :href="route('races.show', { race: race.slug })" link color="blue" outline rounded class="flex items-center gap-3">
                     <NIcon>
                         <RemoveRedEyeOutlined/>
                     </NIcon>
                     <span class="hidden md:block">{{ $t('admin.results.showRace') }}</span>
-                </MyLink>
+                </PrimaryButton>
             </div>
         </template>
 
         <div class="py-4 md:py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div class="col-span-1 md:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6">
-                        <div class="flex justify-end">
-                            <MyLink :href="route('races.show', { race: race.slug })">
-                                {{ $t('admin.races.show') }}
-                            </MyLink>
-                        </div>
                         <form @submit.prevent="submit">
                             <div class="flex flex-col md:flex-row justify-between gap-4">
                                 <div class="flex-1 md:mb-2">
@@ -234,6 +235,33 @@ const fillValueFromParent = (value) => {
                                 </div>
                             </div>
 
+                            <div class="mt-4 flex justify-between gap-4 w-full">
+                                <div class="flex-1">
+                                    <InputLabel for="location" :value="$t('race.latitude')"/>
+
+                                    <NInputNumber
+                                            :input-props="{ id: 'latitude' }"
+                                            :placeholder="$t('race.latitude')"
+                                            class="mt-1 block w-full"
+                                            v-model:value="form.latitude"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.latitude"/>
+                                </div>
+                                <div class="flex-1">
+                                    <InputLabel for="location" :value="$t('race.longitude')"/>
+
+                                    <NInputNumber
+                                            :input-props="{ id: 'longitude' }"
+                                            :placeholder="$t('race.longitude')"
+                                            class="mt-1 block w-full"
+                                            v-model:value="form.longitude"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.longitude"/>
+                                </div>
+                            </div>
+
                             <div class="mt-4">
                                 <InputLabel for="distance" :value="$t('race.distance') + ' (m)'"/>
 
@@ -289,8 +317,11 @@ const fillValueFromParent = (value) => {
                             </div>
                         </form>
                     </div>
-                    <div class="col-span-1">
-                        <DeleteRaceForm :race="race"/>
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="grid gap-4">
+                            <UploadFileForm :race="race" :files="files" />
+                            <DeleteRaceForm :race="race"/>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
 import DeleteRunnerForm from '@/Pages/Admin/Runners/Partials/DeleteRunnerForm.vue'
 import { RemoveRedEyeOutlined } from '@vicons/material'
+import MergeRunnerForm from '@/Pages/Admin/Runners/Partials/MergeRunnerForm.vue'
 
 const maxYear = new Date().getFullYear();
 const minYear = 1900;
@@ -15,6 +16,9 @@ const props = defineProps({
     runner: {
         type: Object,
     },
+    resultCount: {
+        type: Number,
+    }
 });
 
 const form = useForm({
@@ -168,7 +172,13 @@ const submit = () => {
                         </form>
                     </div>
                     <div class="col-span-1">
-                        <DeleteRunnerForm :runner="runner"/>
+                        <div class="flex flex-col gap-4">
+                            <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
+                                {{ $t('admin.runner.resultCount') }}: {{ resultCount }}
+                            </section>
+                            <DeleteRunnerForm :runner="runner" />
+                            <MergeRunnerForm :runner-id="runner.id" :runner-count="resultCount" />
+                        </div>
                     </div>
                 </div>
             </div>

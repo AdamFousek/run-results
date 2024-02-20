@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\MeasurementEvent;
+use App\Models\Illuminate\MeasurementEvent;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogRequest
@@ -19,9 +20,15 @@ class LogRequest
         $response = $next($request);
 
         try {
+            $path = $request->path();
+
+            if (App::environment('local') || str_contains($path, 'admin/'))  {
+                return $response;
+            }
+
             MeasurementEvent::create([
                 'type' => 'pageview',
-                'attribute' => $request->path(),
+                'attribute' => $path,
                 'useragent' => $request->userAgent(),
                 'visitorid' => crypt($request->ip(), 'measurement'),
             ]);

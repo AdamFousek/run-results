@@ -39,6 +39,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'create'])->name('admin.runners.create');
     Route::post('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'store'])->name('admin.runners.store');
     Route::delete('/admin/zavodnici/{runner}/smazat', [\App\Http\Controllers\Admin\RunnerController::class, 'destroy'])->name('admin.runners.destroy');
+    Route::post('/admin/zavodnici/{runner}/merge', [\App\Http\Controllers\Admin\RunnerController::class, 'merge'])->name('admin.runners.merge');
 
     Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
     Route::get('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'create'])->name('admin.races.create');
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'edit'])->name('admin.races.edit');
     Route::post('/admin/zavody/{race}/edit', [\App\Http\Controllers\Admin\RaceController::class, 'update'])->name('admin.races.update');
     Route::delete('/admin/zavody/{race}/smazat', [\App\Http\Controllers\Admin\RaceController::class, 'destroy'])->name('admin.races.destroy');
+    Route::post('/admin/zavody/{race}/upload-file', [\App\Http\Controllers\Admin\RaceController::class, 'uploadFile'])->name('admin.races.fileUpload');
 
     Route::get('/admin/vysledky', [\App\Http\Controllers\Admin\ResultController::class, 'index'])->name('admin.results.index');
     Route::get('/admin/vysledky/{race}', [\App\Http\Controllers\Admin\ResultController::class, 'show'])->name('admin.results.show');
@@ -54,6 +56,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
     Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
     Route::delete('/admin/vysledky/{race}/smazat-vsechny', [\App\Http\Controllers\Admin\ResultController::class, 'destroyAll'])->name('admin.results.destroyAll');
+
+    Route::post('/admin/soubory/{uploadedFiles}/togglePublicity', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'togglePublicity'])->name('admin.uploadedFiles.togglePublicity');
+    Route::delete('/admin/soubory/{uploadedFiles}/smazat', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'destroy'])->name('admin.uploadedFiles.destroy');
 
     Route::get('/admin/uzivatele', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');

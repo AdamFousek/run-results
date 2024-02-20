@@ -214,6 +214,32 @@ const fillValueFromParent = (value) => {
                                 <InputError class="mt-2" :message="form.errors.region"/>
                             </div>
                         </div>
+                        <div class="mt-4 flex justify-between gap-4 w-full">
+                            <div class="flex-1">
+                                <InputLabel for="location" :value="$t('race.latitude')"/>
+
+                                <NInputNumber
+                                        :input-props="{ id: 'latitude' }"
+                                        :placeholder="$t('race.latitude')"
+                                        class="mt-1 block w-full"
+                                        v-model:value="form.latitude"
+                                />
+
+                                <InputError class="mt-2" :message="form.errors.latitude"/>
+                            </div>
+                            <div class="flex-1">
+                                <InputLabel for="location" :value="$t('race.longitude')"/>
+
+                                <NInputNumber
+                                        :input-props="{ id: 'longitude' }"
+                                        :placeholder="$t('race.longitude')"
+                                        class="mt-1 block w-full"
+                                        v-model:value="form.longitude"
+                                />
+
+                                <InputError class="mt-2" :message="form.errors.longitude"/>
+                            </div>
+                        </div>
 
                         <div class="mt-4">
                             <InputLabel for="distance" :value="$t('race.distance') + ' (m)'"/>

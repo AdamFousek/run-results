@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Commands\PairRunnerLog;
 
-use App\Models\User;
+use App\Models\Illuminate\User;
 
 readonly class PairRunnerLogCreate
 {

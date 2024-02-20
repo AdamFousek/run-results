@@ -32,4 +32,9 @@ return [
     'result_row.not_sure' => 'Hodnota scorej je na 0, je vytvořen nový závodník i když se našel jiný s jménem a ročníkem.',
 
     'chart_average' => 'Průměrný čas',
+
+    'file_updated_successfuly' => 'Soubor byl úspěšně aktualizován',
+    'file_removed_successfuly' => 'Soubor byl úspěšně smazán',
+
+    'runners_merged_successfully' => 'Běžci byli úspěšně sloučeni.',
 ];

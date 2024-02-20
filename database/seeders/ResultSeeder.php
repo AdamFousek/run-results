@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Race;
-use App\Models\Result;
-use App\Models\Runner;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
 use Illuminate\Database\Seeder;
 
 class ResultSeeder extends Seeder

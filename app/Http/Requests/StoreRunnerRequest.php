@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Runner;
+use App\Models\Illuminate\Runner;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRunnerRequest extends FormRequest

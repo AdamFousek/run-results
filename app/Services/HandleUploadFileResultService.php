@@ -5,11 +5,13 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Enums\ResultRowEnum;
-use App\Models\Result;
-use App\Models\Runner;
-use App\Models\UploadFileResult;
-use App\Models\UploadFileResultRow;
+use App\Models\Illuminate\Enums\ResultRowEnum;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\Runner;
+use App\Models\Illuminate\UploadFileResult;
+use App\Models\Illuminate\UploadFileResultRow;
+use App\Queries\Runner\SearchRunnerByNameAndYearHandler;
+use App\Queries\Runner\SearchRunnerByNameAndYearQuery;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -28,6 +30,11 @@ class HandleUploadFileResultService
 
     private int $row = 0;
 
+    public function __construct(
+        private readonly SearchRunnerByNameAndYearHandler $searchRunnerByNameAndYearHandler,
+    ) {
+    }
+
     public function handle(UploadFileResult $results): void
     {
         $file = fopen(Storage::path($results->file_path), "rb");
@@ -35,10 +42,14 @@ class HandleUploadFileResultService
             return;
         }
 
+        $processedRows = $results->processed_rows;
         $this->row = 0;
         while (($data = fgetcsv($file, 1000, ",")) !== false )
         {
             $this->row++;
+            if ($processedRows > $this->row) {
+                continue;
+            }
             $runner = $this->resolveRunner($data, $results);
             if ($runner === null) {
                 $runner = $this->createNewRunner($data);
@@ -52,13 +63,13 @@ class HandleUploadFileResultService
             $result->category = $data[self::CATEGORY];
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->save();
+
+            $results->increment('processed_rows');
         }
 
         fclose($file);
 
         Storage::delete($results->file_path);
-
-        $results->processed_rows = $this->row;
         $results->failed_rows = UploadFileResultRow::query()
             ->whereUploadFileResultId($results->id)
             ->count();
@@ -86,14 +97,22 @@ class HandleUploadFileResultService
 
         $data[self::FIRST_NAME] = Str::title(mb_convert_case($data[self::FIRST_NAME], MB_CASE_LOWER));
         $data[self::LAST_NAME] = Str::title(mb_convert_case($data[self::LAST_NAME], MB_CASE_LOWER));
-        $runners = Runner::query()
-            ->where('first_name', $data[self::FIRST_NAME])
-            ->where('last_name', $data[self::LAST_NAME])
-            ->get();
 
-        $runners = $runners->filter(function (Runner $runner) use ($year) {
-            return $runner->year === $year;
-        });
+        $meilisearchRunners = $this->searchRunnerByNameAndYearHandler->handle(new SearchRunnerByNameAndYearQuery(
+            lastName: $data[self::LAST_NAME],
+            firstName: $data[self::FIRST_NAME],
+            year: $year,
+        ));
+
+        if ($meilisearchRunners->total === 0) {
+            return $this->createNewRunner($data);
+        }
+
+        $runnerIds = array_map(static fn(\App\Models\Meilisearch\Runner $runner) => $runner->getId(),$meilisearchRunners->items->toArray());
+
+        $runners = Runner::query()
+            ->whereIn('id', $runnerIds)
+            ->get();
 
         if ($month === 0 && $day === 0 && $runners->count() === 1) {
             return $runners->first();

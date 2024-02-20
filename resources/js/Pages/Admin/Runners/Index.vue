@@ -7,6 +7,8 @@ import { PlusSharp } from '@vicons/material'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import RunnerList from '@/Pages/Admin/Runners/Partials/RunnerList.vue'
+import AdminRaceList from '@/Pages/Admin/Races/Partials/AdminRaceList.vue'
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const {t} = useI18n();
 
@@ -23,9 +25,13 @@ const props = defineProps({
         required: false,
         default: '',
     },
+    activeSort: {
+        type: String,
+    },
 })
 
 const search = ref(props.search)
+const searching = ref(false)
 
 watch(search, (value) => {
     if (value === '' || value.length > 2) {
@@ -33,13 +39,12 @@ watch(search, (value) => {
     }
 })
 
-const searchRunners = (options) => {
+const searchRunners = () => {
     router.reload({
         data: {
             query: search.value,
             page: 1,
         },
-        only: ['runners', 'paginate'],
         preserveState: true,
     })
 }
@@ -82,15 +87,16 @@ const pagination = computed(() => {
                     </NButton>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
-                        <RunnerList :runners="runners" @sort-runners="searchRunners"/>
+                        <RunnerList :runners="runners" :sort="activeSort" />
                         <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
-                        <div class="flex justify-end px-4">{{ pagination }}</div>
-
-                        <Pagination v-if="runners.length" :pages="paginate.links" class="my-4"/>
+                        <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>
                 </div>
+                <MeilisearchPagination v-if="runners.length && !searching" :page="paginate.page"
+                                       :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage"
+                                       class="my-4"/>
             </div>
         </div>
     </AdminLayout>

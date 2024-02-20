@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Runner;
-use App\Models\User;
+use App\Models\Illuminate\Runner;
+use App\Models\Illuminate\User;
 use Illuminate\Auth\Access\Response;
 
 class RunnerPolicy

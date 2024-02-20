@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\Http\Transformers\User;
 
 use App\Http\Transformers\Runner\RunnerTransformer;
-use App\Models\User;
+use App\Models\Illuminate\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserListTransformer

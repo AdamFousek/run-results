@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
-use App\Models\Race;
+use App\Models\Illuminate\Race;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

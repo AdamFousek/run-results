@@ -17,10 +17,11 @@ use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Result\ResultTransformer;
 use App\Http\Transformers\Result\ResultUploadsTransformer;
 use App\Jobs\ProcessResults;
-use App\Models\Race;
-use App\Models\Result;
-use App\Models\UploadFileResult;
-use App\Models\UploadFileResultRow;
+use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
+use App\Models\Illuminate\UploadFileResult;
+use App\Models\Illuminate\UploadFileResultRow;
+use App\Services\HandleUploadFileResultService;
 use App\Services\PaginateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,8 +43,7 @@ class ResultController extends Controller
         private readonly UpdateResultHandler $updateResultHandler,
         private readonly CreateUploadFileResultHandler $createUploadFileResultHandler,
         private readonly ResultUploadsTransformer $resultUploadsTransformer,
-    )
-    {
+    ) {
     }
 
     /**

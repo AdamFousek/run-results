@@ -5,8 +5,8 @@ declare(strict_types=1);
 
 namespace App\Commands\PairRunnerLog;
 
-use App\Models\PairRunnerLog;
-use App\Models\Runner;
+use App\Models\Illuminate\PairRunnerLog;
+use App\Models\Illuminate\Runner;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
