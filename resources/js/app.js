@@ -3,7 +3,7 @@ import '../css/app.css';
 import Trix from 'trix';
 import * as Sentry from "@sentry/vue";
 
-if (import.meta.env.VITE_SENTRY_ENABLE) {
+if (import.meta.env.VITE_SENTRY_ENABLE === 'true') {
     Sentry.init({
         dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
         integrations: [
