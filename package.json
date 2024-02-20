@@ -35,6 +35,7 @@
         "ziggy-js": "^1.8.1"
     },
     "dependencies": {
-        "@sentry/vue": "^7.40.0"
+        "@sentry/vue": "^7.40.0",
+        "vue-confetti-explosion": "^1.0.2"
     }
 }

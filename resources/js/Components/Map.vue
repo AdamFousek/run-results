@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import L from 'leaflet/dist/leaflet.js'
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
     x: {
@@ -23,6 +23,7 @@ const props = defineProps({
 })
 
 const mapyApi = import.meta.env.VITE_MAPY_CZ_API_KEY
+const loading = ref(false);
 
 onMounted(() => {
     const map = L.map(props.name, {
@@ -60,14 +61,16 @@ onMounted(() => {
     L.marker([props.x, props.y]).addTo(map);
 
     new LogoControl().addTo(map);
+    loading.value = true;
 })
 
 </script>
 
 <template>
-    <div class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
+    <div v-if="!loading" class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
         <div :id="name" class="maps-wrapper hover:scale-125 duration-150 overflow-hidden"></div>
     </div>
+    <div v-else></div>
 </template>
 
 <style scoped>

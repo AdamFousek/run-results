@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import { NIcon } from 'naive-ui'
 import { EmojiEventsOutlined } from '@vicons/material'
-import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+import ConfettiExplosion from "vue-confetti-explosion";
+import { ref } from 'vue'
 
 defineProps({
     runner: {
@@ -15,13 +16,39 @@ defineProps({
     },
 })
 
-const startConfetti = () => {
-    confetti()
+const confettiDuration = 3000
+const confetti = ref(false)
+const confettiElement = ref(null)
+
+const startConfetti = (event) => {
+    if (confetti.value) {
+        return
+    }
+    confetti.value = true
+    const x = event.pageX
+    const y = event.pageY
+
+    confettiElement.value.style.left = '500px'
+    confettiElement.value.style.width = '500px'
+    confettiElement.value.style.left = x - 250 + 'px'
+    confettiElement.value.style.top = y - 250 + 'px'
+    setTimeout(() => {
+        confetti.value = false
+        confettiElement.value.style.left = '0px'
+        confettiElement.value.style.top = '0px'
+        confettiElement.value.style.left = '500px'
+        confettiElement.value.style.width = '500px'
+    }, confettiDuration)
 }
 </script>
 
 <template>
     <section>
+        <Teleport to="#app">
+            <div v-show="confetti" ref="confettiElement" class="absolute flex justify-center items-center z-50 overflow-hidden" style="width: 500px; height: 500px;">
+                <ConfettiExplosion v-if="confetti" :duration="confettiDuration" :particleCount="50" :particleSize="10" :stageWidth="500" :stageHeight="1000"></ConfettiExplosion>
+            </div>
+        </Teleport>
         <div class="grid grid-cols-11 gap-2 md:gap-4 border-b">
             <div class="font-bold p-3 md:px-4">{{ $t('race.date') }}</div>
             <div class="col-span-3 font-bold p-3 md:px-4">{{ $t('race.name') }}</div>
