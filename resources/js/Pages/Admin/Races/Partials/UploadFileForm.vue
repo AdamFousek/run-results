@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {CloseSharp, DeleteFilled, LockOpenFilled, LockOutlined} from "@vicons/material";
-import {NButton, NCard, NCheckbox, NIcon, NInput, NModal, NPopover} from "naive-ui";
+import {NCard, NCheckbox, NIcon, NInput, NModal, NPopover} from "naive-ui";
 import {ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
 import route from 'ziggy-js'
@@ -45,12 +45,12 @@ const upload = () => {
     })
 }
 
-const togglePublicity = (id: number) => {
+const togglePublicity = (id) => {
     router.post(route('admin.uploadedFiles.togglePublicity', {uploadedFiles: id}))
     router.reload()
 }
 
-const removeFile = (id: number) => {
+const removeFile = (id) => {
     router.delete(route('admin.uploadedFiles.destroy', {uploadedFiles: id}))
     router.reload()
 }
