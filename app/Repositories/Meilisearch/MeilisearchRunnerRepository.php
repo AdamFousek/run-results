@@ -32,6 +32,10 @@ class MeilisearchRunnerRepository implements RunnerRepository
             $filter['sort'] = [$query->sortBy . ':' . $query->sortDirection];
         }
 
+        if ($query->withoutIds !== []) {
+            $filter['filter'] = ['id NOT IN [' . implode(',', $query->withoutIds) . ']'];
+        }
+
         $search = $index->search($query->search, $filter);
 
         $items = collect();

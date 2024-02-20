@@ -35,4 +35,6 @@ return [
 
     'file_updated_successfuly' => 'Soubor byl úspěšně aktualizován',
     'file_removed_successfuly' => 'Soubor byl úspěšně smazán',
+
+    'runners_merged_successfully' => 'Běžci byli úspěšně sloučeni.',
 ];

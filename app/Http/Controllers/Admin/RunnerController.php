@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Commands\Runner\CreateRunner;
 use App\Commands\Runner\CreateRunnerHandler;
+use App\Commands\Runner\MergerRunner;
+use App\Commands\Runner\MergerRunnerHandler;
 use App\Commands\Runner\UpdateRunner;
 use App\Commands\Runner\UpdateRunnerHandler;
+use App\Http\Requests\MergeRunnerRequest;
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
 use App\Http\Transformers\Meilisearch\RunnerListTransformer;
@@ -30,6 +33,7 @@ class RunnerController extends AdminController
         private readonly RunnerSortService $sortService,
         private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly RunnerListTransformer $runnerListTransformer,
+        private readonly MergerRunnerHandler $mergerRunnerHandler,
     ) {
     }
 
@@ -66,6 +70,7 @@ class RunnerController extends AdminController
     {
         return Inertia::render('Admin/Runners/Edit', [
             'runner' => $runner,
+            'resultCount' => $runner->results()->count(),
         ]);
     }
 
@@ -122,6 +127,30 @@ class RunnerController extends AdminController
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.runner_update_success'));
 
             return Redirect::route('admin.runners.edit', $runner->id);
+        } catch (\Exception $exception) {
+            $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
+
+            return redirect()->back();
+        }
+    }
+
+    public function merge(MergeRunnerRequest $request, Runner $runner): RedirectResponse
+    {
+        $data = $request->validated();
+
+        try {
+            $targetRunner = Runner::findOrFail($data['runnerId']);
+
+            $targetRunner = $this->mergerRunnerHandler->handle(new MergerRunner(
+                source: $runner,
+                target: $targetRunner,
+            ));
+
+            $targetRunner->searchable();
+
+            $this->withMessage(self::ALERT_SUCCESS, 'messages.runners_merged_successfully');
+
+            return Redirect::route('admin.runners.edit', $targetRunner->id);
         } catch (\Exception $exception) {
             $this->withMessage(self::ALERT_ERROR, $exception->getMessage());
 

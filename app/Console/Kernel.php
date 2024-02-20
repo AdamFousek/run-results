@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(new RemoveUnusedRunners)->dailyAt('07:00');
+        $schedule->call(new RemoveUnusedRunners)->lastDayOfMonth('00:00');
     }
 
     /**

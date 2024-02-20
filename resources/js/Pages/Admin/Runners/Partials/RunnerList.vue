@@ -51,7 +51,7 @@ const changeSort = (name: string, isAsc: boolean) => {
                 </div>
                 <span>{{ $t('runner.name') }}</span>
             </div>
-            <div class="font-bold p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('year', activeSort.isAsc)">
+            <div class="font-bold p-3 md:px-4 flex items-center justify-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('year', activeSort.isAsc)">
                 <div class="flex flex-col">
                     <NIcon v-if="activeSort.name === 'year' && activeSort.isAsc">
                         <KeyboardArrowUpFilled />

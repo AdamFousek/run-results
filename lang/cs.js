@@ -180,6 +180,13 @@ export default {
             deleteDescription: 'Závodník bude smazán ze všech výsledků!',
             delete: 'Smazat závodníka',
             deleteConfirmation: 'Jste si jisti, že chcete smazat závodníka?',
+            mergeRunner: 'Sloučit závodníka',
+            mergeDescription: 'Závodník bude smazán a výsledky budou přiřazeny pod vybraného závodníka.',
+            mergeConfirmation: 'Sloučit závodnika',
+            mergeRunnerCount: 'Aktuální závodník má {count} výsledků.',
+            resultCount: 'Počet výsledků',
+            selectedRunner: 'Vybraný závodník',
+            changeRunner: 'Změnit závodníka',
         },
         races: {
             create: 'Vytvořit závod',

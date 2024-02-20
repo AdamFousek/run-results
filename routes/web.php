@@ -39,6 +39,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'create'])->name('admin.runners.create');
     Route::post('/admin/zavodnici/vytvorit', [\App\Http\Controllers\Admin\RunnerController::class, 'store'])->name('admin.runners.store');
     Route::delete('/admin/zavodnici/{runner}/smazat', [\App\Http\Controllers\Admin\RunnerController::class, 'destroy'])->name('admin.runners.destroy');
+    Route::post('/admin/zavodnici/{runner}/merge', [\App\Http\Controllers\Admin\RunnerController::class, 'merge'])->name('admin.runners.merge');
 
     Route::get('/admin/zavody', [\App\Http\Controllers\Admin\RaceController::class, 'index'])->name('admin.races.index');
     Route::get('/admin/zavody/vytvorit', [\App\Http\Controllers\Admin\RaceController::class, 'create'])->name('admin.races.create');
