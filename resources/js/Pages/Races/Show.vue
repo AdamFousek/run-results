@@ -1,8 +1,8 @@
 <script setup>
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NIcon, NInput } from 'naive-ui'
-import { ref, watch, onMounted } from 'vue'
+import { NIcon, NInput, NCheckbox } from 'naive-ui'
+import { ref, onMounted, watch } from 'vue'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
@@ -42,29 +42,35 @@ const props = defineProps({
     files: {
         type: Array,
     },
+    filter: {
+        type: Object,
+    },
 })
 
 const search = ref(props.search)
 const searching = ref(false)
 const loading = ref(true)
+const showFemale = ref(props.filter?.showFemale)
+const showMale = ref(props.filter?.showMale)
+
+watch([showFemale, showMale], () => {
+    searchRaces()
+})
 
 onMounted(() => {
     loading.value = false
 })
 
-watch(search, (value) => {
-    if (value !== '') {
-        searchRaces(value)
-    } else {
-        searchRaces('')
+const searchRaces = () => {
+    if (searching.value) {
+        return
     }
-})
-
-const searchRaces = (searchTerm) => {
     searching.value = true
     router.reload({
         data: {
-            query: searchTerm,
+            query: search.value,
+            showFemale: showFemale.value,
+            showMale: showMale.value,
         },
         only: ['results', 'paginate'],
         preserveState: true,
@@ -126,13 +132,24 @@ const searchRaces = (searchTerm) => {
                 </div>
 
                 <section v-if="!race.isParent">
-                    <div class="my-4 w-8/12 md:w-7/12 mx-auto">
-                        <NInput type="text"
-                                v-model:value="search"
-                                :placeholder="$t('runner.search')"
-                                clearable
-                                round
-                        />
+                    <div class="my-4 grid grid-cols-6 gap-4">
+                        <div class="flex-shrink-0 col-span-3">
+                            <NInput type="text"
+                                    v-model:value="search"
+                                    :placeholder="$t('runner.search')"
+                                    clearable
+                                    round
+                                    @keyup="searchRaces"
+                            />
+                        </div>
+                        <div class="col-span-3 flex items-center justify-end">
+                            <NCheckbox v-model:checked="showMale" @input="searchRaces">
+                                {{ $t('result.filter.onlyMale') }}
+                            </NCheckbox>
+                            <NCheckbox v-model:checked="showFemale" @input="searchRaces">
+                                {{ $t('result.filter.onlyFemale') }}
+                            </NCheckbox>
+                        </div>
                     </div>
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">

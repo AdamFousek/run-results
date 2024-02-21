@@ -73,6 +73,12 @@ class RaceController extends Controller
         $search = trim($request->get('query'));
         $runnerId = (int)$request->get('runnerId');
         $page = (int)$request->get('page', 1);
+        $showFemale = trim($request->get('showFemale', 'true'));
+        $showMale = trim($request->get('showMale', 'true'));
+        $filter = [
+            'showFemale' => $showFemale === 'true',
+            'showMale' => $showMale === 'true',
+        ];
 
         $files = $race->files->filter(fn(UploadedFiles $file) => $file->is_public)->map(fn(UploadedFiles $file) => [
             'name' => $file->name,
@@ -83,7 +89,7 @@ class RaceController extends Controller
         $childRaces = null;
         $paginate = null;
         if (!$race->is_parent) {
-            $results = $this->resolveResults($race, $search, $page);
+            $results = $this->resolveResults($race, $search, $page, $filter);
             $paginate = [
                 'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
@@ -107,17 +113,25 @@ class RaceController extends Controller
             ],
             'selectedRunner' => $runnerId === 0 ? null : $runnerId,
             'files' => $files,
+            'filter' => $filter,
         ];
 
 
         return Inertia::render('Races/Show', $data);
     }
 
-    private function resolveResults(Race $race, string $search, int $page): LengthAwarePaginator
+    /**
+     * @param Race $race
+     * @param string $search
+     * @param int $page
+     * @param array<string, bool> $filter
+     * @return LengthAwarePaginator
+     */
+    private function resolveResults(Race $race, string $search, int $page, array $filter): LengthAwarePaginator
     {
         if ($search !== '') {
             if (is_numeric($search)) {
-                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->with('runner')->paginate(self::LIMIT_RUNNERS);
+                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->paginate(self::LIMIT_RUNNERS);
             }
 
             $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT_RUNNERS));
@@ -125,7 +139,17 @@ class RaceController extends Controller
             return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
         }
 
-        return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->paginate(self::LIMIT_RUNNERS);
+        $query = Result::whereRaceId($race->id)->with('runner');
+
+        if (!$filter['showFemale']) {
+            $query->withoutFemale();
+        }
+
+        if (!$filter['showMale']) {
+            $query->withoutMale();
+        }
+
+        return $query->orderBy('position')->paginate(self::LIMIT_RUNNERS);
     }
 
     private function resolveMetaDescription(Race $race): string

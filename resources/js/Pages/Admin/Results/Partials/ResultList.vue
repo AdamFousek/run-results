@@ -62,7 +62,7 @@ const openUpdateResult = (result) => {
         </div>
         <div v-for="(result, index) in results" :key="result.id" class="grid grid-cols-12 gap-2 md:gap-4 hover:bg-gray-100 min-w-800 text-center"
              :class="{ 'bg-gray-50': index%2 === 0}">
-            <div class="col-span-2 font-bold p-2 text-left">{{ result.lastName }} {{ result.name }}</div>
+            <div class="col-span-2 font-bold p-2 text-left">{{ result.lastName }} {{ result.name }} <span v-if="result.gender !== ''" class="font-normal text-xs">({{ $t('genders.' + result.gender) }})</span></div>
             <div class="p-2">{{ result.position }}</div>
             <div class="p-2">{{ result.startingNumber }}</div>
             <div class="p-2">{{ result.time }}</div>

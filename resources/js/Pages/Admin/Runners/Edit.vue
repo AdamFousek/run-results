@@ -1,13 +1,16 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
-import { NButton, NIcon, NInput, NInputNumber } from 'naive-ui'
+import { NButton, NIcon, NInput, NInputNumber, NSelect } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
 import DeleteRunnerForm from '@/Pages/Admin/Runners/Partials/DeleteRunnerForm.vue'
 import { RemoveRedEyeOutlined } from '@vicons/material'
 import MergeRunnerForm from '@/Pages/Admin/Runners/Partials/MergeRunnerForm.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 
 const maxYear = new Date().getFullYear();
 const minYear = 1900;
@@ -29,6 +32,7 @@ const form = useForm({
     year: props.runner.year,
     city: props.runner.city,
     club: props.runner.club,
+    gender: props.runner.gender,
 });
 
 const submit = () => {
@@ -41,6 +45,21 @@ const submit = () => {
         },
     });
 };
+
+const genderOptions = [
+    {
+        label: t('runner.genders.female'),
+        value: 'F'
+    },
+    {
+        label: t('runner.genders.male'),
+        value: 'M'
+    },
+    {
+        label: t('runner.genders.none'),
+        value: ''
+    }
+]
 </script>
 
 <template>
@@ -157,6 +176,20 @@ const submit = () => {
                                 />
 
                                 <InputError class="mt-2" :message="form.errors.club"/>
+                            </div>
+
+                            <div class="mt-4">
+                                <InputLabel for="gender" :value="$t('runner.gender')"/>
+
+                                <NSelect
+                                        :input-props="{ id: 'gender' }"
+                                        :placeholder="$t('runner.gender')"
+                                        :options="genderOptions"
+                                        class="mt-1 block w-full"
+                                        v-model:value="form.gender"
+                                />
+
+                                <InputError class="mt-2" :message="form.errors.gender"/>
                             </div>
 
                             <div class="flex items-center justify-between mt-4 gap-4">

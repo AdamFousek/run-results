@@ -39,6 +39,7 @@ class ResultTransformer
             'runnerId' => $result->runner_id,
             'name' => $result->runner->first_name,
             'lastName' => $result->runner->last_name,
+            'gender' => $result->runner->gender,
             'startingNumber' => $result->starting_number,
             'time' => explode('.', $result->time ?? '')[0],
             'position' => $result->position,

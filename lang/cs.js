@@ -95,6 +95,12 @@ export default {
         month: 'Měsíc',
         tabRaces: 'Závody',
         races: 'Počet závodů',
+        gender: 'Pohlaví',
+        genders: {
+            male: 'Muž',
+            female: 'Žena',
+            none: 'Neznámé',
+        },
         tabCharts: 'Statistiky',
         chart: {
             distance: 'Počet závodu podle vzdálenosti',
@@ -143,6 +149,10 @@ export default {
         club: 'Klub',
         DNF: 'DNF',
         DNS: 'DNS',
+        filter: {
+            onlyFemale: 'Zobrazit ženy',
+            onlyMale: 'Zobrazit muže',
+        }
     },
     sort: {
         name_asc: 'Název vzestupně',
@@ -244,4 +254,8 @@ export default {
     close: 'Zavřít',
     Previous: 'Předchozí',
     Next: 'Další',
+    genders: {
+        F: 'Žena',
+        M: 'Muž',
+    },
 }

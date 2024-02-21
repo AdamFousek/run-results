@@ -18,8 +18,7 @@ class UpdateRunner
         public int $year,
         public ?string $city,
         public ?string $club,
-    )
-    {
-
+        public string $gender = '',
+    ) {
     }
 }

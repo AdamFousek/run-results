@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Illuminate\Enums\ResultRowEnum;
+use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use App\Models\Illuminate\UploadFileResult;
@@ -27,6 +28,7 @@ class HandleUploadFileResultService
     private const TIME = 6;
     private const CATEGORY_POSITION = 7;
     private const CATEGORY = 8;
+    private const GENDER = 9;
 
     private int $row = 0;
 
@@ -64,6 +66,11 @@ class HandleUploadFileResultService
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->club = $data[self::CLUB];
             $result->save();
+
+            if ($data[self::GENDER] !== '') {
+                $runner->gender = $data[self::GENDER] === 'm' ? RunnerGenderEnum::MALE->value : RunnerGenderEnum::FELAME->value;
+                $runner->save();
+            }
 
             $results->increment('processed_rows');
         }

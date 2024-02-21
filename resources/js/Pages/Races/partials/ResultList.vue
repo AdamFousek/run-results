@@ -32,6 +32,7 @@ defineProps({
               :class="{
                   'bg-gray-50': index%2 === 0,
                   'bg-indigo-100 hover:bg-indigo-200': selectedRunner === result.runner_id,
+                  'text-red-800': result.gender === 'F',
               }"
         >
             <div class="p-3 md:px-4 flex flex-start items-center gap-2">
@@ -46,11 +47,11 @@ defineProps({
                     <EmojiEventsOutlined />
                 </NIcon>
             </div>
-            <div class="col-span-2 md:col-span-3 p-3 md:px-4">{{ result.last_name }} {{ result.first_name }} ({{ result.year }})</div>
-            <div v-if="result.DNF" class="col-span-2 p-3 md:px-4">{{ $t('result.DNF') }}</div>
-            <div v-else-if="result.DNS" class="col-span-2 p-3 md:px-4">{{ $t('result.DNS') }}</div>
-            <div v-else class="col-span-2 p-3 md:px-4">{{ result.time }}</div>
-            <div class="p-3 md:px-4">{{ result.category }}</div>
+            <div class="col-span-2 md:col-span-3 p-3 md:px-4 flex flex-start items-center">{{ result.last_name }} {{ result.first_name }} ({{ result.year }})</div>
+            <div v-if="result.DNF" class="col-span-2 p-3 md:px-4 flex flex-start items-center">{{ $t('result.DNF') }}</div>
+            <div v-else-if="result.DNS" class="col-span-2 p-3 md:px-4 flex flex-start items-center">{{ $t('result.DNS') }}</div>
+            <div v-else class="col-span-2 p-3 md:px-4 flex flex-start items-center">{{ result.time }}</div>
+            <div class="p-3 md:px-4 flex flex-start items-center">{{ result.category }}</div>
             <div class="p-3 md:px-4 flex flex-start items-center gap-2">
                 <span>{{ result.category_position }}</span>
                 <NIcon v-if="result.category_position > 0 && result.category_position < 4"
@@ -63,8 +64,8 @@ defineProps({
                     <EmojiEventsOutlined />
                 </NIcon>
             </div>
-            <div class="col-span-2 p-3 md:px-4">{{ result.club }}</div>
-            <div class="p-3 md:px-4 text-center">{{ result.starting_number }}</div>
+            <div class="col-span-2 p-3 md:px-4 flex flex-start items-center">{{ result.club }}</div>
+            <div class="p-3 md:px-4 flex flex-start items-center">{{ result.starting_number }}</div>
         </Link>
     </section>
 </template>

@@ -3,7 +3,9 @@
 namespace App\Models\Illuminate;
 
 use App\Casts\TimeCast;
+use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\IlluminateModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -73,5 +75,19 @@ class Result extends IlluminateModel
     public function race(): BelongsTo
     {
         return $this->belongsTo(Race::class);
+    }
+
+    public function scopeWithoutFemale(Builder $query): Builder
+    {
+        return $query->whereHas('runner', function (Builder $query) {
+            $query->where('gender', '!=', RunnerGenderEnum::FELAME);
+        });
+    }
+
+    public function scopeWithoutMale(Builder $query): Builder
+    {
+        return $query->whereHas('runner', function (Builder $query) {
+            $query->where('gender', '!=', RunnerGenderEnum::MALE);
+        });
     }
 }

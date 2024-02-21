@@ -20,6 +20,7 @@ class RunnerDeserializer
      *     year: int,
      *     city: string|null,
      *     club: string|null,
+     *     gender: string|null,
      *     resultsCount: int,
      *     createdAt: ?int,
      *     updatedAt: ?int,
@@ -35,8 +36,9 @@ class RunnerDeserializer
         $runner->setFirstName($data['firstName']);
         $runner->setLastName($data['lastName']);
         $runner->setYear($data['year']);
-        $runner->setCity($data['city']);
-        $runner->setClub($data['club']);
+        $runner->setCity($data['city'] ?? null);
+        $runner->setClub($data['club'] ?? null);
+        $runner->setGender($data['gender'] ?? null);
         $runner->setResultsCount($data['resultsCount']);
         $runner->setCreatedAt($data['createdAt'] ? Carbon::createFromTimestamp($data['createdAt']) : null);
         $runner->setUpdatedAt($data['updatedAt'] ? Carbon::createFromTimestamp($data['updatedAt']) : null);

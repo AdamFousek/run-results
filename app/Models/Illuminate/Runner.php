@@ -62,6 +62,7 @@ class Runner extends IlluminateModel
         'day',
         'month',
         'year',
+        'gender',
         'city',
         'club',
     ];

@@ -29,6 +29,7 @@ class RunnerListTransformer
                 'club' => $runner->getClub(),
                 'city' => $runner->getCity(),
                 'year' => $runner->getYear(),
+                'gender' => $runner->getGender(),
                 'resultsCount' => $runner->getResultsCount(),
             ];
         }

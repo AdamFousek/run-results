@@ -25,6 +25,7 @@ class UpdateRunnerHandler
         $runner->year = $command->year;
         $runner->city = $command->city;
         $runner->club = $command->club;
+        $runner->gender = $command->gender;
 
         $runner->save();
         $runner->makeHidden(['day', 'month']);

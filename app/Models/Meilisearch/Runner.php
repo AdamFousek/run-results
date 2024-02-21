@@ -16,6 +16,7 @@ class Runner
     private int $year;
     private ?string $city = null;
     private ?string $club = null;
+    private ?string $gender = null;
     private int $resultsCount;
     private ?Carbon $createdAt = null;
     private ?Carbon $updatedAt = null;
@@ -129,5 +130,15 @@ class Runner
     public function setResultsCount(int $resultsCount): void
     {
         $this->resultsCount = $resultsCount;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 }

@@ -30,6 +30,7 @@ class StoreRunnerRequest extends FormRequest
             'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
             'city' => 'nullable|string|max:255',
             'club' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:1',
         ];
     }
 }

@@ -27,6 +27,7 @@ class RaceRunnerListTransformer
                 'starting_number' => $result->starting_number,
                 'first_name' => $result->runner->first_name,
                 'last_name' => $result->runner->last_name,
+                'gender' => $result->runner->gender,
                 'year' => $result->runner->year,
                 'club' => $result->club ?? '',
                 'position' => $result->position,

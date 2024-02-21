@@ -2,12 +2,10 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { NButton, NInput, NIcon } from 'naive-ui'
-import Pagination from '@/Components/Pagination.vue'
 import { PlusSharp } from '@vicons/material'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import RunnerList from '@/Pages/Admin/Runners/Partials/RunnerList.vue'
-import AdminRaceList from '@/Pages/Admin/Races/Partials/AdminRaceList.vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const {t} = useI18n();

@@ -13,7 +13,6 @@ use App\Http\Requests\StoreResultRequest;
 use App\Http\Requests\UpdateResultRequest;
 use App\Http\Requests\UploadResultRequest;
 use App\Http\Transformers\Meilisearch\RaceListTransformer;
-use App\Http\Transformers\Race\RaceResultsTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Result\ResultTransformer;
 use App\Http\Transformers\Result\ResultUploadsTransformer;
@@ -21,11 +20,8 @@ use App\Jobs\ProcessResults;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\UploadFileResult;
-use App\Models\Illuminate\UploadFileResultRow;
 use App\Queries\Race\RaceSearch;
 use App\Queries\Race\RaceSearchHandler;
-use App\Services\HandleUploadFileResultService;
-use App\Services\PaginateService;
 use App\Services\RaceSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,9 +35,7 @@ class ResultController extends Controller
     private const LIMIT = 30;
 
     public function __construct(
-        private readonly RaceResultsTransformer $transformer,
         private readonly RaceTransformer $raceTransformer,
-        private readonly PaginateService $paginateService,
         private readonly ResultTransformer $resultTransformer,
         private readonly CreateResultCommand $createResultCommand,
         private readonly UpdateResultHandler $updateResultHandler,

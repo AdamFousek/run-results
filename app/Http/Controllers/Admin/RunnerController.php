@@ -95,6 +95,7 @@ class RunnerController extends AdminController
                     $data['year'],
                     $data['city'],
                     $data['club'],
+                    $data['gender'] ?? '',
                 )
             );
 
@@ -122,6 +123,7 @@ class RunnerController extends AdminController
                 $data['year'],
                 $data['city'],
                 $data['club'],
+                $data['gender'] ?? '',
             ));
 
             $this->withMessage(self::ALERT_SUCCESS, trans('messages.runner_update_success'));

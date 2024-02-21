@@ -34,6 +34,7 @@ class RunnerSerializer
             'year' => $runner->year,
             'city' => $runner->city,
             'club' => $runner->club,
+            'gender' => $runner->gender,
             'resultsCount' => $runner->results->count(),
             'createdAt' => $runner->created_at?->getTimestamp(),
             'updatedAt' => $runner->updated_at?->getTimestamp(),
