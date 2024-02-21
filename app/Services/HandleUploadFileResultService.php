@@ -11,8 +11,6 @@ use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use App\Models\Illuminate\UploadFileResult;
 use App\Models\Illuminate\UploadFileResultRow;
-use App\Queries\Runner\SearchRunnerByNameAndYearHandler;
-use App\Queries\Runner\SearchRunnerByNameAndYearQuery;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -31,11 +29,6 @@ class HandleUploadFileResultService
     private const GENDER = 9;
 
     private int $row = 0;
-
-    public function __construct(
-        private readonly SearchRunnerByNameAndYearHandler $searchRunnerByNameAndYearHandler,
-    ) {
-    }
 
     public function handle(UploadFileResult $results): void
     {
@@ -105,22 +98,14 @@ class HandleUploadFileResultService
 
         $data[self::FIRST_NAME] = Str::title(mb_convert_case($data[self::FIRST_NAME], MB_CASE_LOWER));
         $data[self::LAST_NAME] = Str::title(mb_convert_case($data[self::LAST_NAME], MB_CASE_LOWER));
-
-        $meilisearchRunners = $this->searchRunnerByNameAndYearHandler->handle(new SearchRunnerByNameAndYearQuery(
-            lastName: $data[self::LAST_NAME],
-            firstName: $data[self::FIRST_NAME],
-            year: $year,
-        ));
-
-        if ($meilisearchRunners->total === 0) {
-            return $this->createNewRunner($data);
-        }
-
-        $runnerIds = array_map(static fn(\App\Models\Meilisearch\Runner $runner) => $runner->getId(),$meilisearchRunners->items->toArray());
-
         $runners = Runner::query()
-            ->whereIn('id', $runnerIds)
+            ->where('first_name', $data[self::FIRST_NAME])
+            ->where('last_name', $data[self::LAST_NAME])
             ->get();
+
+        $runners = $runners->filter(function (Runner $runner) use ($year) {
+            return $runner->year === $year;
+        });
 
         if ($month === 0 && $day === 0 && $runners->count() === 1) {
             return $runners->first();
