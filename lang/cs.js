@@ -1,5 +1,10 @@
 export default {
     appName: 'Závody mimo dráhy',
+    webDescription: 'Výsledky závodů mimo dráhy - stovky závodů, tisíce výsledků...',
+    seo: {
+        raceIndex: 'Vyhledejte závody podle svých představ - stovky závodů, tisíce výsledků...',
+        raceDetail: ''
+    },
     cancel: 'Zrušit',
     noResults: 'Nic jsme nenašli',
     laoding: 'Načítání...',

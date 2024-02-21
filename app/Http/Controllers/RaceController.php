@@ -100,7 +100,8 @@ class RaceController extends Controller
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
         }
 
-        $metaDescription = $this->resolveMetaDescription($race);
+        $total = $childRaces !== null ? $childRaces->count() : $results->total();
+        $metaDescription = $this->resolveMetaDescription($race, $total);
 
         $data = [
             'race' => $this->raceTransformer->transform($race),
@@ -152,16 +153,20 @@ class RaceController extends Controller
         return $query->orderBy('position')->paginate(self::LIMIT_RUNNERS);
     }
 
-    private function resolveMetaDescription(Race $race): string
+    private function resolveMetaDescription(Race $race, int $total): string
     {
         if ($race->is_parent) {
-            return $race->name;
+            $raceName = $race->name;
+
+            return trans('messages.race_parent_meta_description', [ 'race' => $raceName, 'count' => $total ]);
         }
 
         if ($race->date === null) {
-            return $race->name;
+            $raceName = $race->name;
+        } else {
+            $raceName = $race->name . ' ' . $race->date->format('j. n. Y') . $race->description->toPlainText();
         }
 
-        return $race->name . ' ' . $race->date->format('j. n. Y') . $race->description->toPlainText();
+        return trans('messages.race_meta_description', [ 'race' => $raceName, 'count' => $total ]);
     }
 }

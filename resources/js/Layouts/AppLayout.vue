@@ -27,7 +27,7 @@ const alert = computed(() => {
             <div class="flex">
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
-                <Link :href="route('welcome')">
+                <Link :href="route('welcome')" aria-label="Website logo">
                   <ApplicationLogo
                     class="block w-auto fill-current text-gray-800"
                   />
@@ -65,6 +65,7 @@ const alert = computed(() => {
                     <span class="inline-flex rounded-md">
                         <button
                           type="button"
+                          aria-label="Menu"
                           class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                         >
                             {{ $page.props.auth.user.username }}
@@ -102,6 +103,7 @@ const alert = computed(() => {
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
               <button
+                aria-label="Menu"
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
               >

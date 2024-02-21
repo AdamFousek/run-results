@@ -68,7 +68,10 @@ const pagination = computed(() => {
 </script>
 
 <template>
-    <Head :title="$t('head.races')"/>
+    <Head>
+        <title>{{ $t('head.races') }}</title>
+        <meta name="description" :content="$t('seo.raceIndex')">
+    </Head>
 
     <AppLayout>
         <template #header>

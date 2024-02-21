@@ -10,7 +10,10 @@ defineProps({
 </script>
 
 <template>
-    <Head :title="$t('welcome')"/>
+    <Head>
+        <title>{{ $t('welcome') }}</title>
+        <meta name="description" :content="$t('webDescription')">
+    </Head>
 
     <AuthenticatedLayout>
         <template #header>
