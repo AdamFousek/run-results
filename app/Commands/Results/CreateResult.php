@@ -15,6 +15,7 @@ readonly class CreateResult
         public ?string $time,
         public int $categoryPosition,
         public string $category,
+        public string $club,
         public bool $dnf,
         public bool $dns,
     ) {

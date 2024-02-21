@@ -36,7 +36,7 @@ defineProps({
         >
             <div class="p-3 md:px-4 flex flex-start items-center gap-2">
                 <span>{{ result.position }}</span>
-                <NIcon v-if="result.position < 4"
+                <NIcon v-if="result.position > 0 && result.position < 4"
                        :class="{
                             'text-2xl text-gold-500': result.position === 1,
                             'text-xl text-silver-500': result.position === 2,
@@ -53,7 +53,7 @@ defineProps({
             <div class="p-3 md:px-4">{{ result.category }}</div>
             <div class="p-3 md:px-4 flex flex-start items-center gap-2">
                 <span>{{ result.category_position }}</span>
-                <NIcon v-if="result.category_position < 4"
+                <NIcon v-if="result.category_position > 0 && result.category_position < 4"
                        :class="{
                             'text-base text-gold-500': result.category_position === 1,
                             'text-base text-silver-500': result.category_position === 2,

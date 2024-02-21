@@ -31,7 +31,6 @@ use Laravel\Scout\Searchable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
  * @property-read \App\Models\Illuminate\User|null $user
- * @method static \Database\Factories\RunnerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Runner newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Runner onlyTrashed()

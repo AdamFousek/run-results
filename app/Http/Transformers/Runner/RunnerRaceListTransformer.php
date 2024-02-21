@@ -33,6 +33,7 @@ class RunnerRaceListTransformer
                 'position' => $result->position,
                 'category' => $result->category,
                 'category_position' => $result->category_position,
+                'club' => $result->club ?? '',
             ];
         }
 

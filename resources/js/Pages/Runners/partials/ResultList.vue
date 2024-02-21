@@ -16,7 +16,7 @@ defineProps({
     },
 })
 
-const confettiDuration = 3000
+const confettiDuration = 2500
 const confetti = ref(false)
 const confettiElement = ref(null)
 
@@ -28,7 +28,7 @@ const startConfetti = (event) => {
     const x = event.pageX
     const y = event.pageY
 
-    confettiElement.value.style.left = '500px'
+    confettiElement.value.style.height = '500px'
     confettiElement.value.style.width = '500px'
     confettiElement.value.style.left = x - 250 + 'px'
     confettiElement.value.style.top = y - 250 + 'px'
@@ -36,8 +36,8 @@ const startConfetti = (event) => {
         confetti.value = false
         confettiElement.value.style.left = '0px'
         confettiElement.value.style.top = '0px'
-        confettiElement.value.style.left = '500px'
-        confettiElement.value.style.width = '500px'
+        confettiElement.value.style.height = '0'
+        confettiElement.value.style.width = '0'
     }, confettiDuration)
 }
 </script>

@@ -22,64 +22,60 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
  *
  * @property int $id
  * @property int|null $parent_id
+ * @property string $slug
  * @property string $name
- * @property mixed $description
- * @property \Illuminate\Support\Carbon $date
- * @property string $location
- * @property mixed $distance
- * @property string $surface
- * @property string $type
+ * @property \Illuminate\Support\Carbon|null $date
+ * @property \Illuminate\Support\Carbon|null $time
+ * @property int|null $vintage
+ * @property string|null $location
+ * @property string $region
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property string|null $distance
+ * @property string|null $surface
+ * @property string|null $type
+ * @property string|null $tag
+ * @property int $is_parent
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property mixed $description
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $children
+ * @property-read int|null $children_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\UploadedFiles> $files
+ * @property-read int|null $files_count
  * @property-read Race|null $parent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $records
- * @property-read int|null $records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
  * @property-read int|null $results_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Runner> $runners
  * @property-read int|null $runners_count
- * @method static \Database\Factories\RaceFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Race newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Race newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Race onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Race query()
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereDistance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereSurface($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Race withoutTrashed()
- * @property string $slug
- * @property int $is_parent
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereIsParent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Race withRichText($fields = [])
- * @property \Illuminate\Support\Carbon|null $time
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Race> $children
- * @property-read int|null $children_count
- * @method static \Illuminate\Database\Eloquent\Builder|Race whereTime($value)
- * @property int|null $vintage
- * @property string $region
- * @property float|null $latitude
- * @property float|null $longitude
- * @property string|null $tag
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\UploadedFiles> $files
- * @property-read int|null $files_count
+ * @method static Builder|Race newModelQuery()
+ * @method static Builder|Race newQuery()
  * @method static Builder|Race notParents()
+ * @method static Builder|Race onlyTrashed()
+ * @method static Builder|Race query()
+ * @method static Builder|Race whereCreatedAt($value)
+ * @method static Builder|Race whereDate($value)
+ * @method static Builder|Race whereDeletedAt($value)
+ * @method static Builder|Race whereDistance($value)
+ * @method static Builder|Race whereId($value)
+ * @method static Builder|Race whereIsParent($value)
  * @method static Builder|Race whereLatitude($value)
+ * @method static Builder|Race whereLocation($value)
  * @method static Builder|Race whereLongitude($value)
+ * @method static Builder|Race whereName($value)
+ * @method static Builder|Race whereParentId($value)
  * @method static Builder|Race whereRegion($value)
+ * @method static Builder|Race whereSlug($value)
+ * @method static Builder|Race whereSurface($value)
  * @method static Builder|Race whereTag($value)
+ * @method static Builder|Race whereTime($value)
+ * @method static Builder|Race whereType($value)
+ * @method static Builder|Race whereUpdatedAt($value)
  * @method static Builder|Race whereVintage($value)
+ * @method static Builder|Race withRichText($fields = [])
+ * @method static Builder|Race withTrashed()
+ * @method static Builder|Race withoutTrashed()
  * @mixin \Eloquent
  */
 class Race extends IlluminateModel

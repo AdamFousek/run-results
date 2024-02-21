@@ -30,6 +30,7 @@ const form = useForm({
     time: props.result?.time ?? null,
     category: props.result?.category ?? '',
     categoryPosition: props.result?.categoryPosition ?? 0,
+    club: props.result?.club ?? '',
     DNF: props.result?.DNF ?? false,
     DNS: props.result?.DNS ?? false,
 });
@@ -137,6 +138,19 @@ onMounted(() => {
             />
 
             <InputError class="mt-2" :message="form.errors.categoryPosition"/>
+        </div>
+        <div>
+            <InputLabel for="club" :value="$t('result.club')"/>
+
+            <NInput
+                    :input-props="{ type: 'text', id: 'club' }"
+                    :placeholder="$t('result.club')"
+                    class="mt-1 block w-full"
+                    v-model:value="form.club"
+                    required
+            />
+
+            <InputError class="mt-2" :message="form.errors.club"/>
         </div>
         <div>
             <InputLabel for="isParent" :value="$t('result.DNF')"/>

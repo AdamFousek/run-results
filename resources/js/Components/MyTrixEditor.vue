@@ -5,8 +5,6 @@ const props = defineProps(['modelValue', 'name']);
 
 const emits = defineEmits(['update:modelValue']);
 
-console.log(props.modelValue);
-
 const input = ref(null);
 const editor = ref();
 

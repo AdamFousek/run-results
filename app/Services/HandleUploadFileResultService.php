@@ -62,6 +62,7 @@ class HandleUploadFileResultService
             $result->time = $this->resolveTime($result, $data);
             $result->category = $data[self::CATEGORY];
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
+            $result->club = $data[self::CLUB];
             $result->save();
 
             $results->increment('processed_rows');
@@ -250,6 +251,21 @@ class HandleUploadFileResultService
         if (!str_contains($time, ':')) {
             $result->DNF = $time === 'DNF' ? 1 : 0;
             $result->DNS = $time === 'DNS' ? 1 : 0;
+
+            return null;
+        }
+
+        $exploded = explode(':', $time);
+        $allAreZeroes = true;
+        foreach ($exploded as $value) {
+            if ((int)$value !== 0) {
+                $allAreZeroes = false;
+                break;
+            }
+        }
+
+        if ($allAreZeroes) {
+            $result->DNF = 1;
 
             return null;
         }

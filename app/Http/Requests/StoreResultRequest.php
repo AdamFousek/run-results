@@ -29,6 +29,7 @@ class StoreResultRequest extends FormRequest
             'position' => 'nullable|integer',
             'categoryPosition' => 'nullable|integer',
             'category' => 'nullable|string',
+            'club' => 'nullable|string',
             'DNF' => 'nullable|boolean',
             'DNS' => 'nullable|boolean',
         ];

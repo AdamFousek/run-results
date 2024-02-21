@@ -20,6 +20,7 @@ class CreateResultCommand
         $result->time = $command->time;
         $result->category_position = $command->categoryPosition;
         $result->category = $command->category;
+        $result->club = $command->club;
         $result->DNF = $command->dnf ? 1 : 0;
         $result->DNS = $command->dns ? 1 : 0;
 

@@ -1,13 +1,10 @@
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { NInput } from 'naive-ui';
-import { useI18n } from 'vue-i18n'
-import Pagination from '@/Components/Pagination.vue'
+import { NInput } from 'naive-ui'
 import RaceList from '@/Pages/Admin/Results/Partials/RaceList.vue'
-
-const {t} = useI18n();
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const props = defineProps({
     races: {
@@ -22,9 +19,13 @@ const props = defineProps({
         required: false,
         default: '',
     },
+    activeSort: {
+        type: String,
+    },
 })
 
 const search = ref(props.search)
+const searching = ref(false)
 
 watch(search, (value) => {
     if (value === '' || value.length > 2) {
@@ -33,6 +34,7 @@ watch(search, (value) => {
 })
 
 const searchRaces = () => {
+    searching.value = true
     router.reload({
         data: {
             query: search.value,
@@ -40,8 +42,19 @@ const searchRaces = () => {
         },
         only: ['races', 'paginate'],
         preserveState: true,
+        onFinish() {
+            searching.value = false
+        }
     })
 }
+
+const pagination = computed(() => {
+    if (props.paginate.total < props.paginate.limit) {
+        return `${props.paginate.total} / ${props.paginate.total}`
+    }
+
+    return `${props.paginate.limit} / ${props.paginate.total}`
+})
 </script>
 
 <template>
@@ -66,11 +79,14 @@ const searchRaces = () => {
                 </div>
                 <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                     <div class="md:w-full flex-shrink-0">
-                        <RaceList :races="races"/>
-
-                        <Pagination v-if="races.length" :pages="paginate.links" class="my-4"/>
+                        <RaceList :races="races" :sort="activeSort"/>
+                        <section class="p-4 text-center" v-if="races.length === 0">{{ $t('noResults') }}</section>
+                        <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     </div>
                 </div>
+                <MeilisearchPagination v-if="races.length && !searching" :page="paginate.page"
+                                       :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage"
+                                       class="my-4"/>
             </div>
         </div>
     </AdminLayout>

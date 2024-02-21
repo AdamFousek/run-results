@@ -44,6 +44,7 @@ class ResultTransformer
             'position' => $result->position,
             'categoryPosition' => $result->category_position,
             'category' => $result->category,
+            'club' => $result->club ?? '',
             'DNF' => $result->DNF,
             'DNS' => $result->DNS,
         ];

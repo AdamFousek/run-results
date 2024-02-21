@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreResultRequest;
 use App\Http\Requests\UpdateResultRequest;
 use App\Http\Requests\UploadResultRequest;
+use App\Http\Transformers\Meilisearch\RaceListTransformer;
 use App\Http\Transformers\Race\RaceResultsTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Result\ResultTransformer;
@@ -21,8 +22,11 @@ use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\UploadFileResult;
 use App\Models\Illuminate\UploadFileResultRow;
+use App\Queries\Race\RaceSearch;
+use App\Queries\Race\RaceSearchHandler;
 use App\Services\HandleUploadFileResultService;
 use App\Services\PaginateService;
+use App\Services\RaceSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -43,6 +47,9 @@ class ResultController extends Controller
         private readonly UpdateResultHandler $updateResultHandler,
         private readonly CreateUploadFileResultHandler $createUploadFileResultHandler,
         private readonly ResultUploadsTransformer $resultUploadsTransformer,
+        private readonly RaceSearchHandler $raceSearchHandler,
+        private readonly RaceSortService $raceSortService,
+        private readonly RaceListTransformer $raceListTransformer,
     ) {
     }
 
@@ -52,23 +59,31 @@ class ResultController extends Controller
     public function index(Request $request): Response
     {
         $search = trim($request->get('query'));
-        if ($search !== '') {
-            $races = Race::search($search)->paginate(self::LIMIT);
-        } else {
-            $races = Race::query()->paginate(self::LIMIT);
-        }
-        $races->loadCount('results');
         $page = (int)$request->get('page', 1);
+        $requestSort = $request->get('sort', RaceSortService::DEFAULT_SORT);
+        $sort = $this->raceSortService->resolveSort($requestSort);
+        [$sortColumn, $sortDirection] = explode(':', $sort);
+
+        $races = $this->raceSearchHandler->handle(new RaceSearch(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            wihtoutParent: $search === '',
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection,
+
+        ));
 
         return Inertia::render('Admin/Results/Index', [
-            'races' => $this->transformer->transform($races->items()),
+            'races' => $this->raceListTransformer->transform($races->items),
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($races),
                 'page' => $page,
-                'total' => $races->total(),
-                'limit' => self::LIMIT
+                'total' => $races->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $races->total,
             ],
             'search' => $search,
+            'activeSort' => $sort,
         ]);
     }
 
@@ -88,6 +103,7 @@ class ResultController extends Controller
                 time: $validated['time'] ?? null,
                 categoryPosition: $validated['categoryPosition'] ?? 0,
                 category: $validated['category'] ?? '',
+                club: $validated['club'] ?? '',
                 dnf: $validated['DNF'] ?? false,
                 dns: $validated['DNS'] ?? false,
             ));
@@ -135,6 +151,7 @@ class ResultController extends Controller
                 time: $validated['time'] ?? null,
                 categoryPosition: $validated['categoryPosition'] ?? 0,
                 category: $validated['category'] ?? '',
+                club: $validated['club'] ?? '',
                 dnf: $validated['DNF'] ?? false,
                 dns: $validated['DNS'] ?? false,
             ));
