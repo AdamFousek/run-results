@@ -2,7 +2,7 @@
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { NIcon, NInput } from 'naive-ui'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
@@ -46,6 +46,11 @@ const props = defineProps({
 
 const search = ref(props.search)
 const searching = ref(false)
+const loading = ref(true)
+
+onMounted(() => {
+    loading.value = false
+})
 
 watch(search, (value) => {
     if (value !== '') {
@@ -99,7 +104,7 @@ const searchRaces = (searchTerm) => {
                         </MyLink>
                         <div v-if="race.latitude || race.longitude" class="w-full mt-2">
                             <MyLink :href="`http://www.mapy.cz/?query=${race.latitude},${race.longitude}`" target="_blank" external>
-                                <Map :name="race.name" :x="race.latitude" :y="race.longitude" />
+                                <Map v-if="!loading" :name="race.name" :x="race.latitude" :y="race.longitude" />
                             </MyLink>
                         </div>
                     </div>

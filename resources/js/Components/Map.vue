@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import L from 'leaflet/dist/leaflet.js'
-import {onMounted, ref} from "vue";
+import { LMap, LTileLayer, LControl, LMarker } from "@vue-leaflet/vue-leaflet";
+import { ref} from "vue";
 
 const props = defineProps({
     x: {
@@ -14,7 +14,7 @@ const props = defineProps({
     zoom: {
         type: Number,
         required: false,
-        default: 13,
+        default: 10,
     },
     name: {
         type: String,
@@ -23,54 +23,51 @@ const props = defineProps({
 })
 
 const mapyApi = import.meta.env.VITE_MAPY_CZ_API_KEY
-const loading = ref(false);
+const defaultZoom = ref(props.zoom)
 
-onMounted(() => {
-    const map = L.map(props.name, {
-        zoomControl: false,
-        dragging: false,
-        boxZoom: false,
-        doubleClickZoom: false,
-        scrollWheelZoom: false,
-    }).setView([props.x, props.y], props.zoom);
-
-    L.tileLayer(`https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${mapyApi}`, {
-        minZoom: 0,
-        maxZoom: 19,
-        attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
-    }).addTo(map);
-
-    const LogoControl = L.Control.extend({
-        options: {
-            position: 'bottomleft',
-        },
-
-        onAdd: function (map) {
-            const container = L.DomUtil.create('div');
-            const link = L.DomUtil.create('a', '', container);
-
-            link.setAttribute('href', 'http://mapy.cz/');
-            link.setAttribute('target', '_blank');
-            link.innerHTML = '<img src="https://api.mapy.cz/img/api/logo.svg" />';
-            L.DomEvent.disableClickPropagation(link);
-
-            return container;
-        },
-    });
-
-    L.marker([props.x, props.y]).addTo(map);
-
-    new LogoControl().addTo(map);
-    loading.value = true;
+const tileLayer = ref({
+    url: `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${mapyApi}`,
+    minZoom: 0,
+    maxZoom: 19,
+    attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
 })
 
 </script>
 
 <template>
-    <div v-if="!loading" class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
-        <div :id="name" class="maps-wrapper hover:scale-125 duration-150 overflow-hidden"></div>
+    <div class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
+        <LMap :id="name"
+              :options="{
+                    zoomControl: false,
+                    dragging: false,
+                    boxZoom: false,
+                    doubleClickZoom: false,
+                    scrollWheelZoom: false,
+                }"
+              :use-global-leaflet="false"
+              v-model:zoom="defaultZoom"
+              :center="[x, y]"
+              class="maps-wrapper hover:scale-105 duration-150 overflow-hidden"
+        >
+            <LTileLayer
+                    :url="tileLayer.url"
+                    :min-zoom="tileLayer.minZoom"
+                    :max-zoom="tileLayer.maxZoom"
+                    :attribution="tileLayer.attribution"
+                    layer-type="base"
+                    name="mapy.cz"
+            />
+            <LControl :options="{position: 'bottomleft'}" disable-click-propagation>
+                <div>
+                    <a href="http://mapy.cz/" target="_blank">
+                        <img src="https://api.mapy.cz/img/api/logo.svg" />
+                    </a>
+                </div>
+            </LControl>
+            <LMarker :lat-lng="[x, y]">
+            </LMarker>
+        </LMap>
     </div>
-    <div v-else></div>
 </template>
 
 <style scoped>
