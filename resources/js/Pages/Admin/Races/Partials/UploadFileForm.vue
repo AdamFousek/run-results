@@ -1,7 +1,7 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {CloseSharp, DeleteFilled, LockOpenFilled, LockOutlined} from "@vicons/material";
-import {NCard, NCheckbox, NIcon, NInput, NModal, NPopover} from "naive-ui";
+import {NCard, NCheckbox, NIcon, NInput, NModal, NPopover, NPopconfirm} from "naive-ui";
 import {ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
 import route from 'ziggy-js'
@@ -87,9 +87,23 @@ const removeFile = (id) => {
                             </template>
                             <span>{{ $t('admin.file.isNotPublic') }}</span>
                         </NPopover>
-                        <NIcon class="text-red-600 hover:text-red-800 cursor-pointer" @click="removeFile(file.id)">
-                            <DeleteFilled/>
-                        </NIcon>
+                        <NPopconfirm
+                                @positive-click="removeFile(file.id)"
+                                @negative-click="() => {}"
+                                :show-icon="false"
+                                :positive-text="$t('admin.file.delete')"
+                                :negative-text="$t('admin.file.cancel')"
+                                :positive-button-props="{ type: 'error', round: true }"
+                                :negative-button-props="{ type: 'success', round: true }"
+                        >
+                            <template #trigger>
+                                <NIcon class="text-red-600 hover:text-red-800 cursor-pointer">
+                                    <DeleteFilled/>
+                                </NIcon>
+                            </template>
+                            {{ $t('admin.file.deleteConfirmation') }}
+                        </NPopconfirm>
+
                     </div>
                 </div>
             </div>

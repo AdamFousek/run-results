@@ -223,6 +223,9 @@ export default {
             name: 'Název souboru',
             isPublic: 'Je veřejný',
             isNotPublic: 'Není veřejný',
+            deleteConfirmation: 'Opravdu smazat soubor?',
+            delete: 'Smazat',
+            cancel: 'Zrušit',
         }
     },
     user: {

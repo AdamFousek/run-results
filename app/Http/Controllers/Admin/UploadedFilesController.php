@@ -18,7 +18,7 @@ class UploadedFilesController extends AdminController
         $uploadedFiles->is_public = !$uploadedFiles->is_public;
         $uploadedFiles->save();
 
-        $this->withMessage(self::ALERT_SUCCESS, 'file_updated_successfuly');
+        $this->withMessage(self::ALERT_SUCCESS, trans('messages.file_updated_successfuly'));
 
         return redirect()->back();
     }
@@ -34,7 +34,7 @@ class UploadedFilesController extends AdminController
             Storage::delete($uploadedFiles->file_path);
             $uploadedFiles->delete();
 
-            $this->withMessage(self::ALERT_SUCCESS, 'file_removed_successfuly');
+            $this->withMessage(self::ALERT_SUCCESS, trans('messages.file_removed_successfuly'));
 
             return redirect()->back();
         } catch (\Exception $e) {
