@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Repositories\Illuminate\IlluminateResultRepository;
 use App\Repositories\Illuminate\IlluminateRunnerRepository;
+use App\Repositories\IlluminateResultRepositoryInterface;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
 use App\Repositories\Meilisearch\MeilisearchRaceRepository;
 use App\Repositories\Meilisearch\MeilisearchRunnerRepository;
@@ -23,6 +25,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         // Illuminate
         $this->app->bind(IlluminateRunnerRepositoryInterface::class, IlluminateRunnerRepository::class);
+        $this->app->bind(IlluminateResultRepositoryInterface::class, IlluminateResultRepository::class);
     }
 
     /**

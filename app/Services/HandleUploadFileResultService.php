@@ -61,7 +61,7 @@ class HandleUploadFileResultService
             $result->save();
 
             if ($data[self::GENDER] !== '') {
-                $runner->gender = $data[self::GENDER] === 'm' ? RunnerGenderEnum::MALE->value : RunnerGenderEnum::FELAME->value;
+                $runner->gender = $data[self::GENDER] === 'm' ? RunnerGenderEnum::MALE->value : RunnerGenderEnum::FEMALE->value;
                 $runner->save();
             }
 

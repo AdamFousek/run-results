@@ -80,7 +80,7 @@ class Result extends IlluminateModel
     public function scopeWithoutFemale(Builder $query): Builder
     {
         return $query->whereHas('runner', function (Builder $query) {
-            $query->where('gender', '!=', RunnerGenderEnum::FELAME);
+            $query->where('gender', '!=', RunnerGenderEnum::FEMALE);
         });
     }
 

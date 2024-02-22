@@ -69,12 +69,12 @@ const selectTab = (tab) => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center md:justify-start gap-4 mb-4">
-                    <div class="p-4"
+                    <div class="p-4 cursor-pointer hover:border-b-2 border-gray-300"
                          :class="{
                             'border-b-2 border-violet-600': selectedTab === $t('runner.tabRaces'),
                          }"
                          @click="selectTab($t('runner.tabRaces'))">{{ $t('runner.tabRaces') }}</div>
-                    <div class="p-4"
+                    <div class="p-4 cursor-pointer hover:border-b-2 border-gray-300"
                          :class="{
                             'border-b-2 border-violet-600': selectedTab === $t('runner.tabCharts'),
                          }"

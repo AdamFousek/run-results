@@ -15,12 +15,11 @@ class TimeCast implements CastsAttributes
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
         if (is_int($value)) {
-            $milliseconds = $value % 1000;
             $seconds = (int)($value / 1000) % 60;
             $minutes = (int)($value / (1000 * 60)) % 60;
             $hours = (int)($value / (1000 * 60 * 60)) % 24;
 
-            return sprintf('%02d:%02d:%02d.%03d', $hours, $minutes, $seconds, $milliseconds);
+            return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
         }
 
         return $value;

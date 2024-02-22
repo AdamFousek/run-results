@@ -13,10 +13,6 @@ defineProps({
 <template>
     <section>
         <h2 class="text-xl">{{ $t('race.information') }}</h2>
-        <div v-if="race.distance" class="flex my-2 gap-2 justify-start">
-            <div class="font-bold">{{ $t('race.distance') }}:</div>
-            <div class="">{{ race.distance }}</div>
-        </div>
         <div v-if="race.date" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.date') }}:</div>
             <div class="">{{ race.date }}</div>
@@ -25,13 +21,13 @@ defineProps({
             <div class="font-bold">{{ $t('race.time') }}:</div>
             <div class="">{{ race.time }}</div>
         </div>
+        <div v-if="race.distance" class="flex my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.distance') }}:</div>
+            <div class="">{{ race.distance }}</div>
+        </div>
         <div v-if="race.surface" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.surface') }}:</div>
             <div class="">{{ race.surface }}</div>
-        </div>
-        <div v-if="race.tag" class="flex my-2 gap-2 justify-start">
-            <div class="font-bold">{{ $t('race.tag') }}:</div>
-            <div class="">{{ race.tag }}</div>
         </div>
         <div v-if="!race.isParent" class="flex my-2 gap-2 justify-start">
             <div class="font-bold">{{ $t('race.runners') }}:</div>

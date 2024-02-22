@@ -8,5 +8,5 @@ namespace App\Models\Illuminate\Enums;
 enum RunnerGenderEnum: string
 {
     case MALE = 'M';
-    case FELAME = 'F';
+    case FEMALE = 'F';
 }

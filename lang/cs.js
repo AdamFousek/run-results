@@ -143,6 +143,13 @@ export default {
         filesToDownload: 'Soubory ke stažení',
         longitude: 'Zeměpisná délka',
         latitude: 'Zeměpisná šířka',
+        stats: {
+            title: 'Statistiky',
+            fastestTime: 'Nejrychlejší čas',
+            fastestMan: 'Nejrychlejší muž',
+            fastestWomen: 'Nejrychlejší žena',
+            averageTime: 'Průměrný čas',
+        },
     },
     result: {
         runner: 'Běžec',

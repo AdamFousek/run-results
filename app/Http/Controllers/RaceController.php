@@ -15,6 +15,7 @@ use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
 use App\Services\PaginateService;
 use App\Services\RaceSortService;
+use App\Services\ResultStatsService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -35,6 +36,7 @@ class RaceController extends Controller
         private readonly RaceSearchHandler $raceSearchHandler,
         private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
         private readonly RaceSortService $sortService,
+        private readonly ResultStatsService $resultStatsService,
     ) {
     }
 
@@ -88,6 +90,7 @@ class RaceController extends Controller
         $results = null;
         $childRaces = null;
         $paginate = null;
+        $stats = null;
         if (!$race->is_parent) {
             $results = $this->resolveResults($race, $search, $page, $filter);
             $paginate = [
@@ -98,6 +101,9 @@ class RaceController extends Controller
             ];
         } else {
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
+            if ($race->tag !== null || $race->tag !== '') {
+                $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
+            }
         }
 
         $total = $childRaces !== null ? $childRaces->count() : $results->total();
@@ -115,6 +121,7 @@ class RaceController extends Controller
             'selectedRunner' => $runnerId === 0 ? null : $runnerId,
             'files' => $files,
             'filter' => $filter,
+            'stats' => $stats,
         ];
 
 

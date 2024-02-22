@@ -4,9 +4,15 @@ namespace App\Observers;
 
 
 use App\Models\Illuminate\Result;
+use App\Services\ResultStatsService;
 
 class ResultObserver
 {
+    public function __construct(
+        private readonly ResultStatsService $resultStatsService,
+    ) {
+    }
+
     /**
      * Handle the Result "created" event.
      */
@@ -14,6 +20,8 @@ class ResultObserver
     {
         $result->race->searchable();
         $result->runner->searchable();
+
+        $this->resultStatsService->invalidateCache($result->race->tag);
     }
 
     /**
@@ -23,6 +31,8 @@ class ResultObserver
     {
         $result->race->searchable();
         $result->runner->searchable();
+
+        $this->resultStatsService->invalidateCache($result->race->tag);
     }
 
     /**
@@ -32,6 +42,8 @@ class ResultObserver
     {
         $result->race->searchable();
         $result->runner->searchable();
+
+        $this->resultStatsService->invalidateCache($result->race->tag);
     }
 
     /**

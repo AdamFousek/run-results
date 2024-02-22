@@ -45,6 +45,9 @@ const props = defineProps({
     filter: {
         type: Object,
     },
+    stats: {
+        type: Object,
+    }
 })
 
 const search = ref(props.search)
@@ -125,9 +128,28 @@ const searchRaces = () => {
                             </MyLink>
                         </div>
                     </div>
-                    <div class="bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
+                    <div v-if="!race.isParent" class="bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.description') }}</h2>
                         <div class="trix-content" v-html="race.description"></div>
+                    </div>
+                    <div v-else-if="stats" class="text-sm bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
+                        <h2 class="text-xl mb-2">{{ $t('race.stats.title') }}</h2>
+                        <div v-if="stats.fastestTime" class="flex flex-col my-2 gap-2 justify-start">
+                            <div class="font-bold">{{ $t('race.stats.fastestTime') }}:</div>
+                            <div class="">{{ stats.fastestTime.time }} ({{ stats.fastestTime.year }})</div>
+                        </div>
+                        <div v-if="stats.fastestMan" class="flex flex-col my-2 gap-2 justify-start">
+                            <div class="font-bold">{{ $t('race.stats.fastestMan') }}:</div>
+                            <div class="">{{ stats.fastestMan.time }} ({{ stats.fastestMan.year }})</div>
+                        </div>
+                        <div v-if="stats.fastestWomen" class="flex flex-col my-2 gap-2 justify-start">
+                            <div class="font-bold">{{ $t('race.stats.fastestWomen') }}:</div>
+                            <div class="">{{ stats.fastestWomen.time }} ({{ stats.fastestWomen.year }})</div>
+                        </div>
+                        <div v-if="stats.averageTime" class="flex flex-col my-2 gap-2 justify-start">
+                            <div class="font-bold">{{ $t('race.stats.averageTime') }}:</div>
+                            <div class="">{{ stats.averageTime.time }}</div>
+                        </div>
                     </div>
                 </div>
 

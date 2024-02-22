@@ -2,7 +2,7 @@
 import { onBeforeUnmount, ref } from "vue";
 import { Head, useForm, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { NButton, NIcon, NModal, NCard } from 'naive-ui';
+import { NButton, NIcon, NModal, NCard, NBadge } from 'naive-ui';
 import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp, RemoveRedEyeOutlined } from '@vicons/material'
 import ResultList from '@/Pages/Admin/Results/Partials/ResultList.vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
@@ -73,6 +73,8 @@ const deleteResults = () => {
         },
     })
 }
+
+const failedRows = props.uploads[0]?.failed_rows
 </script>
 
 <template>
@@ -114,14 +116,16 @@ const deleteResults = () => {
                             </template>
                             {{ $t('admin.results.createSingle') }}
                         </NButton>
-                        <NButton v-if="uploads.length" round type="warning" @click="openUploadsLogModal">
-                            <template #icon>
-                                <NIcon>
-                                    <RemoveRedEyeOutlined/>
-                                </NIcon>
-                            </template>
-                            {{ $t('admin.results.showResultsLog') }}
-                        </NButton>
+                        <NBadge :value="failedRows">
+                            <NButton v-if="uploads.length" round type="warning" @click="openUploadsLogModal">
+                                <template #icon>
+                                    <NIcon>
+                                        <RemoveRedEyeOutlined/>
+                                    </NIcon>
+                                </template>
+                                {{ $t('admin.results.showResultsLog') }}
+                            </NButton>
+                        </NBadge>
                     </div>
                 </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
