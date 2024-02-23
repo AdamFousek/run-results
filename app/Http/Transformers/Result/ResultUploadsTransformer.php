@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Http\Transformers\Result;
 
 use App\Models\Illuminate\UploadFileResult;
+use App\Models\Illuminate\UploadFileResultRow;
 use Illuminate\Support\Collection;
 
 class ResultUploadsTransformer
@@ -53,10 +54,15 @@ class ResultUploadsTransformer
     {
         $result = [];
         foreach ($rows as $row) {
+            if (!$row instanceof UploadFileResultRow) {
+                continue;
+            }
+
+            $data = json_decode($row->data, false, 512, JSON_THROW_ON_ERROR);
             $result[] = [
                 'id' => $row->id,
                 'row_number' => $row->row_number,
-                'data' => $row->data,
+                'data' => implode(',', $data),
                 'error' => trans($row->error),
             ];
         }

@@ -14,7 +14,7 @@ if (import.meta.env.VITE_SENTRY_ENABLE === 'true') {
             }),
         ],
         // Performance Monitoring
-        tracesSampleRate: 0.1, //  Capture 100% of the transactions
+        tracesSampleRate: 0.01, //  Capture 100% of the transactions
     });
 }
 
