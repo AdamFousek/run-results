@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, ref } from "vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 import { Head, useForm, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { NButton, NIcon, NModal, NCard, NBadge } from 'naive-ui';
@@ -33,6 +33,7 @@ const uploadForm = useForm({
 })
 
 const deleteForm = useForm({})
+const loading = ref(false)
 
 const openEraseModal = () => {
     eraseModal.value = true
@@ -53,8 +54,19 @@ function upload() {
         onSuccess: () => {
             uploadForm.reset()
             uploadResultsModal.value = false
-            interval = setInterval(() => router.reload({only: ['results', 'uploads']}), 2000)
+            interval = setInterval(reloadPage, 2000)
         },
+    })
+}
+
+const reloadPage = () => {
+    console.log(props.uploads)
+    loading.value = true
+    router.reload({
+        only: ['results', 'uploads'],
+        onFinish() {
+            loading.value = false
+        }
     })
 }
 
@@ -74,7 +86,9 @@ const deleteResults = () => {
     })
 }
 
-const failedRows = props.uploads[0]?.failed_rows
+const failedRows = computed(() => {
+    return loading.value ? 0 : props.uploads[0]?.failed_rows
+})
 </script>
 
 <template>
