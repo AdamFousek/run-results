@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LMap, LTileLayer, LControl, LMarker } from "@vue-leaflet/vue-leaflet";
-import { ref} from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
     x: {
@@ -31,7 +31,6 @@ const tileLayer = ref({
     maxZoom: 19,
     attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
 })
-
 </script>
 
 <template>
@@ -59,8 +58,8 @@ const tileLayer = ref({
             />
             <LControl :options="{position: 'bottomleft'}" disable-click-propagation>
                 <div>
-                    <a href="http://mapy.cz/" target="_blank">
-                        <img src="https://api.mapy.cz/img/api/logo.svg" />
+                    <a href="http://mapy.cz/" target="_blank" aria-label="Link to mapy.cz">
+                        <img src="https://api.mapy.cz/img/api/logo.svg" alt="mapy.cz" />
                     </a>
                 </div>
             </LControl>

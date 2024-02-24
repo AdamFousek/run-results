@@ -100,8 +100,8 @@ const mergeRunner = () => {
                                     role="status">
                             </div>
                             <span class="font-bold ml-2">
-                        {{ $t('laoding') }}
-                    </span>
+                                {{ $t('laoding') }}
+                            </span>
                         </div>
                     </div>
                     <div v-else class="relative">

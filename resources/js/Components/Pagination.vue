@@ -21,8 +21,9 @@ const props = defineProps({
                 'rounded-l-md': index === 0,
                 'rounded-r-md': index === pages.length-1,
               }"
-              v-html="link.label"
-        />
+        >
+            {{ link.label }}
+        </Link>
         <Link v-else-if="link.link"
               :href="link.link"
               class="flex items-center justify-center px-3 h-8 leading-tight text-violet-950 border border-violet-950 bg-violet-50 hover:bg-violet-100 hover:text-violet-800"
