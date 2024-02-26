@@ -3,7 +3,9 @@
 namespace App\Models\Illuminate;
 
 use App\Models\Illuminate\Enums\RoleEnum;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -71,5 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function runner(): HasOne
     {
         return $this->hasOne(Runner::class);
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
     }
 }

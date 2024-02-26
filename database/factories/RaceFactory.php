@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Illuminate\Race;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -10,6 +11,8 @@ use Illuminate\Support\Str;
  */
 class RaceFactory extends Factory
 {
+    protected $model = Race::class;
+
     /**
      * Define the model's default state.
      *

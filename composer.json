@@ -5,7 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.11",
@@ -60,6 +60,9 @@
         ],
         "phpstan": [
             "./vendor/bin/phpstan analyse --memory-limit=-1"
+        ],
+        "test": [
+            "@php artisan test --stop-on-failure"
         ]
     },
     "extra": {
