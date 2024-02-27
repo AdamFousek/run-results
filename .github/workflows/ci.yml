@@ -52,6 +52,7 @@ jobs:
           cp .env.testing .env
           php artisan key:generate
           touch ./database/database.sqlite
+          npm install
           npm run build
 
       - name: Run tests
