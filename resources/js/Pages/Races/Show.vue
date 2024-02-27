@@ -65,9 +65,6 @@ onMounted(() => {
 })
 
 const searchRaces = () => {
-    if (searching.value) {
-        return
-    }
     searching.value = true
     router.reload({
         data: {
@@ -161,7 +158,7 @@ const searchRaces = () => {
                                     :placeholder="$t('runner.search')"
                                     clearable
                                     round
-                                    @keyup="searchRaces"
+                                    @input="searchRaces"
                             />
                         </div>
                         <div class="col-span-3 flex items-center justify-end">

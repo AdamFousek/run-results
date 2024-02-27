@@ -12,7 +12,13 @@ class RaceResultsTransformer
 {
     /**
      * @param array<int, ?Race> $items
-     * @return array<array<string, string|int|float>>
+     * @return array<array{
+     *      id: int,
+     *      name: string,
+     *      date: string|null,
+     *      location: string|null,
+     *      resultsCount: int
+     *  }>
      */
     public function transform(Collection|array $items): array
     {
@@ -30,7 +36,13 @@ class RaceResultsTransformer
 
     /**
      * @param Race $race
-     * @return array<string, string|int|float>
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     date: string|null,
+     *     location: string|null,
+     *     resultsCount: int
+     * }
      */
     private function transformItem(Race $race): array
     {
@@ -39,7 +51,7 @@ class RaceResultsTransformer
             'name' => $race->name,
             'date' => $race->date?->format('j. n. Y'),
             'location' => $race->location,
-            'resultsCount' => $race->results_count,
+            'resultsCount' => $race->results_count ?? 0,
         ];
     }
 }

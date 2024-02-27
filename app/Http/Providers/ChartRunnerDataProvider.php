@@ -14,6 +14,35 @@ use stdClass;
 
 class ChartRunnerDataProvider
 {
+
+    /**
+     * @param Runner $runner
+     * @return array{
+     *     distance: array<int, array{
+     *          label: string,
+     *          data: int,
+     *          color: string
+     *     }>,
+     *     surface: array<int, array{
+     *          label: string,
+     *          data: int,
+     *          color: string
+     *     }>,
+     *     compare: array<string, array{
+     *      datasets: array{
+     *      label: string,
+     *      color: string,
+     *      data: array{
+     *           y: int,
+     *           x: string
+     *       }[]
+     *      }[],
+     *      slowestTime: int,
+     *      fastestTime: int|null
+     *      }>|null
+     * }
+     * @throws RandomException
+     */
     public function provide(Runner $runner): array
     {
         return [
@@ -26,7 +55,11 @@ class ChartRunnerDataProvider
 
     /**
      * @param Runner $runner
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array{
+     *     label: string,
+     *     data: int,
+     *     color: string
+     * }>
      * @throws RandomException
      */
     private function resolveDistanceChart(Runner $runner): array
@@ -39,11 +72,12 @@ class ChartRunnerDataProvider
             ->get();
 
         $chartData = [];
+        /** @var Result $result */
         foreach ($results as $result) {
             $castDistance = new DistanceCast();
             $chartData[] = [
-                'label' => $castDistance->get($result, 'distance', $result->distance, []),
-                'data' => $result->count,
+                'label' => $castDistance->get($result, 'distance', $result->distance ?? 0),
+                'data' => $result->count ?? 0,
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
             ];
         }
@@ -51,21 +85,7 @@ class ChartRunnerDataProvider
         return $chartData;
     }
 
-    /**
-     * @param string $defaultColor - Preferable hex color of type FF0000, 00FF00, 0000FF
-     * @param int $count
-     * @return array
-     */
-    private function getColors(string $defaultColor = 'FF0000', int $count = 1): array
-    {
-        $colors = [];
-        for ($i = 0; $i < $count; $i++) {
-            $colorVariation = -($i * 20);
-        }
-        return $colors;
-    }
-
-    private function resolveRacesChart(Runner $runner): array
+    /*private function resolveRacesChart(Runner $runner): array
     {
         $results = Result::query()
             ->selectRaw('count(*) as count, races.type')
@@ -84,8 +104,17 @@ class ChartRunnerDataProvider
         }
 
         return $chartData;
-    }
+    }*/
 
+    /**
+     * @param Runner $runner
+     * @return array<int, array{
+     *     label: string,
+     *     data: int,
+     *     color: string
+     * }>
+     * @throws RandomException
+     */
     private function resolveSurfaceChart(Runner $runner): array
     {
         $results = Result::query()
@@ -96,10 +125,11 @@ class ChartRunnerDataProvider
             ->get();
 
         $chartData = [];
+        /** @var stdClass $result */
         foreach ($results as $result) {
             $chartData[] = [
-                'label' => $result->surface,
-                'data' => $result->count,
+                'label' => $result->surface ?? '',
+                'data' => $result->count ?? 0,
                 'color' => sprintf('#%06X', random_int(0, 0xFFFFFF)),
             ];
         }
@@ -109,7 +139,18 @@ class ChartRunnerDataProvider
 
     /**
      * @param Runner $runner
-     * @return array|null
+     * @return array<string, array{
+     *     datasets: array{
+     *     label: string,
+     *     color: string,
+     *     data: array{
+     *          y: int,
+     *          x: string
+     *      }[]
+     *     }[],
+     *     slowestTime: int,
+     *     fastestTime: int|null
+     * }>|null
      * @throws RandomException
      */
     private function resolveCompareChart(Runner $runner): ?array
@@ -144,7 +185,7 @@ class ChartRunnerDataProvider
             $fastestTime = null;
             $slowestTime = 0;
             $runnerData = [];
-            /** @var stdClass $item */
+            /** @var Result $item */
             foreach ($result as $item) {
                 $time = (int)$item->getRawOriginal('time');
                 if ($fastestTime === null) {
@@ -159,13 +200,13 @@ class ChartRunnerDataProvider
                 }
                 $runnerData[] = [
                     'y' => $time,
-                    'x' => (new Carbon($item->date))->format('j.n.Y'),
+                    'x' => (new Carbon($item->date ?? 'now'))->format('j.n.Y'),
                 ];
             }
 
             $averageData = [];
             /** @var stdClass $averageResult */
-            foreach($averageResults->get($key) as $averageResult) {
+            foreach($averageResults->get($key) ?? [] as $averageResult) {
                 $time = (int)$averageResult->time;
                 if ($fastestTime === null) {
                     $fastestTime = $time;

@@ -7,20 +7,20 @@ namespace App\Queries\Result;
 
 use App\Repositories\IlluminateResultRepositoryInterface;
 
-class GetStatsByRaceTagHandler
+readonly class GetStatsByRaceTagHandler
 {
     public function __construct(
-        private readonly IlluminateResultRepositoryInterface $resultRepository,
+        private IlluminateResultRepositoryInterface $resultRepository,
     ) {
     }
 
     /**
      * @param GetStatsByRaceTagQuery $query
      * @return array{
-     *     fastestTime: array{time: int, year: int},
-     *     fastestMan: array{time: int, year: int},
-     *     fastestWomen: array{time: int, year: int},
-     *     averageTime: array{time: int},
+     *     fastestTime: array{time: int, year: int}|null,
+     *     fastestMan: array{time: int, year: int}|null,
+     *     fastestWoman: array{time: int, year: int}|null,
+     *     averageTime: array{time: int}|null,
      *     }
      */
     public function handle(GetStatsByRaceTagQuery $query): array
@@ -28,7 +28,7 @@ class GetStatsByRaceTagHandler
         return [
             'fastestTime' => $this->resultRepository->getFastestTimeByRaceIds($query->raceTag),
             'fastestMan' => $this->resultRepository->getFastestManByRaceIds($query->raceTag),
-            'fastestWomen' => $this->resultRepository->getFastestWomenByRaceIds($query->raceTag),
+            'fastestWoman' => $this->resultRepository->getFastestWomanByRaceIds($query->raceTag),
             'averageTime' => $this->resultRepository->getAverageTimeByRaceIds($query->raceTag),
         ];
     }

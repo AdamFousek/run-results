@@ -13,7 +13,21 @@ class ResultUploadsTransformer
 {
     /**
      * @param array<int, ?UploadFileResult> $items
-     * @return array<array<string, mixed>>
+     * @return array<array{
+     *     id: int,
+     *     total_rows: int,
+     *     processed_rows: int,
+     *     failed_rows: int,
+     *     processed_at: string|null,
+     *     created_at: string|null,
+     *     rows: array<int, array{
+     *     id: int,
+     *     row_number: int,
+     *     data: string,
+     *     error: string
+     *    }>
+     * }>
+     * @throws \JsonException
      */
     public function transform(Collection|array $items): array
     {
@@ -31,7 +45,21 @@ class ResultUploadsTransformer
 
     /**
      * @param UploadFileResult $item
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     total_rows: int,
+     *     processed_rows: int,
+     *     failed_rows: int,
+     *     processed_at: string|null,
+     *     created_at: string|null,
+     *     rows: array<int, array{
+     *     id: int,
+     *     row_number: int,
+     *     data: string,
+     *     error: string
+     *     }>
+     * }
+     * @throws \JsonException
      */
     private function transformItem(UploadFileResult $item): array
     {
@@ -41,14 +69,20 @@ class ResultUploadsTransformer
             'processed_rows' => $item->processed_rows,
             'failed_rows' => $item->failed_rows,
             'processed_at' => $item->processed_at?->format('j.n.Y H:i:s'),
-            'created_at' => $item->created_at->format('j.n.Y H:i:s'),
+            'created_at' => $item->created_at?->format('j.n.Y H:i:s'),
             'rows' => $this->transformRows($item->rows),
         ];
     }
 
     /**
-     * @param array|\Illuminate\Database\Eloquent\Collection $rows
-     * @return array<array<string, mixed>>
+     * @param array<int, UploadFileResultRow>|\Illuminate\Database\Eloquent\Collection $rows
+     * @return array<int, array{
+     *     id: int,
+     *     row_number: int,
+     *     data: string,
+     *     error: string
+     * }>
+     * @throws \JsonException
      */
     private function transformRows(array|\Illuminate\Database\Eloquent\Collection $rows): array
     {

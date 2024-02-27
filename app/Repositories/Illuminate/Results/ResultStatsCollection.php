@@ -8,10 +8,10 @@ namespace App\Repositories\Illuminate\Results;
 class ResultStatsCollection
 {
     /**
-     * @param array{time: int, year: int} $fastestTime
-     * @param array{time: int, year: int} $fastestMan
-     * @param array{time: int, year: int} $fastestWoman
-     * @param array{time: int, year: int} $averageTime
+     * @param array{time: int, year: int}|array{} $fastestTime
+     * @param array{time: int, year: int}|array{} $fastestMan
+     * @param array{time: int, year: int}|array{} $fastestWoman
+     * @param array{time: int, year: int}|array{} $averageTime
      */
     public function __construct(
         public array $fastestTime = [],

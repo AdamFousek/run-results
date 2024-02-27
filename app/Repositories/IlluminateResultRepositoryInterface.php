@@ -23,7 +23,7 @@ interface IlluminateResultRepositoryInterface
      * @param string $raceTag
      * @return ?array{time: int, year: int}
      */
-    public function getFastestWomenByRaceIds(string $raceTag): ?array;
+    public function getFastestWomanByRaceIds(string $raceTag): ?array;
 
     /**
      * @param string $raceTag

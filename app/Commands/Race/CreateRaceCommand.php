@@ -24,10 +24,10 @@ class CreateRaceCommand
         $race = new Race();
         $race->name = $command->name;
         $race->description = $command->description;
-        $race->date = $date;
+        $race->date = $date ?: null;
         $race->time = $time;
         $race->location = $command->location;
-        $race->distance = $command->distance > 0 ? $command->distance : null;
+        $race->distance = $command->distance > 0 ? (string)$command->distance : null;
         $race->surface = $command->surface;
         $race->type = $command->type;
         $race->tag = $command->tag;
@@ -35,7 +35,7 @@ class CreateRaceCommand
         $race->region = $command->region;
         $race->latitude = $command->latitude;
         $race->longitude = $command->longitude;
-        $race->is_parent = $command->isParent;
+        $race->is_parent = $command->isParent ? 1 : 0;
         $race->parent_id = $command->parentId;
 
         $slug = $this->resolveSlug(Str::slug($command->name));

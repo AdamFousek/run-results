@@ -27,9 +27,10 @@ class Race
     private ?float $latitude = null;
     private ?float $longitude = null;
     private int $resultsCount;
+    /** @var Files[]  */
     private array $files;
-    private Carbon $createdAt;
-    private Carbon $updatedAt;
+    private ?Carbon $createdAt;
+    private ?Carbon $updatedAt;
     private Carbon $upsertedAt;
 
     public function getId(): int
@@ -229,22 +230,22 @@ class Race
         $this->files = $files;
     }
 
-    public function getCreatedAt(): Carbon
+    public function getCreatedAt(): ?Carbon
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(Carbon $createdAt): void
+    public function setCreatedAt(?Carbon $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): Carbon
+    public function getUpdatedAt(): ?Carbon
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(Carbon $updatedAt): void
+    public function setUpdatedAt(?Carbon $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

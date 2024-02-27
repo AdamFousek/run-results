@@ -13,9 +13,7 @@ class PairRunnerLogController extends Controller
 {
     public function __construct(
         private readonly PairRunnerLogCreateHandler $pairRunnerLogCreateHandler,
-    )
-    {
-
+    ) {
     }
 
     /**

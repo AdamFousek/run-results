@@ -11,8 +11,17 @@ use Illuminate\Support\Collection;
 class RunnerListTransformer
 {
     /**
-     * @param Collection<Runner> $collection
-     * @return array{array{id: int, firstName: string, lastName: string, year: int, resultsCount: int}}
+     * @param Collection<?Runner> $collection
+     * @return array<array{
+     *     id: int,
+     *     firstName: string,
+     *     lastName: string,
+     *     club: string|null,
+     *     city: string|null,
+     *     year: int,
+     *     gender: string|null,
+     *     resultsCount: int,
+     * }>
      */
     public function transform(Collection $collection): array
     {
