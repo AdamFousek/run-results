@@ -39,7 +39,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --no-interaction
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: MeiliSearch setup with Docker
         run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=${{ env.MEILISEARCH_KEY }} --no-analytics=true
@@ -49,8 +49,9 @@ jobs:
 
       - name: Prepare Laravel Application
         run: |
-          cp .env.ci .env
+          cp .env.testing .env
           php artisan key:generate
+          touch ./database/database.sqlite
 
       - name: Run tests
         run: php artisan test
