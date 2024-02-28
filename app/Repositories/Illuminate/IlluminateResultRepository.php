@@ -8,14 +8,22 @@ namespace App\Repositories\Illuminate;
 use App\Casts\TimeCast;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Result;
+use App\Models\Meilisearch\Runner;
+use App\Queries\Result\GetResultsQuery;
+use App\Queries\Runner\RunnerSearch;
+use App\Queries\Runner\RunnerSearchQuery;
 use App\Repositories\IlluminateResultRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use stdClass;
 
-class IlluminateResultRepository implements IlluminateResultRepositoryInterface
+readonly class IlluminateResultRepository implements IlluminateResultRepositoryInterface
 {
 
+    private const int LIMIT_RUNNERS = 50;
+
     public function __construct(
-        private readonly TimeCast $timeCast
+        private TimeCast $timeCast,
+        private RunnerSearchQuery $runnerSearchQuery,
     ) {
     }
 
@@ -131,5 +139,54 @@ class IlluminateResultRepository implements IlluminateResultRepositoryInterface
             'time' => $fastestTimeResult->time,
             'year' => $fastestTimeResult->year,
         ];
+    }
+
+    /**
+     * @param int $raceId
+     * @return string[]
+     */
+    public function getCategoriesByRaceId(int $raceId): array
+    {
+        $results = Result::query()
+            ->where('race_id', $raceId)
+            ->groupBy('category');
+
+        return $results->pluck('category')->toArray();
+    }
+
+    public function findResults(GetResultsQuery $query): LengthAwarePaginator
+    {
+        $search = $query->search;
+        $race = $query->race;
+        $page = $query->page;
+        $showFemale = $query->showFemale;
+        $showMale = $query->showMale;
+        $categories = $query->categories;
+
+        if ($search !== '') {
+            if (is_numeric($search)) {
+                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->paginate(self::LIMIT_RUNNERS);
+            }
+
+            $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, 100000));
+            $runnerIds = $runners->items->map(fn(Runner $runner) => $runner->getId())->toArray();
+            return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
+        }
+
+        $query = Result::whereRaceId($race->id)->with('runner');
+
+        if (!$showFemale) {
+            $query->withoutFemale();
+        }
+
+        if (!$showMale) {
+            $query->withoutMale();
+        }
+
+        if ($categories !== []) {
+            $query->whereIn('category', $categories);
+        }
+
+        return $query->orderBy('position')->paginate(self::LIMIT_RUNNERS);
     }
 }

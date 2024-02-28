@@ -6,17 +6,16 @@ use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Models\Illuminate\Race;
-use App\Models\Illuminate\Result;
 use App\Models\Illuminate\UploadedFiles;
-use App\Models\Meilisearch\Runner;
 use App\Queries\Race\RaceSearch;
 use App\Queries\Race\RaceSearchHandler;
-use App\Queries\Runner\RunnerSearch;
-use App\Queries\Runner\RunnerSearchQuery;
+use App\Queries\Result\GetCategoriesByRaceIdHandler;
+use App\Queries\Result\GetCategoriesByRaceIdQuery;
+use App\Queries\Result\GetResultsHandler;
+use App\Queries\Result\GetResultsQuery;
 use App\Services\PaginateService;
 use App\Services\RaceSortService;
 use App\Services\ResultStatsService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,18 +24,17 @@ class RaceController extends Controller
 {
     private const int LIMIT = 30;
 
-    private const int LIMIT_RUNNERS = 50;
-
     public function __construct(
         private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
         private readonly RaceRunnerListTransformer $raceRunnerListTransformer,
         private readonly RaceTransformer $raceTransformer,
-        private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly RaceSearchHandler $raceSearchHandler,
         private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
         private readonly RaceSortService $sortService,
         private readonly ResultStatsService $resultStatsService,
+        private readonly GetCategoriesByRaceIdHandler $getCategoriesByRaceIdHandler,
+        private readonly GetResultsHandler $getResultsHandler,
     ) {
     }
 
@@ -77,9 +75,11 @@ class RaceController extends Controller
         $page = (int)$request->get('page', 1);
         $showFemale = trim($request->get('showFemale', 'true'));
         $showMale = trim($request->get('showMale', 'true'));
+        $categories = $request->get('filterCategories', []);
         $filter = [
             'showFemale' => $showFemale === 'true',
             'showMale' => $showMale === 'true',
+            'categories' => $categories,
         ];
 
         $files = $race->files->filter(fn(UploadedFiles $file) => (bool)$file->is_public)->map(fn(UploadedFiles $file) => [
@@ -92,7 +92,15 @@ class RaceController extends Controller
         $paginate = null;
         $stats = null;
         if (!$race->is_parent) {
-            $results = $this->resolveResults($race, $search, $page, $filter);
+            $results = $this->getResultsHandler->handle(new GetResultsQuery(
+                race: $race,
+                search: $search,
+                page: $page,
+                showFemale: $filter['showFemale'],
+                showMale: $filter['showMale'],
+                categories: $filter['categories'],
+            ));
+
             $paginate = [
                 'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
@@ -122,42 +130,11 @@ class RaceController extends Controller
             'files' => $files,
             'filter' => $filter,
             'stats' => $stats,
+            'categories' => $this->getCategoriesByRaceIdHandler->handle(new GetCategoriesByRaceIdQuery($race->id)),
         ];
 
 
         return Inertia::render('Races/Show', $data);
-    }
-
-    /**
-     * @param Race $race
-     * @param string $search
-     * @param int $page
-     * @param array<string, bool> $filter
-     * @return LengthAwarePaginator
-     */
-    private function resolveResults(Race $race, string $search, int $page, array $filter): LengthAwarePaginator
-    {
-        if ($search !== '') {
-            if (is_numeric($search)) {
-                return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->paginate(self::LIMIT_RUNNERS);
-            }
-
-            $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, 100000));
-            $runnerIds = $runners->items->map(fn(Runner $runner) => $runner->getId())->toArray();
-            return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
-        }
-
-        $query = Result::whereRaceId($race->id)->with('runner');
-
-        if (!$filter['showFemale']) {
-            $query->withoutFemale();
-        }
-
-        if (!$filter['showMale']) {
-            $query->withoutMale();
-        }
-
-        return $query->orderBy('position')->paginate(self::LIMIT_RUNNERS);
     }
 
     private function resolveMetaDescription(Race $race, int $total): string
