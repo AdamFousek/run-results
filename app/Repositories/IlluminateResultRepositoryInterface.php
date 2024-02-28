@@ -5,6 +5,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Queries\Result\GetResultsQuery;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 interface IlluminateResultRepositoryInterface
 {
     /**
@@ -30,4 +33,16 @@ interface IlluminateResultRepositoryInterface
      * @return ?array{time: int}
      */
     public function getAverageTimeByRaceIds(string $raceTag): ?array;
+
+    /**
+     * @param int $raceId
+     * @return string[]
+     */
+    public function getCategoriesByRaceId(int $raceId): array;
+
+    /**
+     * @param GetResultsQuery $query
+     * @return LengthAwarePaginator
+     */
+    public function findResults(GetResultsQuery $query): LengthAwarePaginator;
 }

@@ -164,6 +164,7 @@ export default {
         filter: {
             onlyFemale: 'Zobrazit ženy',
             onlyMale: 'Zobrazit muže',
+            byCategory: 'Podle kategorie',
         }
     },
     sort: {

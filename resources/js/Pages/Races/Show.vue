@@ -1,7 +1,7 @@
 <script setup>
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NIcon, NInput, NCheckbox } from 'naive-ui'
+import { NIcon, NInput, NCheckbox, NButton } from 'naive-ui'
 import { ref, onMounted, watch } from 'vue'
 import Pagination from '@/Components/Pagination.vue'
 import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
@@ -47,7 +47,10 @@ const props = defineProps({
     },
     stats: {
         type: Object,
-    }
+    },
+    categories: {
+        type: Array,
+    },
 })
 
 const search = ref(props.search)
@@ -55,6 +58,7 @@ const searching = ref(false)
 const loading = ref(true)
 const showFemale = ref(props.filter?.showFemale)
 const showMale = ref(props.filter?.showMale)
+const filterCategories = ref(props.filter?.categories)
 
 watch([showFemale, showMale], () => {
     searchRaces()
@@ -66,18 +70,35 @@ onMounted(() => {
 
 const searchRaces = () => {
     searching.value = true
-    router.reload({
+    const data = {
+        query: search.value,
+        showFemale: showFemale.value,
+        showMale: showMale.value,
+        filterCategories: filterCategories.value,
+    }
+
+    router.replace(route(route().current(), { race: props.race.slug }),{
         data: {
-            query: search.value,
-            showFemale: showFemale.value,
-            showMale: showMale.value,
+            ...data,
         },
-        only: ['results', 'paginate'],
+        only: ['results', 'paginate', 'filter'],
         preserveState: true,
+        replace: true,
+        preserveScroll: true,
         onFinish() {
             searching.value = false
         }
     })
+}
+
+const selectCategory = (category) => {
+    if (props.filter?.categories.includes(category)) {
+        filterCategories.value = filterCategories.value.filter((c) => c !== category)
+    } else {
+        filterCategories.value.push(category)
+    }
+
+    searchRaces()
 }
 </script>
 
@@ -151,8 +172,8 @@ const searchRaces = () => {
                 </div>
 
                 <section v-if="!race.isParent">
-                    <div class="my-4 grid grid-cols-6 gap-4">
-                        <div class="flex-shrink-0 col-span-3">
+                    <div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">
+                        <div class="flex-shrink-0 md:col-span-3">
                             <NInput type="text"
                                     v-model:value="search"
                                     :placeholder="$t('runner.search')"
@@ -161,13 +182,27 @@ const searchRaces = () => {
                                     @input="searchRaces"
                             />
                         </div>
-                        <div class="col-span-3 flex items-center justify-end">
+                        <div class="md:col-span-3 flex items-center justify-center md:justify-end">
                             <NCheckbox v-model:checked="showMale" @input="searchRaces">
                                 {{ $t('result.filter.onlyMale') }}
                             </NCheckbox>
                             <NCheckbox v-model:checked="showFemale" @input="searchRaces">
                                 {{ $t('result.filter.onlyFemale') }}
                             </NCheckbox>
+                        </div>
+                        <div class="col-span-6">
+                            <div class="font-bold">{{ $t('result.filter.byCategory') }}</div>
+                            <div class="flex justify-start gap-4">
+                                <NButton
+                                    v-for="category in categories"
+                                    :key="category"
+                                    :type="filter?.categories.includes(category) ? 'success' : 'info'"
+                                    @click="selectCategory(category)"
+                                    secondary
+                                    rounded>
+                                    {{ category }}
+                                </NButton>
+                            </div>
                         </div>
                     </div>
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">

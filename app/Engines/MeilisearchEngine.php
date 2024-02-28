@@ -17,59 +17,58 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
      * @param Collection<Race|Runner> $models
      * @return void
      */
-    public function update($models): void
+    public function update($models)
     {
         if ($models->isEmpty()) {
             return;
         }
 
-        /** @var Race|Runner $model */
+        /** @var Race|Runner|null $model */
         $model = $models->first();
-
-        $searchableData = $model->getAllSearchableWith();
-        if ($searchableData !== []) {
-            $models->load($searchableData);
+        if ($model === null) {
+            return;
         }
 
-        $fields = collect($model->getRichTextFieldsSearchable())
-            ->map(fn ($field) => 'richText'.Str::studly($field))
-            ->all();
-        if ($fields !== []) {
+        if ($model->getAllSearchableWith() !== []) {
+            $models->load($model->getAllSearchableWith());
+        }
+
+        if ($model->getRichTextFieldsSearchable() !== []) {
+            $fields = collect($model->getRichTextFieldsSearchable())
+                ->map(fn ($field) => 'richText'.Str::studly($field))
+                ->all();
+
             $models->load($fields);
         }
 
         $index = $this->meilisearch->index($model->searchableAs());
 
         if ($this->softDelete && $this->usesSoftDelete($model)) {
-            foreach ($models as $model) {
-                $model->pushSoftDeleteMetadata();
-            }
+            $models->each->pushSoftDeleteMetadata();
         }
 
-        $objects = collect();
+        $objects = $models->map(function (Race|Runner $model) {
+            if ($model->getSerializer() !== null) {
+                $serializer = app($model->getSerializer());
 
-        foreach ($models as $upsertedModel) {
-            if ($upsertedModel->getSerializer() !== null) {
-                $serializer = app($upsertedModel->getSerializer());
-
-                $searchableData = $serializer->serialize($upsertedModel);
+                $searchableData = $serializer->serialize($model);
             } else {
-                $searchableData = $upsertedModel->toSearchableArray();
+                $searchableData = $model->toSearchableArray();
             }
 
             if (empty($searchableData)) {
-                continue;
+                return;
             }
 
-            $objects->add(array_merge(
+            return array_merge(
                 $searchableData,
                 $model->scoutMetadata(),
                 [$model->getScoutKeyName() => $model->getScoutKey()],
-            ));
-        }
+            );
+        })->filter()->values()->all();
 
-        if ($objects->isNotEmpty()) {
-            $index->addDocuments($objects->values()->all(), $model->getScoutKeyName());
+        if (! empty($objects)) {
+            $index->addDocuments($objects, $model->getScoutKeyName());
         }
     }
 }
