@@ -5,7 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.11",
@@ -30,7 +30,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.1",
-        "spatie/laravel-ignition": "^2.0"
+        "spatie/laravel-ignition": "^2.0",
+        "doctrine/dbal": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -60,6 +61,9 @@
         ],
         "phpstan": [
             "./vendor/bin/phpstan analyse --memory-limit=-1"
+        ],
+        "test": [
+            "@php artisan test --stop-on-failure"
         ]
     },
     "extra": {

@@ -21,13 +21,13 @@ class RaceSerializer
      *     location: string,
      *     region: string,
      *     distance: int,
-     *     vintage: int,
+     *     vintage: int|null,
      *     surface: string,
      *     type: string,
      *     tag: string,
      *     isParent: bool,
      *     parent: array{id: int, name: string, slug: string}|null,
-     *     _geo: array{lat: float, lng: float},
+     *     _geo: array{lat: float|null, lng: float|null},
      *     files: array{
      *     id: int,
      *     name: string,
@@ -49,13 +49,13 @@ class RaceSerializer
             'description' => $race->description->toPlainText(),
             'date' => $race->date?->getTimestamp(),
             'time' => $race->time?->format('H:i'),
-            'location' => $race->location,
+            'location' => $race->location ?? '',
             'region' => $race->region,
             'distance' => $race->getRawOriginal('distance'),
             'vintage' => $race->vintage,
-            'surface' => $race->surface,
-            'type' => $race->type,
-            'tag' => $race->tag,
+            'surface' => $race->surface ?? '',
+            'type' => $race->type ?? '',
+            'tag' => $race->tag ?? '',
             'isParent' => (bool)$race->is_parent,
             'parent' => $race->parent !== null ? [
                 'id' => $race->parent->id,
@@ -74,6 +74,10 @@ class RaceSerializer
         ];
     }
 
+    /**
+     * @param Race $race
+     * @return array<int, array{id: int, name: string, url: string, isPublic: bool}>
+     */
     private function resolveFiles(Race $race): array
     {
         $result = [];

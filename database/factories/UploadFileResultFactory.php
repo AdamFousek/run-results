@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Illuminate\UploadFileResult;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UploadFileResultFactory extends Factory
 {
+    protected $model = UploadFileResult::class;
+
     /**
      * Define the model's default state.
      *

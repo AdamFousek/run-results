@@ -30,7 +30,7 @@ class LogRequest
                 'type' => 'pageview',
                 'attribute' => $path,
                 'useragent' => $request->userAgent(),
-                'visitorid' => crypt($request->ip(), 'measurement'),
+                'visitorid' => crypt($request->ip() ?? 'not-recognized', 'measurement'),
             ]);
 
             return $response;

@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+  workflow_dispatch:
+
+jobs:
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install composer dependencies
+        run: composer install -n --prefer-dist
+
+      - name: Run Static Analysis
+        run: composer phpstan --error-format=github
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    env:
+      MEILISEARCH_KEY: masterKey
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: MeiliSearch setup with Docker
+        run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=${{ env.MEILISEARCH_KEY }} --no-analytics=true
+
+      - name: Redis setup with Docker
+        run: docker run -v /local-data/:/data -d --name redis-stack-server -p 6379:6379 redis:alpine -v ./local-data/:/data
+
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.testing .env
+          php artisan key:generate
+          touch ./database/database.sqlite
+          php artisan ziggy:generate
+          npm install
+          npm run build
+
+      - name: Run tests
+        run: php artisan test

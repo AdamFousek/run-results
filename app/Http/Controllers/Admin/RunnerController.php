@@ -141,7 +141,8 @@ class RunnerController extends AdminController
         $data = $request->validated();
 
         try {
-            $targetRunner = Runner::findOrFail($data['runnerId']);
+            /** @var Runner $targetRunner */
+            $targetRunner = Runner::findOrFail($data['runnerId'])->first();
 
             $targetRunner = $this->mergerRunnerHandler->handle(new MergerRunner(
                 source: $runner,

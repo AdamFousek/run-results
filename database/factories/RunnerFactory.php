@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Illuminate\Runner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
  */
 class RunnerFactory extends Factory
 {
+    protected $model = Runner::class;
+
     /**
      * Define the model's default state.
      *

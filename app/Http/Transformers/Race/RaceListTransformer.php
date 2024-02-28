@@ -12,7 +12,22 @@ class RaceListTransformer
 {
     /**
      * @param array<int, ?Race> $items
-     * @return array<array<string, string|int|float>>
+     * @return array<array{
+     *      id: int,
+     *      name: string,
+     *      slug: string,
+     *      date: string|null,
+     *      formDate: string|null,
+     *      location: string|null,
+     *      surface: string|null,
+     *      type: string|null,
+     *      tag: string|null,
+     *      vintage: int|null,
+     *      region: string|null,
+     *      distance: string|null,
+     *      distanceRaw: int|null,
+     *      resultsCount: int
+     *  }>
      */
     public function transform(Collection|array $items): array
     {
@@ -30,7 +45,22 @@ class RaceListTransformer
 
     /**
      * @param Race $race
-     * @return array<string, string|int|float>
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     slug: string,
+     *     date: string|null,
+     *     formDate: string|null,
+     *     location: string|null,
+     *     surface: string|null,
+     *     type: string|null,
+     *     tag: string|null,
+     *     vintage: int|null,
+     *     region: string|null,
+     *     distance: string|null,
+     *     distanceRaw: int|null,
+     *     resultsCount: int
+     * }
      */
     private function transformItem(Race $race): array
     {

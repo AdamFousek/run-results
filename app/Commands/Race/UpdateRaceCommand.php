@@ -25,10 +25,10 @@ class UpdateRaceCommand
 
         $race->name = $command->name;
         $race->description = $command->description;
-        $race->date = $date;
+        $race->date = $date ?: null;
         $race->time = $time;
         $race->location = $command->location;
-        $race->distance = $command->distance;
+        $race->distance = $command->distance > 0 ? (string)$command->distance : null;
         $race->surface = $command->surface;
         $race->type = $command->type;
         $race->tag = $command->tag;
@@ -36,7 +36,7 @@ class UpdateRaceCommand
         $race->region = $command->region;
         $race->latitude = $command->latitude;
         $race->longitude = $command->longitude;
-        $race->is_parent = $command->isParent;
+        $race->is_parent = $command->isParent ? 1 : 0;
         $race->parent_id = $command->parentId;
 
         $race->save();

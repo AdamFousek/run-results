@@ -6,14 +6,39 @@ declare(strict_types=1);
 namespace App\Http\Transformers\Meilisearch;
 
 use App\Casts\DistanceCast;
+use App\Models\Meilisearch\Files;
+use App\Models\Meilisearch\ParentRace;
 use App\Models\Meilisearch\Race;
 use Illuminate\Support\Collection;
 
 class RaceListTransformer
 {
     /**
-     * @param Collection<Race> $collection
-     * @return array{array{id: int, firstName: string, lastName: string, year: int, resultsCount: int}}
+     * @param Collection<?Race> $collection
+     * @return array<array{
+     *     id: int,
+     *     name: string,
+     *     slug: string,
+     *     description: string|null,
+     *     date: string|null,
+     *     time: string|null,
+     *     location: string|null,
+     *     region: string|null,
+     *     distance: string|null,
+     *     vintage: int|null,
+     *     surface: string|null,
+     *     type: string|null,
+     *     tag: string|null,
+     *     isParent: bool,
+     *     parent: ParentRace|null,
+     *     latitude: float|null,
+     *     longitude: float|null,
+     *     resultsCount: int,
+     *     files: Files[],
+     *     createdAt: int|null,
+     *     updatedAt: int|null,
+     *     upsertedAt: int
+     * }>
      */
     public function transform(Collection $collection): array
     {

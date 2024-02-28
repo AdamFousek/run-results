@@ -20,16 +20,16 @@ class RaceDeserializer
      *      description: string,
      *      date: int|null,
      *      time: string|null,
-     *      location: string,
-     *      region: string,
-     *      distance: int,
-     *      vintage: int,
-     *      surface: string,
-     *      type: string,
-     *      tag: string,
+     *      location: string|null,
+     *      region: string|null,
+     *      distance: int|null,
+     *      vintage: int|null,
+     *      surface: string|null,
+     *      type: string|null,
+     *      tag: string|null,
      *      isParent: bool,
      *      parent: array{id: int, name: string, slug: string}|null,
-     *      _geo: array{lat: float, lng: float},
+     *      _geo: array{lat: float|null, lng: float|null},
      *      files: array{
      *      id: int,
      *      name: string,
@@ -41,7 +41,7 @@ class RaceDeserializer
      *      updatedAt: int|null,
      *      upsertedAt: int
      *  } $data
-     * @return void
+     * @return Race
      */
     public function deserialize(array $data): Race
     {
@@ -56,9 +56,9 @@ class RaceDeserializer
         $race->setRegion($data['region'] ?? '');
         $race->setDistance((int)($data['distance'] ?? 0));
         $race->setVintage($data['vintage'] ?? null);
-        $race->setSurface($data['surface']);
-        $race->setType($data['type']);
-        $race->setTag($data['tag']);
+        $race->setSurface($data['surface'] ?? '');
+        $race->setType($data['type'] ?? '');
+        $race->setTag($data['tag'] ?? '');
         $race->setIsParent((bool)$data['isParent']);
         $race->setLatitude($data['_geo']['lat'] ?? null);
         $race->setLongitude($data['_geo']['lng'] ?? null);
@@ -72,6 +72,37 @@ class RaceDeserializer
         return $race;
     }
 
+    /**
+     * @param array{
+     *       id: int,
+     *       name: string,
+     *       slug: string,
+     *       description: string,
+     *       date: int|null,
+     *       time: string|null,
+     *       location: string|null,
+     *       region: string|null,
+     *       distance: int|null,
+     *       vintage: int|null,
+     *       surface: string|null,
+     *       type: string|null,
+     *       tag: string|null,
+     *       isParent: bool,
+     *       parent: array{id: int, name: string, slug: string}|null,
+     *       _geo: array{lat: float|null, lng: float|null},
+     *       files: array{
+     *       id: int,
+     *       name: string,
+     *       url: string,
+     *       isPublic: bool
+     *       }[],
+     *       runnerCount: int,
+     *       createdAt: int|null,
+     *       updatedAt: int|null,
+     *       upsertedAt: int
+     *   } $data
+     * @return ParentRace|null
+     */
     private function resolveParent(array $data): ?ParentRace
     {
         if ($data['parent'] === null) {
@@ -86,12 +117,39 @@ class RaceDeserializer
     }
 
     /**
-     * @param Files[]|array{} $data
-     * @return array
+     * @param array{
+     *       id: int,
+     *       name: string,
+     *       slug: string,
+     *       description: string,
+     *       date: int|null,
+     *       time: string|null,
+     *       location: string|null,
+     *       region: string|null,
+     *       distance: int|null,
+     *       vintage: int|null,
+     *       surface: string|null,
+     *       type: string|null,
+     *       tag: string|null,
+     *       isParent: bool,
+     *       parent: array{id: int, name: string, slug: string}|null,
+     *       _geo: array{lat: float|null, lng: float|null},
+     *       files: array{
+     *       id: int,
+     *       name: string,
+     *       url: string,
+     *       isPublic: bool
+     *       }[],
+     *       runnerCount: int,
+     *       createdAt: int|null,
+     *       updatedAt: int|null,
+     *       upsertedAt: int
+     *   } $data
+     * @return Files[]
      */
     private function resolveFiles(array $data): array
     {
-        return array_map(function (array $f) {
+        return array_map(static function (array $f) {
             $file = new Files();
             $file->setId($f['id']);
             $file->setName($f['name']);

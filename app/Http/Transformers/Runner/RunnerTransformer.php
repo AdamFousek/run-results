@@ -11,14 +11,22 @@ class RunnerTransformer
 {
     /**
      * @param Runner $runner
-     * @return array<string, string|int|float>
+     * @return array{
+     *      id: int,
+     *      firstName: string,
+     *      lastName: string,
+     *      year: int,
+     *      city: string|null,
+     *      club: string|null,
+     *      results_count: int
+     *  }
      */
     public function transform(Runner $runner): array
     {
         return [
             'id' => $runner->id,
-            'first_name' => $runner->first_name,
-            'last_name' => $runner->last_name,
+            'firstName' => $runner->first_name,
+            'lastName' => $runner->last_name,
             'year' => $runner->year,
             'city' => $runner->city,
             'club' => $runner->club,

@@ -23,9 +23,9 @@ use Inertia\Response;
 
 class RaceController extends Controller
 {
-    private const LIMIT = 30;
+    private const int LIMIT = 30;
 
-    private const LIMIT_RUNNERS = 50;
+    private const int LIMIT_RUNNERS = 50;
 
     public function __construct(
         private readonly PaginateService $paginateService,
@@ -82,7 +82,7 @@ class RaceController extends Controller
             'showMale' => $showMale === 'true',
         ];
 
-        $files = $race->files->filter(fn(UploadedFiles $file) => $file->is_public)->map(fn(UploadedFiles $file) => [
+        $files = $race->files->filter(fn(UploadedFiles $file) => (bool)$file->is_public)->map(fn(UploadedFiles $file) => [
             'name' => $file->name,
             'url' => $file->file_path,
         ]);
@@ -101,13 +101,13 @@ class RaceController extends Controller
             ];
         } else {
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
-            if ($race->tag !== null || $race->tag !== '') {
+            if ($race->tag !== null && $race->tag !== '') {
                 $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
             }
         }
 
-        $total = $childRaces !== null ? $childRaces->count() : $results->total();
-        $metaDescription = $this->resolveMetaDescription($race, $total);
+        $total = $childRaces !== null ? $childRaces->count() : $results?->total();
+        $metaDescription = $this->resolveMetaDescription($race, (int)$total);
 
         $data = [
             'race' => $this->raceTransformer->transform($race),
@@ -142,7 +142,7 @@ class RaceController extends Controller
                 return Result::whereRaceId($race->id)->whereStartingNumber((int)$search)->orderBy('position')->paginate(self::LIMIT_RUNNERS);
             }
 
-            $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, self::LIMIT_RUNNERS));
+            $runners = $this->runnerSearchQuery->handle(new RunnerSearch($search, $page, 100000));
             $runnerIds = $runners->items->map(fn(Runner $runner) => $runner->getId())->toArray();
             return Result::whereRaceId($race->id)->orderBy('position')->with('runner')->whereIn('runner_id', $runnerIds)->paginate(self::LIMIT_RUNNERS);
         }

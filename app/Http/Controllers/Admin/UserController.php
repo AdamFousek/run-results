@@ -18,7 +18,7 @@ class UserController extends AdminController
     ) {
     }
 
-    private const LIMIT = 50;
+    private const int LIMIT = 50;
 
     public function index(Request $request): Response
     {
@@ -39,7 +39,7 @@ class UserController extends AdminController
         ]);
     }
 
-    public function edit()
+    public function edit(): void
     {
 
     }

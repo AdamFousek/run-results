@@ -81,7 +81,7 @@ class MeilisearchRaceRepository implements RaceRepository
 
     /**
      * @param GetRaceIdsBySearch $search
-     * @return array
+     * @return int[]
      */
     public function getIds(GetRaceIdsBySearch $search): array
     {

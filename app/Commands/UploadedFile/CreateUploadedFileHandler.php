@@ -14,7 +14,7 @@ class CreateUploadedFileHandler
         $uploadedFile = new UploadedFiles();
         $uploadedFile->file_path = $command->path;
         $uploadedFile->name = $command->name;
-        $uploadedFile->is_public = $command->isPublic;
+        $uploadedFile->is_public = $command->isPublic ? 1 : 0;
         $uploadedFile->filable_id = $command->filableId;
         $uploadedFile->filable_type = $command->filableType;
 

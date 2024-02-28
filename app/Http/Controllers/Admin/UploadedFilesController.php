@@ -15,7 +15,7 @@ class UploadedFilesController extends AdminController
     {
         $this->authorize('update', $uploadedFiles);
 
-        $uploadedFiles->is_public = !$uploadedFiles->is_public;
+        $uploadedFiles->is_public = $uploadedFiles->is_public === 1 ? 0 : 1;
         $uploadedFiles->save();
 
         $this->withMessage(self::ALERT_SUCCESS, trans('messages.file_updated_successfuly'));

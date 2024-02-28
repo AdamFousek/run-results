@@ -10,24 +10,32 @@ use App\Queries\Result\GetStatsByRaceTagQuery;
 use Illuminate\Support\Facades\Cache;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class ResultStatsService
+readonly class ResultStatsService
 {
     public function __construct(
-        private readonly GetStatsByRaceTagHandler $getStatsByRaceIdsHandler,
+        private GetStatsByRaceTagHandler $getStatsByRaceIdsHandler,
     ) {
     }
 
     /**
      * @param string $raceTag
      * @return array{
-     *     fastestTime: array{time: int, year: int},
-     *     fastestMan: array{time: int, year: int},
-     *     fastestWoman: array{time: int, year: int},
-     *     averageTime: array{time: int}
+     *     fastestTime: array{time: int, year: int}|null,
+     *     fastestMan: array{time: int, year: int}|null,
+     *     fastestWoman: array{time: int, year: int}|null,
+     *     averageTime: array{time: int}|null,
      * }
      */
     public function provideStatsByRaceIds(string $raceTag): array
     {
+        /**
+         * @var array{
+         *     fastestTime: array{time: int, year: int}|null,
+         *     fastestMan: array{time: int, year: int}|null,
+         *     fastestWoman: array{time: int, year: int}|null,
+         *     averageTime: array{time: int}|null,
+         *     }|array{} $cachedData
+         */
         $cachedData = Cache::store('redis')->tags('result_stats_' . $raceTag)->get($raceTag, []);
         if ($cachedData !== []) {
             return $cachedData;
@@ -40,8 +48,12 @@ class ResultStatsService
         return $stats;
     }
 
-    public function invalidateCache(string $raceTag): void
+    public function invalidateCache(?string $raceTag): void
     {
+        if ($raceTag === null) {
+            return;
+        }
+
         Cache::store('redis')->tags('result_stats_' . $raceTag)->flush();
     }
 }

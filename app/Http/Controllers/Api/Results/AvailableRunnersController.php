@@ -3,23 +3,18 @@
 namespace App\Http\Controllers\Api\Results;
 
 use App\Http\Controllers\Controller;
-use App\Http\Transformers\Runner\RunnerListTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AvailableRunnersController extends Controller
 {
-    public function __construct(
-        private readonly RunnerListTransformer $runnerListTransformer,
-    ) {
-    }
-
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $this->authorize('viewAny', Result::class);
 

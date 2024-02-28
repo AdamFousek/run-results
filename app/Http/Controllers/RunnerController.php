@@ -20,7 +20,7 @@ use Inertia\Response;
 
 class RunnerController extends Controller
 {
-    private const LIMIT = 30;
+    private const int LIMIT = 30;
 
     public function __construct(
         private readonly RunnerRaceListTransformer $runnerRaceListTransformer,

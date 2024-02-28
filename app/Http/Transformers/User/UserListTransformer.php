@@ -18,7 +18,20 @@ class UserListTransformer
 
     /**
      * @param array<int, ?User> $users
-     * @return array<array<string, string|int|float|null|array>>
+     * @return array<array{
+     *     id: int,
+     *      username: string,
+     *      email: string,
+     *      runner: array{
+     *          id: int,
+     *          firstName: string,
+     *          lastName: string,
+     *          year: int,
+     *          city: string|null,
+     *          club: string|null,
+     *          results_count: int
+     *      }|null
+     *  }>
      */
     public function transform(array $users): array
     {
