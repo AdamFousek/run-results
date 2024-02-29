@@ -3,12 +3,9 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { NButton, NInput, NIcon } from 'naive-ui'
 import { PlusSharp } from '@vicons/material'
-import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import RunnerList from '@/Pages/Admin/Runners/Partials/RunnerList.vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
-
-const {t} = useI18n();
 
 const props = defineProps({
     runners: {
@@ -60,7 +57,12 @@ const pagination = computed(() => {
     <Head :title="$t('head.admin.runners')"/>
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.admin.runners') }}</h2>
+            <div class="flex justify-between">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('head.admin.runners') }}</h2>
+                <NButton round type="warning" @click="router.get(route('admin.runners.duplicity'))">
+                    {{ $t('admin.runner.duplicity') }}
+                </NButton>
+            </div>
         </template>
 
         <div class="py-4">

@@ -24,8 +24,8 @@ class RunnerListTransformer
 
             $result[] = [
                 'id' => $runner->id,
-                'first_name' => $runner->first_name,
-                'last_name' => $runner->last_name,
+                'firstName' => $runner->first_name,
+                'lastName' => $runner->last_name,
                 'year' => $runner->year,
             ];
         }

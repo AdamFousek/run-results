@@ -33,7 +33,6 @@ const props = defineProps({
 })
 
 const search = ref(props.search)
-const unmounted = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
 
 watch(search, (value) => {

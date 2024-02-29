@@ -142,7 +142,7 @@ class RunnerController extends AdminController
 
         try {
             /** @var Runner $targetRunner */
-            $targetRunner = Runner::findOrFail($data['runnerId'])->first();
+            $targetRunner = Runner::whereId($data['runnerId'])->first();
 
             $targetRunner = $this->mergerRunnerHandler->handle(new MergerRunner(
                 source: $runner,

@@ -7,6 +7,7 @@ namespace App\Repositories\Illuminate;
 
 use App\Models\Illuminate\Runner;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
 {
@@ -18,5 +19,21 @@ class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
         $source->delete();
 
         return $target;
+    }
+
+    #[\Override]
+    public function findDuplicityByLastName(): Collection
+    {
+        $sameLastNameAndYear = Runner::query()
+            ->select('last_name')
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('last_name', 'year')
+            ->having('count', '>', 1)
+            ->get();
+
+        return Runner::query()
+            ->whereIn('last_name', $sameLastNameAndYear->pluck('last_name'))
+            ->orderBy('last_name')
+            ->get();
     }
 }
