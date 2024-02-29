@@ -76,6 +76,7 @@ export default {
             races_update: 'Administrace - Upravit závod',
             results: 'Administrace - Výsledky',
             measurement: 'Administrace - Měření',
+            runnersDuplicity: 'Administrace - Duplicitní závodníci',
         }
     },
     menu: {
@@ -211,6 +212,7 @@ export default {
             resultCount: 'Počet výsledků',
             selectedRunner: 'Vybraný závodník',
             changeRunner: 'Změnit závodníka',
+            duplicity: 'Duplicitní závodníci',
         },
         races: {
             create: 'Vytvořit závod',

@@ -103,12 +103,27 @@ class HandleUploadFileResultService
             ->where('last_name', $data[self::LAST_NAME])
             ->get();
 
+        $yearAndLastNameRunners = Runner::query()
+            ->where('last_name', $data[self::LAST_NAME])
+            ->where('year', $year)
+            ->count();
+
         $runnersBasedOnName = $runners->count();
         $runners = $runners->filter(function (Runner $runner) use ($year) {
             return $runner->year === $year;
         });
         $afterFilter = $runners->count();
+
         if ($afterFilter < $runnersBasedOnName) {
+            $log = new UploadFileResultRow();
+            $log->upload_file_result_id = $uploadFileResult->id;
+            $log->row_number = $this->row;
+            $log->data = json_encode($data, JSON_THROW_ON_ERROR);
+            $log->error = trans(ResultRowEnum::MULTIPLE_NAMES->trans());
+            $log->save();
+        }
+
+        if ($afterFilter !== $yearAndLastNameRunners) {
             $log = new UploadFileResultRow();
             $log->upload_file_result_id = $uploadFileResult->id;
             $log->row_number = $this->row;
