@@ -44,7 +44,10 @@ readonly class DuplicityRunnersService
             $removeFromGroup[] = $lastName;
         }
 
-        return $runners->filter(function (Runner $runner) use ($removeFromGroup): bool {
+        return $runners->filter(function ($runner) use ($removeFromGroup): bool {
+            if (!$runner instanceof Runner) {
+                return false;
+            }
             return !in_array($runner->last_name, $removeFromGroup, true);
         });
     }

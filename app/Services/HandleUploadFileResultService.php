@@ -87,7 +87,9 @@ class HandleUploadFileResultService
 
     /**
      * @param string[] $data
+     * @param UploadFileResult $uploadFileResult
      * @return ?Runner
+     * @throws \JsonException
      */
     private function resolveRunner(array $data, UploadFileResult $uploadFileResult): ?Runner
     {
@@ -285,7 +287,7 @@ class HandleUploadFileResultService
     }
 
     /**
-     * @param array $data
+     * @param string[] $data
      * @return int[]
      */
     private function resolveBirthDay(array $data): array
