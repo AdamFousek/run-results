@@ -4,7 +4,7 @@ namespace App\Observers;
 
 
 use App\Models\Illuminate\Result;
-use App\Services\ResultStatsService;
+use App\Services\Providers\ResultStatsService;
 
 class ResultObserver
 {
