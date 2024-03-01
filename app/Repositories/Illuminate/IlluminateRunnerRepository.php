@@ -25,7 +25,7 @@ class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
     public function findDuplicityByLastName(): Collection
     {
         $sameLastNameAndYear = Runner::query()
-            ->select('last_name')
+            ->select('last_name', 'year')
             ->selectRaw('COUNT(*) as count')
             ->groupBy('last_name', 'year')
             ->having('count', '>', 1)
@@ -33,6 +33,7 @@ class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
 
         return Runner::query()
             ->whereIn('last_name', $sameLastNameAndYear->pluck('last_name'))
+            ->whereIn('year', $sameLastNameAndYear->pluck('year'))
             ->orderBy('last_name')
             ->get();
     }

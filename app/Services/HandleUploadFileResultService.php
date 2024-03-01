@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Commands\UploadedFile\CreateUploadFileResultRow;
+use App\Commands\UploadedFile\CreateUploadFileResultRowHandler;
 use App\Models\Illuminate\Enums\ResultRowEnum;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Result;
@@ -17,18 +19,23 @@ use Illuminate\Support\Str;
 
 class HandleUploadFileResultService
 {
-    private const POSITION = 0;
-    private const STARTING_NUMBER = 1;
-    private const LAST_NAME = 2;
-    private const FIRST_NAME = 3;
-    private const DATE_OF_BIRTH = 4;
-    private const CLUB = 5;
-    private const TIME = 6;
-    private const CATEGORY_POSITION = 7;
-    private const CATEGORY = 8;
-    private const GENDER = 9;
+    private const int POSITION = 0;
+    private const int STARTING_NUMBER = 1;
+    private const int LAST_NAME = 2;
+    private const int FIRST_NAME = 3;
+    private const int DATE_OF_BIRTH = 4;
+    private const int CLUB = 5;
+    private const int TIME = 6;
+    private const int CATEGORY_POSITION = 7;
+    private const int CATEGORY = 8;
+    private const int GENDER = 9;
 
     private int $row = 0;
+
+    public function __construct(
+        private readonly CreateUploadFileResultRowHandler $createUploadFileResultRowHandler,
+    ) {
+    }
 
     public function handle(UploadFileResult $results): void
     {
@@ -80,21 +87,13 @@ class HandleUploadFileResultService
 
     /**
      * @param string[] $data
+     * @param UploadFileResult $uploadFileResult
      * @return ?Runner
+     * @throws \JsonException
      */
     private function resolveRunner(array $data, UploadFileResult $uploadFileResult): ?Runner
     {
-        $birthDate = explode('.', $data[self::DATE_OF_BIRTH] ?? '0.0.0');
-        $month = 0;
-        $day = 0;
-        if (count($birthDate) < 3) {
-            $year = (int)$data[self::DATE_OF_BIRTH];
-        } else {
-            $year = (int)($birthDate[2] ?? 0);
-            $month = (int)($birthDate[1] ?? 0);
-            $day = (int)($birthDate[0] ?? 0);
-        }
-
+        [$year, $month, $day] = $this->resolveBirthDay($data);
 
         $data[self::FIRST_NAME] = Str::title(mb_convert_case($data[self::FIRST_NAME], MB_CASE_LOWER));
         $data[self::LAST_NAME] = Str::title(mb_convert_case($data[self::LAST_NAME], MB_CASE_LOWER));
@@ -115,21 +114,19 @@ class HandleUploadFileResultService
         $afterFilter = $runners->count();
 
         if ($afterFilter < $runnersBasedOnName) {
-            $log = new UploadFileResultRow();
-            $log->upload_file_result_id = $uploadFileResult->id;
-            $log->row_number = $this->row;
-            $log->data = json_encode($data, JSON_THROW_ON_ERROR);
-            $log->error = trans(ResultRowEnum::MULTIPLE_NAMES->trans());
-            $log->save();
+            $this->createRowResult(
+                uploadFileResult: $uploadFileResult,
+                data: json_encode($data, JSON_THROW_ON_ERROR),
+                error: trans(ResultRowEnum::MULTIPLE_NAMES->trans()),
+            );
         }
 
         if ($afterFilter !== $yearAndLastNameRunners) {
-            $log = new UploadFileResultRow();
-            $log->upload_file_result_id = $uploadFileResult->id;
-            $log->row_number = $this->row;
-            $log->data = json_encode($data, JSON_THROW_ON_ERROR);
-            $log->error = trans(ResultRowEnum::MULTIPLE_NAMES->trans());
-            $log->save();
+            $this->createRowResult(
+                uploadFileResult: $uploadFileResult,
+                data: json_encode($data, JSON_THROW_ON_ERROR),
+                error: trans(ResultRowEnum::MULTIPLE_NAMES->trans()),
+            );
         }
 
         if ($month === 0 && $day === 0 && $runners->count() === 1) {
@@ -203,24 +200,22 @@ class HandleUploadFileResultService
 
         // this should never happen
         if ($bestMatch['score'] === 0) {
-            $log = new UploadFileResultRow();
-            $log->upload_file_result_id = $uploadFileResult->id;
-            $log->row_number = $this->row;
-            $log->data = json_encode($data, JSON_THROW_ON_ERROR);
-            $log->error = trans(ResultRowEnum::NOT_SURE->trans());
-            $log->save();
+            $this->createRowResult(
+                uploadFileResult: $uploadFileResult,
+                data: json_encode($data, JSON_THROW_ON_ERROR),
+                error: trans(ResultRowEnum::NOT_SURE->trans()),
+            );
 
             return $this->createNewRunner($data);
         }
 
         if ($runners->count() !== 1) {
             if ($bestMatch['score'] === 2) {
-                $log = new UploadFileResultRow();
-                $log->upload_file_result_id = $uploadFileResult->id;
-                $log->row_number = $this->row;
-                $log->data = json_encode($data, JSON_THROW_ON_ERROR);
-                $log->error = trans(ResultRowEnum::DID_NOT_MATCH_DATE->trans());
-                $log->save();
+                $this->createRowResult(
+                    uploadFileResult: $uploadFileResult,
+                    data: json_encode($data, JSON_THROW_ON_ERROR),
+                    error: trans(ResultRowEnum::DID_NOT_MATCH_DATE->trans()),
+                );
             }
         }
 
@@ -234,16 +229,7 @@ class HandleUploadFileResultService
      */
     private function createNewRunner(array $data): Runner
     {
-        $birthDate = explode('.', $data[self::DATE_OF_BIRTH] ?? '0.0.0');
-        $month = 0;
-        $day = 0;
-        if (count($birthDate) < 3) {
-            $year = (int)$data[self::DATE_OF_BIRTH];
-        } else {
-            $year = (int)($birthDate[2] ?? 0);
-            $month = (int)($birthDate[1] ?? 0);
-            $day = (int)($birthDate[0] ?? 0);
-        }
+        [$year, $month, $day] = $this->resolveBirthDay($data);
 
         $runner = new Runner();
         $runner->first_name = ucfirst($data[self::FIRST_NAME]);
@@ -288,5 +274,35 @@ class HandleUploadFileResultService
         }
 
         return $time;
+    }
+
+    private function createRowResult(UploadFileResult $uploadFileResult, string $data, string $error): void
+    {
+        $this->createUploadFileResultRowHandler->handle(new CreateUploadFileResultRow(
+            uplodFileId: $uploadFileResult->id,
+            row: $this->row,
+            data: $data,
+            error: $error,
+        ));
+    }
+
+    /**
+     * @param string[] $data
+     * @return int[]
+     */
+    private function resolveBirthDay(array $data): array
+    {
+        $birthDate = explode('.', $data[self::DATE_OF_BIRTH] ?? '0.0.0');
+        $month = 0;
+        $day = 0;
+        if (count($birthDate) < 3) {
+            $year = (int)$data[self::DATE_OF_BIRTH];
+        } else {
+            $year = (int)($birthDate[2] ?? 0);
+            $month = (int)($birthDate[1] ?? 0);
+            $day = (int)($birthDate[0] ?? 0);
+        }
+
+        return [$year, $month, $day];
     }
 }
