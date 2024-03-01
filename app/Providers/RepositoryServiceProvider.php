@@ -7,8 +7,10 @@ namespace App\Providers;
 
 use App\Repositories\Illuminate\IlluminateResultRepository;
 use App\Repositories\Illuminate\IlluminateRunnerRepository;
+use App\Repositories\Illuminate\IlluminateUploadFileResultRowRepository;
 use App\Repositories\IlluminateResultRepositoryInterface;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
+use App\Repositories\IlluminateUploadFileResultRowRepositoryInterface;
 use App\Repositories\Meilisearch\MeilisearchRaceRepository;
 use App\Repositories\Meilisearch\MeilisearchRunnerRepository;
 use App\Repositories\RaceRepository;
@@ -26,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         // Illuminate
         $this->app->bind(IlluminateRunnerRepositoryInterface::class, IlluminateRunnerRepository::class);
         $this->app->bind(IlluminateResultRepositoryInterface::class, IlluminateResultRepository::class);
+        $this->app->bind(IlluminateUploadFileResultRowRepositoryInterface::class, IlluminateUploadFileResultRowRepository::class);
     }
 
     /**
