@@ -4,10 +4,10 @@ namespace App\Models\Illuminate;
 
 use App\Casts\DistanceCast;
 use App\Models\IlluminateModel;
-use Carbon\Carbon;
+use Database\Factories\RaceFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -156,5 +156,10 @@ class Race extends IlluminateModel
     public function getSerializer(): ?string
     {
         return \App\Serializer\RaceSerializer::class;
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return RaceFactory::new();
     }
 }

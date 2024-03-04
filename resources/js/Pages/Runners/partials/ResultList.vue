@@ -21,7 +21,7 @@ const confetti = ref(false)
 const confettiElement = ref(null)
 
 const startConfetti = (event) => {
-    if (confetti.value) {
+    if (confetti.value || confettiElement.value === null) {
         return
     }
     confetti.value = true
