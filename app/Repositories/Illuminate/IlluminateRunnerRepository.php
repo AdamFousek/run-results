@@ -7,7 +7,7 @@ namespace App\Repositories\Illuminate;
 
 use App\Models\Illuminate\Runner;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
 {
@@ -27,14 +27,44 @@ class IlluminateRunnerRepository implements IlluminateRunnerRepositoryInterface
         $sameLastNameAndYear = Runner::query()
             ->select('last_name', 'year')
             ->selectRaw('COUNT(*) as count')
+            ->whereNull('deleted_at')
             ->groupBy('last_name', 'year')
             ->having('count', '>', 1)
             ->get();
 
-        return Runner::query()
-            ->whereIn('last_name', $sameLastNameAndYear->pluck('last_name'))
-            ->whereIn('year', $sameLastNameAndYear->pluck('year'))
-            ->orderBy('last_name')
+        $runners = [];
+        foreach ($sameLastNameAndYear as $runner) {
+            $sameRunners = Runner::query()
+                ->where('last_name', $runner->last_name)
+                ->where('year', $runner->year)
+                ->whereNull('deleted_at')
+                ->get();
+
+            $runners[] = $sameRunners;
+        }
+
+        return collect($runners);
+    }
+
+    public function findDuplicityByFullName(): Collection
+    {
+        $sameLastNameAndYear = Runner::query()
+            ->select('last_name', 'first_name')
+            ->selectRaw('COUNT(*) as count')
+            ->whereNull('deleted_at')
+            ->groupBy('last_name', 'first_name')
+            ->having('count', '>', 1)
             ->get();
+
+        $runners = [];
+        foreach ($sameLastNameAndYear as $runner) {
+            $runners[] = Runner::query()
+                ->where('last_name', $runner->last_name)
+                ->where('first_name', $runner->first_name)
+                ->whereNull('deleted_at')
+                ->get();
+        }
+
+        return collect($runners);
     }
 }
