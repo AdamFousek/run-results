@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
+use App\Http\Transformers\Runner\TopRunnerTransformer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\UploadedFiles;
 use App\Queries\Race\RaceSearch;
@@ -35,6 +36,7 @@ class RaceController extends Controller
         private readonly ResultStatsService $resultStatsService,
         private readonly GetCategoriesByRaceIdHandler $getCategoriesByRaceIdHandler,
         private readonly GetResultsHandler $getResultsHandler,
+        private readonly TopRunnerTransformer $topRunnerTransformer,
     ) {
     }
 
@@ -91,6 +93,9 @@ class RaceController extends Controller
         $childRaces = null;
         $paginate = null;
         $stats = null;
+        $topWomen = null;
+        $topMen = null;
+        $topParticipant = null;
         if (!$race->is_parent) {
             $results = $this->getResultsHandler->handle(new GetResultsQuery(
                 race: $race,
@@ -111,11 +116,15 @@ class RaceController extends Controller
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
             if ($race->tag !== null && $race->tag !== '') {
                 $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
+                $topWomen = $this->resultStatsService->provideTopWomenByRaceTag($race->tag);
+                $topParticipant = $this->resultStatsService->provideTopParticipantByRaceTag($race->tag);
+                $topMen = $this->resultStatsService->provideTopMenByRaceTag($race->tag);
             }
         }
 
         $total = $childRaces !== null ? $childRaces->count() : $results?->total();
         $metaDescription = $this->resolveMetaDescription($race, (int)$total);
+
 
         $data = [
             'race' => $this->raceTransformer->transform($race),
@@ -130,6 +139,9 @@ class RaceController extends Controller
             'files' => $files,
             'filter' => $filter,
             'stats' => $stats,
+            'topWomen' => $topWomen !== null ? $this->topRunnerTransformer->transform($topWomen->items) : null,
+            'topMen' => $topMen !== null ? $this->topRunnerTransformer->transform($topMen->items) : null,
+            'topParticipant' => $topParticipant !== null ? $this->topRunnerTransformer->transform($topParticipant->items) : null,
             'categories' => $this->getCategoriesByRaceIdHandler->handle(new GetCategoriesByRaceIdQuery($race->id)),
         ];
 

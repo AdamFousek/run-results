@@ -41,6 +41,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail

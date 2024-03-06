@@ -148,7 +148,7 @@ export default {
             title: 'Statistiky',
             fastestTime: 'Nejrychlejší čas',
             fastestMan: 'Nejrychlejší muž',
-            fastestWomen: 'Nejrychlejší žena',
+            fastestWoman: 'Nejrychlejší žena',
             averageTime: 'Průměrný čas',
         },
     },

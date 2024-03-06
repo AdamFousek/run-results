@@ -9,9 +9,12 @@ use App\Casts\TimeCast;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Result;
 use App\Models\Meilisearch\Runner;
+use App\Models\QueryResult\TopRunner;
 use App\Queries\Result\GetResultsQuery;
+use App\Queries\Result\GetTopRunnersBy;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
+use App\Repositories\Illuminate\Results\TopRunnersResult;
 use App\Repositories\IlluminateResultRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use stdClass;
@@ -29,45 +32,27 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
 
     /**
      * @param string $raceTag
-     * @return array<string, int>|null
+     * @return array<string, int|string>|null
      */
-    public function getFastestTimeByRaceIds(string $raceTag): ?array
+    public function getFastestTimeByRaceTag(string $raceTag): ?array
     {
-        /** @var ?stdClass $fastestTimeResult */
-        $fastestTimeResult= Result::query()
-            ->selectRaw('MIN(results.time) as time, YEAR(races.date) as year')
-            ->join('races', 'results.race_id', '=', 'races.id')
-            ->whereNotNull('results.time')
-            ->where('races.tag', $raceTag)
-            ->where('results.time', '>', 0)
-            ->orderBy('time')
-            ->groupBy('races.id', 'races.date')
-            ->first();
-
-        if ($fastestTimeResult === null) {
-            return null;
-        }
-
-        return [
-            'time' => $fastestTimeResult->time ?? 0,
-            'year' => $fastestTimeResult->year ?? 0,
-        ];
+        return $this->getFastestByGender($raceTag);
     }
 
     /**
      * @param string $raceTag
-     * @return array<string, int>|null
+     * @return array<string, int|string>|null
      */
-    public function getFastestManByRaceIds(string $raceTag): ?array
+    public function getFastestManByRaceTag(string $raceTag): ?array
     {
         return $this->getFastestByGender($raceTag, RunnerGenderEnum::MALE);
     }
 
     /**
      * @param string $raceTag
-     * @return array<string, int>|null
+     * @return array<string, int|string>|null
      */
-    public function getFastestWomanByRaceIds(string $raceTag): ?array
+    public function getFastestWomanByRaceTag(string $raceTag): ?array
     {
         return $this->getFastestByGender($raceTag, RunnerGenderEnum::FEMALE);
     }
@@ -109,26 +94,23 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
     /**
      * @param string $raceTag
      * @param RunnerGenderEnum|null $gender
-     * @return array<string, int>|null
+     * @return array<string, int|string>|null
      */
     private function getFastestByGender(string $raceTag, ?RunnerGenderEnum $gender = null): ?array
     {
         $fastestTimeQuery = Result::query()
-            ->selectRaw('MIN(results.time) as time, YEAR(races.date) as year')
+            ->select(['results.*', 'runners.first_name', 'runners.last_name', 'races.date'])
             ->join('races', 'results.race_id', '=', 'races.id')
             ->join('runners', 'results.runner_id', '=', 'runners.id')
-            ->whereNotNull('results.time')
             ->where('results.time', '>', 0)
             ->where('races.tag', $raceTag);
-
 
         if ($gender !== null) {
             $fastestTimeQuery->where('runners.gender', '=', $gender->value);
         }
 
-        /** @var ?stdClass $fastestTimeResult */
-        $fastestTimeResult = $fastestTimeQuery->groupBy('races.id', 'races.date')
-            ->orderBy('time')
+        /** @var ?Result $fastestTimeResult */
+        $fastestTimeResult = $fastestTimeQuery->orderBy('results.time')
             ->first();
 
         if ($fastestTimeResult === null) {
@@ -136,8 +118,10 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
         }
 
         return [
+            'runnerId' => $fastestTimeResult->runner_id,
+            'name' => $fastestTimeResult->runner->full_name,
             'time' => $fastestTimeResult->time,
-            'year' => $fastestTimeResult->year,
+            'year' => $fastestTimeResult->race->date?->year,
         ];
     }
 
@@ -188,5 +172,37 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
         }
 
         return $query->orderBy('position')->paginate(self::LIMIT_RUNNERS);
+    }
+
+    #[\Override]
+    public function getTopRunnersBy(GetTopRunnersBy $query): TopRunnersResult
+    {
+        $resultQuery = Result::query()
+            ->select(['results.*', 'runners.first_name', 'runners.last_name'])
+            ->join('races', 'results.race_id', '=', 'races.id')
+            ->join('runners', 'results.runner_id', '=', 'runners.id')
+            ->where('results.time', '>', 0)
+            ->where('races.tag', $query->raceTag);
+
+        if ($query->gender !== null) {
+            $resultQuery->where('runners.gender', '=', $query->gender->value);
+        }
+
+        $result = $resultQuery->orderBy('results.time')->limit($query->limit)->get();
+        $result->load(['runner', 'race']);
+        $topRunners = [];
+        foreach ($result as $res) {
+            $topRunner = new TopRunner(
+                runnerId: $res->runner_id,
+                name: $res->runner->full_name,
+                time: $res->time,
+                year: $res->race->date?->year ?? 0,
+                participiantCount: 0,
+            );
+
+            $topRunners[] = $topRunner;
+        }
+
+        return new TopRunnersResult($topRunners, $result->count());
     }
 }

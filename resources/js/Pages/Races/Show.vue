@@ -10,6 +10,7 @@ import ResultList from '@/Pages/Races/partials/ResultList.vue'
 import { CloudDownloadOutlined, MapOutlined } from '@vicons/material'
 import MyLink from '@/Components/MyLink.vue'
 import Map from '@/Components/Map.vue'
+import Stats from '@/Pages/Races/partials/Stats.vue'
 
 const props = defineProps({
     race: {
@@ -47,6 +48,15 @@ const props = defineProps({
     },
     stats: {
         type: Object,
+    },
+    topMen: {
+        type: Array,
+    },
+    topWomen: {
+        type: Array,
+    },
+    topParticipant: {
+        type: Array,
     },
     categories: {
         type: Array,
@@ -135,7 +145,7 @@ const selectCategory = (category) => {
                             </MyLink>
                         </div>
                     </div>
-                    <div class="bg-white p-4 shadow-sm rounded-xl self-start">
+                    <div v-if="files.length" class="bg-white p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.filesToDownload') }}</h2>
                         <div v-for="file in files" :key="file.name" class="mb-2">
                             <MyLink :href="file.url" download external class="text-base flex justify-between items-center">
@@ -146,30 +156,12 @@ const selectCategory = (category) => {
                             </MyLink>
                         </div>
                     </div>
-                    <div v-if="!race.isParent" class="bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
+                    <div v-if="!race.isParent && race.description.length" class="bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.description') }}</h2>
                         <div class="trix-content" v-html="race.description"></div>
                     </div>
-                    <div v-else-if="stats" class="text-sm bg-white col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
-                        <h2 class="text-xl mb-2">{{ $t('race.stats.title') }}</h2>
-                        <div v-if="stats.fastestTime" class="flex flex-col my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.stats.fastestTime') }}:</div>
-                            <div class="">{{ stats.fastestTime.time }} ({{ stats.fastestTime.year }})</div>
-                        </div>
-                        <div v-if="stats.fastestMan" class="flex flex-col my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.stats.fastestMan') }}:</div>
-                            <div class="">{{ stats.fastestMan.time }} ({{ stats.fastestMan.year }})</div>
-                        </div>
-                        <div v-if="stats.fastestWomen" class="flex flex-col my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.stats.fastestWomen') }}:</div>
-                            <div class="">{{ stats.fastestWomen.time }} ({{ stats.fastestWomen.year }})</div>
-                        </div>
-                        <div v-if="stats.averageTime" class="flex flex-col my-2 gap-2 justify-start">
-                            <div class="font-bold">{{ $t('race.stats.averageTime') }}:</div>
-                            <div class="">{{ stats.averageTime.time }}</div>
-                        </div>
-                    </div>
                 </div>
+                <Stats v-if="stats" :stats="stats" :top-men="topMen" :top-women="topWomen" :top-participant="topParticipant" />
 
                 <section v-if="!race.isParent">
                     <div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">

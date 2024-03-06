@@ -44,6 +44,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereUpdatedAt($value)
  * @property string|null $club
  * @method static \Illuminate\Database\Eloquent\Builder|Result whereClub($value)
+ * @method static Builder|Result withoutFemale()
+ * @method static Builder|Result withoutMale()
  * @mixin \Eloquent
  */
 class Result extends IlluminateModel

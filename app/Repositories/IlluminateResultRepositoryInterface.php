@@ -6,27 +6,29 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Queries\Result\GetResultsQuery;
+use App\Queries\Result\GetTopRunnersBy;
+use App\Repositories\Illuminate\Results\TopRunnersResult;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface IlluminateResultRepositoryInterface
 {
     /**
      * @param string $raceTag
-     * @return ?array{time: int, year: int}
+     * @return ?array{time: int, year: int, name: string, runnerId: int}
      */
-    public function getFastestTimeByRaceIds(string $raceTag): ?array;
+    public function getFastestTimeByRaceTag(string $raceTag): ?array;
 
     /**
      * @param string $raceTag
-     * @return ?array{time: int, year: int}
+     * @return ?array{time: int, year: int, name: string, runnerId: int}
      */
-    public function getFastestManByRaceIds(string $raceTag): ?array;
+    public function getFastestManByRaceTag(string $raceTag): ?array;
 
     /**
      * @param string $raceTag
-     * @return ?array{time: int, year: int}
+     * @return ?array{time: int, year: int, name: string, runnerId: int}
      */
-    public function getFastestWomanByRaceIds(string $raceTag): ?array;
+    public function getFastestWomanByRaceTag(string $raceTag): ?array;
 
     /**
      * @param string $raceTag
@@ -45,4 +47,10 @@ interface IlluminateResultRepositoryInterface
      * @return LengthAwarePaginator
      */
     public function findResults(GetResultsQuery $query): LengthAwarePaginator;
+
+    /**
+     * @param GetTopRunnersBy $query
+     * @return TopRunnersResult
+     */
+    public function getTopRunnersBy(GetTopRunnersBy $query): TopRunnersResult;
 }
