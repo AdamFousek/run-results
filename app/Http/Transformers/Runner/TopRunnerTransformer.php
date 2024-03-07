@@ -9,7 +9,7 @@ use App\Models\QueryResult\TopRunner;
 
 class TopRunnerTransformer
 {
-    /**¨
+    /**
      * @param TopRunner[] $topRunners
      * @return array<array{
      *     runnerId: int,

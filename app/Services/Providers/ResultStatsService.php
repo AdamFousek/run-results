@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace App\Services\Providers;
 
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
-use App\Models\Illuminate\Runner;
 use App\Models\QueryResult\TopRunner;
 use App\Queries\Result\GetStatsByRaceTagHandler;
 use App\Queries\Result\GetStatsByRaceTagQuery;
@@ -68,16 +67,22 @@ readonly class ResultStatsService
 
     /**
      * @param string $tag
-     * @return array
+     * @return TopRunnersResult
      */
-    public function provideTopParticipantByRaceTag(string $tag): array
+    public function provideTopParticipantByRaceTag(string $tag): TopRunnersResult
     {
-        $cachedData = Cache::store('redis')->tags('top_participant_' . $tag)->get($tag, []);
-        if ($cachedData !== []) {
+        /** @var TopRunnersResult $cachedData */
+        $cachedData = new TopRunnersResult([], 0); //Cache::store('redis')->tags('top_participant_' . $tag)->get($tag, new TopRunnersResult([], 0));
+        if ($cachedData->total !== 0) {
             return $cachedData;
         }
 
-        $stats = $this->getStatsByRaceIdsHandler->handle(new GetStatsByRaceTagQuery($tag));
+        $stats = $this->getTopRunnersByQuery->handle(new GetTopRunnersBy(
+            raceTag: $tag,
+            gender: null,
+            limit: 10,
+            isParticipation: true,
+        ));
 
         Cache::store('redis')->tags('top_participant_' . $tag)->put($tag, $stats, 60 * 60 * 24);
 
@@ -90,19 +95,17 @@ readonly class ResultStatsService
      */
     public function provideTopWomenByRaceTag(string $tag): TopRunnersResult
     {
-        /**
-         * @var array{items: array<string, int|string>, count: int}|array{} $cachedData
-         */
-        $cachedData = Cache::store('redis')->tags('top_women_' . $tag)->get($tag, []);
-        if ($cachedData !== []) {
-            return $this->transformCache($cachedData);
+        /** @var TopRunnersResult $cachedData */
+        $cachedData = new TopRunnersResult([], 0); //Cache::store('redis')->tags('top_women_' . $tag)->get($tag, new TopRunnersResult([], 0));
+        if ($cachedData->total !== 0) {
+            return $cachedData;
         }
 
         $stats = $this->getTopRunnersByQuery->handle(new GetTopRunnersBy(
             raceTag: $tag,
             gender: RunnerGenderEnum::FEMALE,
             limit: 10,
-            isParticipation: false
+            isParticipation: false,
         ));
 
         Cache::store('redis')->tags('top_women_' . $tag)->put($tag, $stats, 60 * 60 * 24);
@@ -112,16 +115,22 @@ readonly class ResultStatsService
 
     /**
      * @param string $tag
-     * @return Runner[]
+     * @return TopRunnersResult
      */
-    public function provideTopMenByRaceTag(string $tag): array
+    public function provideTopMenByRaceTag(string $tag): TopRunnersResult
     {
-        $cachedData = Cache::store('redis')->tags('top_men_' . $tag)->get($tag, []);
-        if ($cachedData !== []) {
+        /** @var TopRunnersResult $cachedData */
+        $cachedData = new TopRunnersResult([], 0); //Cache::store('redis')->tags('top_men_' . $tag)->get($tag, new TopRunnersResult([], 0));
+        if ($cachedData->total !== 0) {
             return $cachedData;
         }
 
-        $stats = $this->getStatsByRaceIdsHandler->handle(new GetStatsByRaceTagQuery($tag));
+        $stats = $this->getTopRunnersByQuery->handle(new GetTopRunnersBy(
+            raceTag: $tag,
+            gender: RunnerGenderEnum::MALE,
+            limit: 10,
+            isParticipation: false,
+        ));
 
         Cache::store('redis')->tags('top_men_' . $tag)->put($tag, $stats, 60 * 60 * 24);
 

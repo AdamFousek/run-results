@@ -129,6 +129,7 @@ const selectCategory = (category) => {
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-between gap-4 flex-wrap p-2">
+                    <Stats v-if="stats" :stats="stats" :race-slug="race.slug" :showMore="true"  />
                     <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl self-start" />
                     <div class="bg-white col-span-1 p-4 shadow-sm rounded-xl self-start">
                         <h2 class="text-xl mb-2">{{ $t('race.location') }}</h2>
@@ -161,7 +162,7 @@ const selectCategory = (category) => {
                         <div class="trix-content" v-html="race.description"></div>
                     </div>
                 </div>
-                <Stats v-if="stats" :stats="stats" :top-men="topMen" :top-women="topWomen" :top-participant="topParticipant" />
+
 
                 <section v-if="!race.isParent">
                     <div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">

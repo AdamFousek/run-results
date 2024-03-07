@@ -17,6 +17,7 @@ use App\Queries\Runner\RunnerSearchQuery;
 use App\Repositories\Illuminate\Results\TopRunnersResult;
 use App\Repositories\IlluminateResultRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 readonly class IlluminateResultRepository implements IlluminateResultRepositoryInterface
@@ -177,32 +178,67 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
     #[\Override]
     public function getTopRunnersBy(GetTopRunnersBy $query): TopRunnersResult
     {
-        $resultQuery = Result::query()
-            ->select(['results.*', 'runners.first_name', 'runners.last_name'])
+        if ($query->isParticipation) {
+            $resultQuery = Result::query()
+                ->selectRaw('count(*) as count, runner_id')
+                ->join('races', 'results.race_id', '=', 'races.id')
+                ->where('results.time', '>', 0)
+                ->where('races.tag', $query->raceTag)
+                ->groupBy('results.runner_id')
+                ->orderBy('count', 'desc')
+                ->limit($query->limit)
+                ->get();
+
+            $results = $resultQuery->load('runner');
+            $topRunners = [];
+            foreach ($results as $result) {
+                $topRunners[] = new TopRunner(
+                    runnerId: $result->runner_id,
+                    name: $result->runner->full_name,
+                    time: '',
+                    year: 0,
+                    participiantCount: $result->count,
+                );
+            }
+
+            return new TopRunnersResult($topRunners, $results->count());
+        }
+
+        $fastestRunners = DB::table('results')
+            ->selectRaw('runner_id, MIN(results.time) as resultTime')
             ->join('races', 'results.race_id', '=', 'races.id')
             ->join('runners', 'results.runner_id', '=', 'runners.id')
             ->where('results.time', '>', 0)
-            ->where('races.tag', $query->raceTag);
+            ->where('races.tag', $query->raceTag)
+            ->orderBy('resultTime');
 
         if ($query->gender !== null) {
-            $resultQuery->where('runners.gender', '=', $query->gender->value);
+            $fastestRunners->where('runners.gender', '=', $query->gender->value);
         }
 
-        $result = $resultQuery->orderBy('results.time')->limit($query->limit)->get();
-        $result->load(['runner', 'race']);
+        $fastestRunners->groupBy('runner_id');
+
+        $results = Result::query()
+            ->select('*')
+            ->joinSub($fastestRunners, 'min','results.runner_id', '=', 'min.runner_id')
+            ->whereRaw('results.time = min.resultTime')
+            ->limit($query->limit)
+            ->get();
+
+        $results->load(['runner', 'race']);
         $topRunners = [];
-        foreach ($result as $res) {
+        foreach ($results as $result) {
             $topRunner = new TopRunner(
-                runnerId: $res->runner_id,
-                name: $res->runner->full_name,
-                time: $res->time,
-                year: $res->race->date?->year ?? 0,
+                runnerId: $result->runner_id,
+                name: $result->runner->full_name,
+                time: $result->time,
+                year: $result->race->date->year ?? 0,
                 participiantCount: 0,
             );
 
             $topRunners[] = $topRunner;
         }
 
-        return new TopRunnersResult($topRunners, $result->count());
+        return new TopRunnersResult($topRunners, $results->count());
     }
 }

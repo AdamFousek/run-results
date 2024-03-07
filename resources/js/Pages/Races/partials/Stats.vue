@@ -2,7 +2,8 @@
 import MyLink from "@/Components/MyLink.vue";
 import route from 'ziggy-js'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+    raceSlug?: string,
     stats: {
         fastestTime: {
             runnerId: Number,
@@ -26,41 +27,45 @@ const props = defineProps<{
             time: String,
         },
     },
-}>();
+}>(),
+{
+    raceSlug: '',
+});
 
 </script>
 
 <template>
-    <section>
-        <h2 class="text-xl m-2">{{ $t('race.stats.title') }}</h2>
-        <div class="grid grid-cols-4 gap-4">
-            <div class="bg-white text-sm col-span-1 md:col-span-3 lg:col-span-1 p-4 m-2 shadow-sm rounded-xl self-start">
-                <div v-if="stats.fastestTime" class="flex flex-col my-2 gap-2 justify-start">
-                    <div class="font-bold">{{ $t('race.stats.fastestTime') }}:</div>
-                    <div class="flex justify-between">
-                        <MyLink :href="route('runners.show', { runner: stats.fastestTime.runnerId })">{{ stats.fastestTime.name }}</MyLink>
-                        <span>{{ stats.fastestTime.time }} ({{ stats.fastestTime.year }})</span>
-                    </div>
-                </div>
-                <div v-if="stats.fastestMan" class="flex flex-col my-2 gap-2 justify-start">
-                    <div class="font-bold">{{ $t('race.stats.fastestMan') }}:</div>
-                    <div class="flex justify-between">
-                        <MyLink :href="route('runners.show', { runner: stats.fastestMan.runnerId })">{{ stats.fastestMan.name }}</MyLink>
-                        <span>{{ stats.fastestMan.time }} ({{ stats.fastestMan.year }})</span>
-                    </div>
-                </div>
-                <div v-if="stats.fastestWoman" class="flex flex-col my-2 gap-2 justify-start">
-                    <div class="font-bold">{{ $t('race.stats.fastestWoman') }}:</div>
-                    <div class="flex justify-between">
-                        <MyLink :href="route('runners.show', { runner: stats.fastestWoman.runnerId })">{{ stats.fastestWoman.name }}</MyLink>
-                        <span>{{ stats.fastestWoman.time }} ({{ stats.fastestWoman.year }})</span>
-                    </div>
-                </div>
-                <div v-if="stats.averageTime" class="flex flex-col my-2 gap-2 justify-start">
-                    <div class="font-bold">{{ $t('race.stats.averageTime') }}:</div>
-                    <div class="">{{ stats.averageTime.time }}</div>
-                </div>
+    <section class="bg-white text-sm col-span-1 md:col-span-3 lg:col-span-1 p-4 shadow-sm rounded-xl self-start">
+        <h2 class="text-xl">{{ $t('race.stats.title') }}</h2>
+        <div v-if="stats.fastestTime" class="flex flex-col my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.stats.fastestTime') }}:</div>
+            <div class="flex justify-between">
+                <MyLink :href="route('runners.show', { runner: stats.fastestTime.runnerId })">{{ stats.fastestTime.name }}</MyLink>
+                <span>{{ stats.fastestTime.time }} ({{ stats.fastestTime.year }})</span>
             </div>
+        </div>
+        <div v-if="stats.fastestMan" class="flex flex-col my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.stats.fastestMan') }}:</div>
+            <div class="flex justify-between">
+                <MyLink :href="route('runners.show', { runner: stats.fastestMan.runnerId })">{{ stats.fastestMan.name }}</MyLink>
+                <span>{{ stats.fastestMan.time }} ({{ stats.fastestMan.year }})</span>
+            </div>
+        </div>
+        <div v-if="stats.fastestWoman" class="flex flex-col my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.stats.fastestWoman') }}:</div>
+            <div class="flex justify-between">
+                <MyLink :href="route('runners.show', { runner: stats.fastestWoman.runnerId })">{{ stats.fastestWoman.name }}</MyLink>
+                <span>{{ stats.fastestWoman.time }} ({{ stats.fastestWoman.year }})</span>
+            </div>
+        </div>
+        <div v-if="stats.averageTime" class="flex flex-col my-2 gap-2 justify-start">
+            <div class="font-bold">{{ $t('race.stats.averageTime') }}:</div>
+            <div class="">{{ stats.averageTime.time }}</div>
+        </div>
+        <div v-if="raceSlug !== ''" class="flex justify-end">
+            <MyLink :href="route('races.stats', { race: raceSlug })" class="text-base">
+                {{ $t('race.stats.showAll') }}
+            </MyLink>
         </div>
     </section>
 </template>

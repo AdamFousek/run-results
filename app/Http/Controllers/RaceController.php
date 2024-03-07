@@ -14,10 +14,13 @@ use App\Queries\Result\GetCategoriesByRaceIdHandler;
 use App\Queries\Result\GetCategoriesByRaceIdQuery;
 use App\Queries\Result\GetResultsHandler;
 use App\Queries\Result\GetResultsQuery;
+use App\Repositories\Illuminate\Results\TopRunnersResult;
 use App\Services\PaginateService;
 use App\Services\Providers\ResultStatsService;
 use App\Services\RaceSortService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -93,9 +96,6 @@ class RaceController extends Controller
         $childRaces = null;
         $paginate = null;
         $stats = null;
-        $topWomen = null;
-        $topMen = null;
-        $topParticipant = null;
         if (!$race->is_parent) {
             $results = $this->getResultsHandler->handle(new GetResultsQuery(
                 race: $race,
@@ -116,9 +116,6 @@ class RaceController extends Controller
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
             if ($race->tag !== null && $race->tag !== '') {
                 $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
-                $topWomen = $this->resultStatsService->provideTopWomenByRaceTag($race->tag);
-                $topParticipant = $this->resultStatsService->provideTopParticipantByRaceTag($race->tag);
-                $topMen = $this->resultStatsService->provideTopMenByRaceTag($race->tag);
             }
         }
 
@@ -139,14 +136,47 @@ class RaceController extends Controller
             'files' => $files,
             'filter' => $filter,
             'stats' => $stats,
-            'topWomen' => $topWomen !== null ? $this->topRunnerTransformer->transform($topWomen->items) : null,
-            'topMen' => $topMen !== null ? $this->topRunnerTransformer->transform($topMen->items) : null,
-            'topParticipant' => $topParticipant !== null ? $this->topRunnerTransformer->transform($topParticipant->items) : null,
             'categories' => $this->getCategoriesByRaceIdHandler->handle(new GetCategoriesByRaceIdQuery($race->id)),
         ];
 
 
         return Inertia::render('Races/Show', $data);
+    }
+
+    public function stats(Race $race): Response|RedirectResponse
+    {
+        if (!$race->is_parent) {
+            if ($race->parent !== null) {
+                return Redirect::route('races.stats', $race->parent->slug);
+            }
+
+            return Redirect::route('races.show', $race->slug);
+        }
+
+        $stats = null;
+        $topMen = null;
+        $topWomen = null;
+        $topParticipant = null;
+        if ($race->tag !== null && $race->tag !== '') {
+            $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
+            $topWomen = $this->resultStatsService->provideTopWomenByRaceTag($race->tag);
+            $topMen = $this->resultStatsService->provideTopMenByRaceTag($race->tag);
+            $topParticipant = $this->resultStatsService->provideTopParticipantByRaceTag($race->tag);
+        }
+
+        $data = [
+            'race' => $this->raceTransformer->transform($race),
+            'head' => [
+                'title' => $race->name . ' ' . trans('messages.races_stats_title'),
+                'description' => trans('messages.race_stats_meta_description', [ 'race' => $race->name]),
+            ],
+            'stats' => $stats,
+            'topWomen' => $topWomen !== null ? $this->topRunnerTransformer->transform($topWomen->items) : null,
+            'topMen' => $topMen !== null ? $this->topRunnerTransformer->transform($topMen->items) : null,
+            'topParticipant' => $topParticipant !== null ? $this->topRunnerTransformer->transform($topParticipant->items) : null,
+        ];
+
+        return Inertia::render('Races/RaceStats', $data);
     }
 
     private function resolveMetaDescription(Race $race, int $total): string
@@ -160,9 +190,15 @@ class RaceController extends Controller
         if ($race->date === null) {
             $raceName = $race->name;
         } else {
-            $raceName = $race->name . ' ' . $race->date->format('j. n. Y') . $race->description->toPlainText();
+            $raceName = $race->name . ' - ' . $race->date->format('j. n. Y');
         }
 
-        return trans('messages.race_meta_description', [ 'race' => $raceName, 'count' => $total ]);
+        $raceDesc = $race->description->toPlainText();
+        $description = '';
+        if ($raceDesc !== '') {
+            $description = ' Podrobnosti o závodě: ' . $raceDesc;
+        }
+
+        return trans('messages.race_meta_description', [ 'race' => $raceName, 'count' => $total, 'description' => $description ]);
     }
 }

@@ -13,6 +13,8 @@ export default {
     yes: 'Ano',
     no: 'Ne',
     welcome: 'Novinky',
+    showMore: 'Zobrazit více',
+    back: 'Zpět',
     news: {
         races: 'Nejnovější závody',
     },
@@ -117,6 +119,7 @@ export default {
         }
     },
     race: {
+        back: 'Zpět na závod',
         name: 'Název',
         slug: 'Slug - url adresa',
         date: 'Datum',
@@ -150,6 +153,10 @@ export default {
             fastestMan: 'Nejrychlejší muž',
             fastestWoman: 'Nejrychlejší žena',
             averageTime: 'Průměrný čas',
+            topMen: 'Nejrychlejší muži',
+            topWomen: 'Nejrychlejší ženy',
+            topParticipant: 'Nejvíce startů',
+            showAll: 'Zobrazit všechny statistky',
         },
     },
     result: {
@@ -162,6 +169,8 @@ export default {
         club: 'Klub',
         DNF: 'DNF',
         DNS: 'DNS',
+        countParticipiant: 'Počet startů',
+        yearOfRun: 'Rok běhu',
         filter: {
             onlyFemale: 'Zobrazit ženy',
             onlyMale: 'Zobrazit muže',

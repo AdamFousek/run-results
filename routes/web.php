@@ -23,6 +23,10 @@ Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class,
 
 Route::get('/zavody', [\App\Http\Controllers\RaceController::class, 'index'])->name('races.index');
 Route::get('/zavody/{race:slug}', [\App\Http\Controllers\RaceController::class, 'show'])->name('races.show');
+Route::get('/zavody/{race:slug}/statistiky', [\App\Http\Controllers\RaceController::class, 'stats'])->name('races.stats');
+Route::get('/zavody/{race:slug}/statistiky/nejlepsi-muzi', [\App\Http\Controllers\RaceController::class, 'stats'])->name('races.stats.topMen');
+Route::get('/zavody/{race:slug}/statistiky/nejlepsi-zeny', [\App\Http\Controllers\RaceController::class, 'stats'])->name('races.stats.topWomen');
+Route::get('/zavody/{race:slug}/statistiky/nejvice-ucasti', [\App\Http\Controllers\RaceController::class, 'stats'])->name('races.stats.topParticipant');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
