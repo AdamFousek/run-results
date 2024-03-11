@@ -5,30 +5,38 @@ declare(strict_types=1);
 
 namespace App\Http\Transformers\Runner;
 
+use App\Models\Meilisearch\Result\TopResult;
 use App\Models\QueryResult\TopRunner;
+use Illuminate\Support\Collection;
 
 class TopRunnerTransformer
 {
     /**
-     * @param TopRunner[] $topRunners
+     * @param Collection $topRunners
      * @return array<array{
+     *     position: int,
      *     runnerId: int,
      *     name: string,
      *     time: string,
      *     year: int,
-     *     participiantCount: int,
+     *     runnerYear: int,
      * }>
      */
-    public function transform(array $topRunners): array
+    public function transform(Collection $topRunners): array
     {
         $result = [];
         foreach ($topRunners as $topRunner) {
+            if (!$topRunner instanceof TopResult) {
+                continue;
+            }
+
             $result[] = [
-                'runnerId' => $topRunner->runnerId,
-                'name' => $topRunner->name,
-                'time' => $topRunner->time,
-                'year' => $topRunner->year,
-                'participiantCount' => $topRunner->participiantCount,
+                'position' => $topRunner->getTopPosition(),
+                'runnerId' => $topRunner->getRunner()->getId(),
+                'name' => $topRunner->getRunner()->getLastName() . ' ' .$topRunner->getRunner()->getFirstName(),
+                'time' => $topRunner->getTime(),
+                'year' => $topRunner->getRace()->getDate()?->year,
+                'runnerYear' => $topRunner->getRunner()->getYear(),
             ];
         }
 

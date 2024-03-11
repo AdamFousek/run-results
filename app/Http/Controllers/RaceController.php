@@ -6,14 +6,21 @@ use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Runner\TopRunnerTransformer;
+use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\UploadedFiles;
+use App\Models\QueryResult\TopRunner;
 use App\Queries\Race\RaceSearch;
 use App\Queries\Race\RaceSearchHandler;
 use App\Queries\Result\GetCategoriesByRaceIdHandler;
 use App\Queries\Result\GetCategoriesByRaceIdQuery;
 use App\Queries\Result\GetResultsHandler;
 use App\Queries\Result\GetResultsQuery;
+use App\Queries\Result\GetTopRunnersBy;
+use App\Queries\Runner\RunnerSearch;
+use App\Queries\Runner\RunnerSearchQuery;
+use App\Queries\TopResult\GetTopResultsByQuery;
+use App\Queries\TopResult\GetTopResultsQuery;
 use App\Repositories\Illuminate\Results\TopRunnersResult;
 use App\Services\PaginateService;
 use App\Services\Providers\ResultStatsService;
@@ -40,6 +47,8 @@ class RaceController extends Controller
         private readonly GetCategoriesByRaceIdHandler $getCategoriesByRaceIdHandler,
         private readonly GetResultsHandler $getResultsHandler,
         private readonly TopRunnerTransformer $topRunnerTransformer,
+        private readonly RunnerSearchQuery $runnerSearchQuery,
+        private readonly GetTopResultsByQuery $getTopResultsByQuery,
     ) {
     }
 
@@ -159,9 +168,16 @@ class RaceController extends Controller
         $topParticipant = null;
         if ($race->tag !== null && $race->tag !== '') {
             $stats = $this->resultStatsService->provideStatsByRaceIds($race->tag);
-            $topWomen = $this->resultStatsService->provideTopWomenByRaceTag($race->tag);
-            $topMen = $this->resultStatsService->provideTopMenByRaceTag($race->tag);
-            $topParticipant = $this->resultStatsService->provideTopParticipantByRaceTag($race->tag);
+            $topMen = $this->getTopResultsByQuery->handle(new GetTopResultsQuery(
+                raceTag: $race->tag,
+                gender: RunnerGenderEnum::MALE,
+                limit: 10,
+            ));
+            $topWomen = $this->getTopResultsByQuery->handle(new GetTopResultsQuery(
+                raceTag: $race->tag,
+                gender: RunnerGenderEnum::FEMALE,
+                limit: 10,
+            ));
         }
 
         $data = [
@@ -173,10 +189,84 @@ class RaceController extends Controller
             'stats' => $stats,
             'topWomen' => $topWomen !== null ? $this->topRunnerTransformer->transform($topWomen->items) : null,
             'topMen' => $topMen !== null ? $this->topRunnerTransformer->transform($topMen->items) : null,
-            'topParticipant' => $topParticipant !== null ? $this->topRunnerTransformer->transform($topParticipant->items) : null,
+            'topParticipant' => null,
         ];
 
         return Inertia::render('Races/RaceStats', $data);
+    }
+
+    public function topMen(Request $request, Race $race): Response|RedirectResponse
+    {
+        if (!$race->is_parent || $race->tag === null || $race->tag === '') {
+            if ($race->parent !== null) {
+                return Redirect::route('races.stats', $race->parent->slug);
+            }
+
+            return Redirect::route('races.show', $race->slug);
+        }
+
+        $search = trim($request->get('query'));
+        $page = (int)$request->get('page', 1);
+        $runners = $this->getTopResultsByQuery->handle(new GetTopResultsQuery(
+            raceTag: $race->tag,
+            gender: RunnerGenderEnum::MALE,
+            limit: 100,
+            offset: ($page - 1) * 100,
+            search: $search,
+        ));
+
+        $data = [
+            'head' => [
+                'title' => $race->name . ' ' . trans('messages.topMen'),
+                'description' => trans('messages.topMen_description', [ 'race' => $race->name]),
+            ],
+            'title' => trans('messages.topMen'),
+            'race' => $this->raceTransformer->transform($race),
+            'runners' => $this->topRunnerTransformer->transform($runners->items),
+            'search' => $search,
+            'paginate' => [
+                'page' => $page,
+                'total' => $runners->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $runners->total,
+            ],
+        ];
+
+        return Inertia::render('Races/TopRunners', $data);
+    }
+
+    public function topWomen(Race $race): Response|RedirectResponse
+    {
+        if (!$race->is_parent) {
+            if ($race->parent !== null) {
+                return Redirect::route('races.stats', $race->parent->slug);
+            }
+
+            return Redirect::route('races.show', $race->slug);
+        }
+
+        $data = [
+            'race' => $this->raceTransformer->transform($race),
+        ];
+
+        return Inertia::render('Races/TopRunners', $data);
+    }
+
+    public function topParticipant(Race $race): Response|RedirectResponse
+    {
+        if (!$race->is_parent) {
+            if ($race->parent !== null) {
+                return Redirect::route('races.stats', $race->parent->slug);
+            }
+
+            return Redirect::route('races.show', $race->slug);
+        }
+
+        $data = [
+            'race' => $this->raceTransformer->transform($race),
+        ];
+
+        return Inertia::render('Races/TopRunners', $data);
     }
 
     private function resolveMetaDescription(Race $race, int $total): string

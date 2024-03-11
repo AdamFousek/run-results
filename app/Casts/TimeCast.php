@@ -2,6 +2,8 @@
 
 namespace App\Casts;
 
+use App\Models\Illuminate\Result;
+use App\Models\IlluminateModel;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,5 +51,10 @@ class TimeCast implements CastsAttributes
         }
 
         return $value;
+    }
+
+    public function getFromValue(int $value)
+    {
+        return $this->get(new IlluminateModel(), '', $value, []);
     }
 }

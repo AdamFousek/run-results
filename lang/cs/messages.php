@@ -42,6 +42,13 @@ return [
 
     'races_stats_title' => 'Statistiky',
 
+    'topMen' => 'Nejrychlejší muži',
+    'topMen_description' => 'Nejrychlejší muži v závodě :race',
+    'topWomen' => 'Nejrychlejší ženy',
+    'topWomen_description' => 'Nejrychlejší ženy v závodě :race',
+    'topParticipant' => 'Nejvíce startů',
+    'topParticipant_description' => 'Nejvíce startů v závodě :race',
+
     'race_meta_description' => 'Závodu :race se účastnilo :count běžců.:description Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...',
     'race_parent_meta_description' => 'Závod :race, který má na svém účtě :count podzávodů. Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...',
     'race_stats_meta_description' => 'Statistiky závodu :race - průměrný čas, nejrychlejší běžci, nejlepší běžkyně, nejlepší účastníci. Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...'

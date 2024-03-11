@@ -5,10 +5,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Models\Illuminate\Result;
 use App\Queries\Result\GetResultsQuery;
 use App\Queries\Result\GetTopRunnersBy;
 use App\Repositories\Illuminate\Results\TopRunnersResult;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 interface IlluminateResultRepositoryInterface
 {
@@ -50,7 +52,7 @@ interface IlluminateResultRepositoryInterface
 
     /**
      * @param GetTopRunnersBy $query
-     * @return TopRunnersResult
+     * @return Collection<Result>
      */
-    public function getTopRunnersBy(GetTopRunnersBy $query): TopRunnersResult;
+    public function getTopRunnersBy(GetTopRunnersBy $query): Collection;
 }

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Engines;
 
 use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
 {
 
     /**
-     * @param Collection<Race|Runner> $models
+     * @param Collection<Race|Runner|Result> $models
      * @return void
      */
     public function update($models)
@@ -23,7 +24,7 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
             return;
         }
 
-        /** @var Race|Runner|null $model */
+        /** @var Race|Runner|Result|null $model */
         $model = $models->first();
         if ($model === null) {
             return;
@@ -47,7 +48,7 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
             $models->each->pushSoftDeleteMetadata();
         }
 
-        $objects = $models->map(function (Race|Runner $model) {
+        $objects = $models->map(function (Race|Runner|Result $model) {
             if ($model->getSerializer() !== null) {
                 $serializer = app($model->getSerializer());
 

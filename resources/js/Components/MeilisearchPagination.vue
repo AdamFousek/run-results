@@ -19,6 +19,11 @@ const props = defineProps({
         type: Number,
         required: true,
     },
+    ulrParams: {
+        type: Object,
+        required: false,
+        default: () => ({}),
+    },
 })
 
 const startPage = props.page > 3 ? props.page - 2 : 1
@@ -44,7 +49,8 @@ const current = (usePage().props.ziggy as any).current ?? '#';
                     _query: {
                         ...query,
                         page: page - 1,
-                    }
+                    },
+                    ...ulrParams
                 })" aria-label="Previous page"
                       class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
                     <span class="sr-only">{{ $t('Previous') }}</span>
@@ -61,7 +67,8 @@ const current = (usePage().props.ziggy as any).current ?? '#';
                     _query: {
                         ...query,
                         page: 1,
-                    }
+                    },
+                    ...ulrParams
                 })" aria-label="Page one" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-violet-100 border border-gray-300 hover:text-gray-700">
                         1
                     </Link>
@@ -76,7 +83,8 @@ const current = (usePage().props.ziggy as any).current ?? '#';
                     _query: {
                         ...query,
                         page: index,
-                    }
+                    },
+                    ...ulrParams
                 })"
                       :aria-label="'Page ' + index"
                       class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300  hover:text-gray-700"
@@ -99,7 +107,8 @@ const current = (usePage().props.ziggy as any).current ?? '#';
                         _query: {
                             ...query,
                             page: lastPage,
-                        }
+                        },
+                        ...ulrParams
                     })" aria-label="Last page"  class="flex items-center justify-center px-3 h-8 leading-tight bg-white hover:bg-violet-100 text-gray-500 border border-gray-300 hover:text-gray-700">
                         {{ lastPage }}
                     </Link>
@@ -118,7 +127,8 @@ const current = (usePage().props.ziggy as any).current ?? '#';
                     _query: {
                         ...query,
                         page: page + 1,
-                    }
+                    },
+                    ...ulrParams
                 })"
                       aria-label="Next page"
                       class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">

@@ -14,6 +14,7 @@ export default {
     no: 'Ne',
     welcome: 'Novinky',
     showMore: 'Zobrazit více',
+    showAll: 'Zobrazit vše',
     back: 'Zpět',
     news: {
         races: 'Nejnovější závody',

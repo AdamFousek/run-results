@@ -8,6 +8,7 @@ use App\Models\IlluminateModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 
 /**
@@ -50,7 +51,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Result extends IlluminateModel
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
+    private int $topPosition;
 
     protected $fillable = [
         'runner_id',
@@ -67,6 +70,11 @@ class Result extends IlluminateModel
 
     protected $casts = [
         'time' => TimeCast::class,
+    ];
+
+    protected array $makeAllSearchableWith = [
+        'runner',
+        'race',
     ];
 
     public function runner(): BelongsTo
@@ -91,5 +99,20 @@ class Result extends IlluminateModel
         return $query->whereHas('runner', function (Builder $query) {
             $query->where('gender', '!=', RunnerGenderEnum::MALE);
         });
+    }
+
+    public function getSerializer(): ?string
+    {
+        return \App\Serializer\ResultSerializer::class;
+    }
+
+    public function getTopPosition(): int
+    {
+        return $this->topPosition;
+    }
+
+    public function setTopPosition(int $topPosition): void
+    {
+        $this->topPosition = $topPosition;
     }
 }

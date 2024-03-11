@@ -29,7 +29,7 @@ const colorClasses = {
     secondary: 'bg-white hover:bg-gray-50 text-gray-700',
     danger: 'bg-red-600 hover:bg-red-700',
     link: 'text-indigo-800 hover:text-indigo-950',
-    linkSecondary: 'text-cyan-600 hover:text-cyan-800',
+    linkSecondary: 'text-rose-600 hover:text-rose-800',
 }
 
 const typeClasses = {
