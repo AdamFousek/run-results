@@ -8,6 +8,7 @@ namespace App\Serializer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
+use Carbon\Carbon;
 
 class TopResultSerializer
 {
@@ -41,6 +42,7 @@ class TopResultSerializer
             'race' => $this->serializeRace($result->race),
             'runner' => $this->serializeRunner($result->runner),
             'time' => (int)$result->getRawOriginal('time'),
+            'lastUpsertedAt' => (new Carbon())->timestamp,
         ];
     }
 

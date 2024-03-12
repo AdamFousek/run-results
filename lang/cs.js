@@ -236,6 +236,8 @@ export default {
             uploadedFiles: 'Nahrané soubory',
             uploadedFilesDescription: 'Název souboru bude zobrazen v seznamu nahraných souborů.',
             uploadFile: 'Nahrát soubor',
+            results: 'Výsledky závodu',
+            showResults: 'Zobrazit výsledky',
         },
         results: {
             create: 'Vytvořit výsledky',

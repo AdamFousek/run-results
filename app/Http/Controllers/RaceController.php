@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Transformers\Race\RaceListTransformer;
 use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
+use App\Http\Transformers\Runner\TopParticipantTransformer;
 use App\Http\Transformers\Runner\TopRunnerTransformer;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Race;
@@ -16,6 +17,7 @@ use App\Queries\Result\GetCategoriesByRaceIdHandler;
 use App\Queries\Result\GetCategoriesByRaceIdQuery;
 use App\Queries\Result\GetResultsHandler;
 use App\Queries\Result\GetResultsQuery;
+use App\Queries\Result\GetTopParticipantsHandler;
 use App\Queries\Result\GetTopRunnersBy;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
@@ -47,8 +49,9 @@ class RaceController extends Controller
         private readonly GetCategoriesByRaceIdHandler $getCategoriesByRaceIdHandler,
         private readonly GetResultsHandler $getResultsHandler,
         private readonly TopRunnerTransformer $topRunnerTransformer,
-        private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly GetTopResultsByQuery $getTopResultsByQuery,
+        private readonly GetTopParticipantsHandler $getTopParticipantsHandler,
+        private readonly TopParticipantTransformer $topParticipantTransformer,
     ) {
     }
 
@@ -178,7 +181,22 @@ class RaceController extends Controller
                 gender: RunnerGenderEnum::FEMALE,
                 limit: 10,
             ));
+            $topParticipant = $this->getTopParticipantsHandler->handle(new GetTopRunnersBy(
+                raceTag: $race->tag,
+                limit: 10,
+            ));
         }
+
+        $breadcrumb = [
+            [
+                'name' => $race->name,
+                'link' => route('races.show', $race->slug),
+            ],
+            [
+                'name' => trans('messages.races_stats_title'),
+                'link' => null,
+            ]
+        ];
 
         $data = [
             'race' => $this->raceTransformer->transform($race),
@@ -186,10 +204,11 @@ class RaceController extends Controller
                 'title' => $race->name . ' ' . trans('messages.races_stats_title'),
                 'description' => trans('messages.race_stats_meta_description', [ 'race' => $race->name]),
             ],
+            'breadcrumb' => $breadcrumb,
             'stats' => $stats,
             'topWomen' => $topWomen !== null ? $this->topRunnerTransformer->transform($topWomen->items) : null,
             'topMen' => $topMen !== null ? $this->topRunnerTransformer->transform($topMen->items) : null,
-            'topParticipant' => null,
+            'topParticipant' => $topParticipant !== null ? $this->topParticipantTransformer->transform($topParticipant->items) : null
         ];
 
         return Inertia::render('Races/RaceStats', $data);
@@ -215,6 +234,21 @@ class RaceController extends Controller
             search: $search,
         ));
 
+        $breadcrumb = [
+            [
+                'name' => $race->name,
+                'link' => route('races.show', $race->slug),
+            ],
+            [
+                'name' => trans('messages.races_stats_title'),
+                'link' => route('races.stats', $race->slug),
+            ],
+            [
+                'name' => trans('messages.topMen'),
+                'link' => null,
+            ]
+        ];
+
         $data = [
             'head' => [
                 'title' => $race->name . ' ' . trans('messages.topMen'),
@@ -222,6 +256,7 @@ class RaceController extends Controller
             ],
             'title' => trans('messages.topMen'),
             'race' => $this->raceTransformer->transform($race),
+            'breadcrumb' => $breadcrumb,
             'runners' => $this->topRunnerTransformer->transform($runners->items),
             'search' => $search,
             'paginate' => [

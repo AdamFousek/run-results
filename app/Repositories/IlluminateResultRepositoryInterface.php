@@ -55,4 +55,6 @@ interface IlluminateResultRepositoryInterface
      * @return Collection<Result>
      */
     public function getTopRunnersBy(GetTopRunnersBy $query): Collection;
+
+    public function getMostParticipants(GetTopRunnersBy $query): TopRunnersResult;
 }

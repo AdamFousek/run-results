@@ -7,8 +7,10 @@ namespace App\Services;
 
 use App\Commands\UploadedFile\CreateUploadFileResultRow;
 use App\Commands\UploadedFile\CreateUploadFileResultRowHandler;
+use App\Jobs\RecalculateTopResults;
 use App\Models\Illuminate\Enums\ResultRowEnum;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
+use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use App\Models\Illuminate\UploadFileResult;
@@ -65,7 +67,7 @@ class HandleUploadFileResultService
             $result->category = $data[self::CATEGORY];
             $result->category_position = (int)$data[self::CATEGORY_POSITION];
             $result->club = $data[self::CLUB];
-            $result->save();
+            $result->saveQuietly();
 
             if ($data[self::GENDER] !== '') {
                 $runner->gender = $data[self::GENDER] === 'm' ? RunnerGenderEnum::MALE->value : RunnerGenderEnum::FEMALE->value;
@@ -83,6 +85,15 @@ class HandleUploadFileResultService
             ->count();
         $results->processed_at = now();
         $results->save();
+
+        $race = Race::whereId( $results->race_id)->first();
+        if ($race instanceof Race) {
+            $race->runners()->searchable();
+            $tag = (string)$race->tag;
+            if ($tag !== '') {
+                RecalculateTopResults::dispatch($tag);
+            }
+        }
     }
 
     /**

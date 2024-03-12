@@ -8,6 +8,7 @@ import route from 'ziggy-js'
 import MyLink from '@/Components/MyLink.vue'
 import { ref } from 'vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import Breadcrumb from '@/Components/Breadcrumb.vue'
 
 const props = defineProps({
     race: {
@@ -93,6 +94,9 @@ const searchRaces = () => {
                 </div>
             </div>
         </template>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-2">
+            <Breadcrumb :breadcrumb="breadcrumb" />
+        </div>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-start mb-4">

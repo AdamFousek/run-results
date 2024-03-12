@@ -18,7 +18,7 @@ class TopRunnerTransformer
      *     runnerId: int,
      *     name: string,
      *     time: string,
-     *     year: int,
+     *     year: int|null,
      *     runnerYear: int,
      * }>
      */

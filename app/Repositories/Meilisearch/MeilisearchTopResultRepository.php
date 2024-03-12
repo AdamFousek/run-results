@@ -93,6 +93,13 @@ readonly class MeilisearchTopResultRepository implements TopResultRepositoryInte
         $index->updateDocuments($serialized->toArray());
     }
 
+    public function deleteByTag(string $raceTag): void
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $index->deleteDocuments(['filter' => "race.tag = '{$raceTag}'"]);
+    }
+
     private function getIndex(): string
     {
         return (new TopResult())->searchableAs();

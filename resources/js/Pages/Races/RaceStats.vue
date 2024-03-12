@@ -6,6 +6,7 @@ import { ArrowBackOutlined } from '@vicons/material'
 import Stats from '@/Pages/Races/partials/Stats.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import TopRunners from '@/Pages/Races/partials/TopRunners.vue'
+import Breadcrumb from '@/Components/Breadcrumb.vue'
 
 const props = defineProps({
     race: {
@@ -26,6 +27,9 @@ const props = defineProps({
         type: Array,
     },
     topParticipant: {
+        type: Array,
+    },
+    breadcrumb: {
         type: Array,
     },
 })
@@ -56,6 +60,9 @@ const props = defineProps({
                 </div>
             </div>
         </template>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-2">
+            <Breadcrumb :breadcrumb="breadcrumb" />
+        </div>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-between gap-4 flex-wrap p-2">

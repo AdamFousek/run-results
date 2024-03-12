@@ -13,5 +13,7 @@ interface TopResultRepositoryInterface
 {
     public function upsert(Collection $results): void;
 
+    public function deleteByTag(string $raceTag): void;
+
     public function find(GetTopResultsQuery $query): TopResultCollection;
 }

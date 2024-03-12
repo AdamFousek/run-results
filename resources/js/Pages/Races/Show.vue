@@ -165,7 +165,7 @@ const selectCategory = (category) => {
 
 
                 <section v-if="!race.isParent">
-                    <div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4 px-4">
                         <div class="flex-shrink-0 md:col-span-3">
                             <NInput type="text"
                                     v-model:value="search"
@@ -183,9 +183,9 @@ const selectCategory = (category) => {
                                 {{ $t('result.filter.onlyFemale') }}
                             </NCheckbox>
                         </div>
-                        <div class="col-span-6">
+                        <div class="md:col-span-6">
                             <div class="font-bold">{{ $t('result.filter.byCategory') }}</div>
-                            <div class="flex justify-start gap-4">
+                            <div class="flex justify-start gap-4 overflow-x-auto pb-2">
                                 <NButton
                                     v-for="category in categories"
                                     :key="category"
