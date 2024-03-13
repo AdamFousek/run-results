@@ -19,9 +19,16 @@ class ResultSerializer
      *      id: int,
      *      name: string,
      *      slug: string,
+     *      tag: string|null,
      *      date: int|null,
      *      time: string|null,
-     *     },
+     *      vintage: int|null,
+     *      distance: int|null,
+     *      location: string|null,
+     *      surface: string|null,
+     *      type: string|null,
+     *      region: string|null,
+     *  },
      *     runner: array{
      *      id: int,
      *      firstName: string,
@@ -62,8 +69,15 @@ class ResultSerializer
      *     id: int,
      *     name: string,
      *     slug: string,
+     *     tag: string|null,
      *     date: int|null,
      *     time: string|null,
+     *     vintage: int|null,
+     *     distance: int|null,
+     *     location: string|null,
+     *     surface: string|null,
+     *     type: string|null,
+     *     region: string|null,
      * }
      */
     private function serializeRace(Race $race): array
@@ -75,6 +89,12 @@ class ResultSerializer
             'tag' => $race->tag,
             'date' => $race->date?->getTimestamp(),
             'time' => $race->time?->format('H:i'),
+            'vintage' => $race->vintage,
+            'distance' => $race->getRawOriginal('distance'),
+            'location' => $race->location,
+            'surface' => $race->surface,
+            'type' => $race->type,
+            'region' => $race->region,
         ];
     }
 

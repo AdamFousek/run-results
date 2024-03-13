@@ -6,10 +6,6 @@ import ConfettiExplosion from "vue-confetti-explosion";
 import { ref } from 'vue'
 
 defineProps({
-    runner: {
-        type: Object,
-        required: true,
-    },
     results: {
         type: Array,
         required: true,
@@ -56,14 +52,14 @@ const startConfetti = (event) => {
             <div class="font-bold p-3 md:px-4 flex justify-center items-center">{{ $t('result.position') }}</div>
             <div class="col-span-2 font-bold p-3 md:px-4 flex justify-center items-center">{{ $t('result.categoryPosition') }}</div>
         </div>
-        <Link v-for="(result, index) in results" :key="result.id" :href="route('races.show', { race: result.raceSlug, runnerId: runner.id })" class="grid grid-cols-11 gap-2 md:gap-4 hover:bg-gray-100"
+        <Link v-for="(result, index) in results" :key="result.id" :href="route('races.show', { race: result.race.slug, runnerId: result.runner.id })" class="grid grid-cols-11 gap-2 md:gap-4 hover:bg-gray-100"
               :class="{
                 'bg-gray-50': index%2 === 0,
                 }">
-            <div class="p-3 md:px-4 text-center flex justify-center items-center">{{ result.date }}</div>
-            <div class="col-span-3 p-3 md:px-4">{{ result.name }}</div>
-            <div class="col-span-2 p-3 md:px-4">{{ result.location }}</div>
-            <div class="p-3 md:px-4 flex justify-center items-center">{{ result.distance }}</div>
+            <div class="p-3 md:px-4 text-center flex justify-center items-center">{{ result.race.date }}</div>
+            <div class="col-span-3 p-3 md:px-4">{{ result.race.name }}</div>
+            <div class="col-span-2 p-3 md:px-4">{{ result.race.location }}</div>
+            <div class="p-3 md:px-4 flex justify-center items-center">{{ result.race.distance }}</div>
             <div class="p-3 md:px-4 flex justify-center items-center">{{ result.time }}</div>
             <div class="p-3 md:px-4 text-center flex justify-center items-center gap-2">
                 <NIcon v-if="result.position < 4"
@@ -78,7 +74,7 @@ const startConfetti = (event) => {
                 </NIcon>
                 <span>{{ result.position }}</span>
             </div>
-            <div class="col-span-2 p-3 md:px-4 flex justify-center items-center">{{ result.category_position }} ({{ result.category }})</div>
+            <div class="col-span-2 p-3 md:px-4 flex justify-center items-center">{{ result.categoryPosition }} ({{ result.category }})</div>
         </Link>
     </section>
 </template>

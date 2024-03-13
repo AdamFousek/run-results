@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3'
 import route from 'ziggy-js'
+import {computed} from "vue";
 
 const props = defineProps({
     page: {
@@ -29,8 +30,14 @@ const props = defineProps({
 const startPage = props.page > 3 ? props.page - 2 : 1
 const lastPage = Math.ceil(props.total / props.perPage)
 const endPage = startPage + 4 < lastPage ? startPage + 4 : lastPage
-const query = (usePage().props.ziggy as any).query;
-const current = (usePage().props.ziggy as any).current ?? '#';
+const query = computed(() => {
+    return (usePage().props.ziggy as any).query
+})
+const current = computed(() => {
+    return (usePage().props.ziggy as any).current ?? '#'
+})
+
+console.log({startPage, lastPage, endPage, query, current})
 </script>
 
 <template>

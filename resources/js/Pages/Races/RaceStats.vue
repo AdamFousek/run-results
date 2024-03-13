@@ -63,7 +63,7 @@ const props = defineProps({
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-2">
             <Breadcrumb :breadcrumb="breadcrumb" />
         </div>
-        <div class="py-4">
+        <div class="md:py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-between gap-4 flex-wrap p-2">
                     <div class="md:col-span-3 grid md:grid-cols-2 gap-4">

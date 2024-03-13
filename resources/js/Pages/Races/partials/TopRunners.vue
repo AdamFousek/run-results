@@ -55,7 +55,7 @@ const showMoreLink = computed(() => {
         </div>
         <div v-if="!isParticipiant" class="flex justify-center mt-4">
             <PrimaryButton :href="showMoreLink" link color="blue" rounded class="flex items-center gap-3">
-                <span class="hidden md:block">{{ $t('showAll') }}</span>
+                <span>{{ $t('showAll') }}</span>
             </PrimaryButton>
         </div>
     </section>

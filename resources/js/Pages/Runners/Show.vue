@@ -7,6 +7,7 @@ import ResultList from '@/Pages/Runners/partials/ResultList.vue'
 import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const { t } = useI18n();
 
@@ -33,6 +34,7 @@ const props = defineProps({
 })
 
 const search = ref(props.search)
+const searching = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
 
 watch(search, (value) => {
@@ -42,12 +44,16 @@ watch(search, (value) => {
 })
 
 const searchRaces = () => {
+    searching.value = true
     router.reload({
         data: {
             query: search.value,
         },
-        only: ['results'],
+        only: ['results', 'paginate', 'ziggy'],
         preserveState: true,
+        onFinish() {
+            searching.value = false
+        },
     })
 }
 
@@ -92,13 +98,13 @@ const selectTab = (tab) => {
 
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">
-                            <ResultList :results="results" :runner="runner"/>
+                            <ResultList :results="results" />
                             <section v-if="results.length === 0" class="p-4 text-center">
                                 {{ $t('noResults') }}
                             </section>
                         </div>
                     </div>
-                    <Pagination v-if="results.length" :pages="paginate.links" class="my-4" />
+                    <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{runner: runner.id}" class="my-4"/>
                 </div>
                 <div v-show="selectedTab === $t('runner.tabCharts')">
                     <ChartIndex :data="chartData" />

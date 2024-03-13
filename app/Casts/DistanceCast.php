@@ -2,6 +2,7 @@
 
 namespace App\Casts;
 
+use App\Models\IlluminateModel;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +30,14 @@ class DistanceCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes = []): string
     {
         return $value ?? 0;
+    }
+
+    public function getValue(?int $getDistance): string
+    {
+        if ($getDistance === null) {
+            return '';
+        }
+
+        return $this->get(new IlluminateModel(), 'distance', $getDistance);
     }
 }

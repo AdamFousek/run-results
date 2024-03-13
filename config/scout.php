@@ -149,7 +149,7 @@ return [
                 ]
             ],
             Race::class => [
-                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'isParent'],
+                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'isParent', 'region'],
                 'sortableAttributes'=> ['name', 'location', 'distance', 'date', 'runnerCount'],
                 'pagination' => [
                     'maxTotalHits' => 100000
@@ -157,7 +157,7 @@ return [
             ],
             Result::class => [
                 'filterableAttributes'=> [
-                    'race', 'race.name', 'race.tag', 'race.data', 'race.time',
+                    'race', 'race.name', 'race.tag', 'race.data', 'race.location', 'race.region',
                     'runner', 'runner.id', 'runner.gender', 'runner.firstName', 'runner.lastName',
                     'time',
                     'startingNumber',
@@ -168,7 +168,15 @@ return [
                     'dnf',
                     'dns',
                 ],
-                'sortableAttributes'=> ['time', 'startingNumber', 'position', 'category', 'categoryPosition', 'runner.gender', 'race.tag',],
+                'sortableAttributes'=> [
+                    'time',
+                    'startingNumber',
+                    'position',
+                    'category',
+                    'categoryPosition',
+                    'runner.gender', 'runner.lastName', 'runner.firstName', 'runner.year',
+                    'race.tag', 'race.name', 'race.distance', 'race.date',
+                ],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]

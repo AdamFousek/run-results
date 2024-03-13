@@ -12,9 +12,9 @@ class Result
     private ResultRace $race;
     private int $startingNumber;
     private int $position;
-    private ?string $time = null;
+    private ?int $time = null;
     private ?string $category = null;
-    private ?string $categoryPosition = null;
+    private ?int $categoryPosition = null;
     private ?string $club = null;
     private bool $dnf;
     private bool $dns;
@@ -69,12 +69,12 @@ class Result
         $this->position = $position;
     }
 
-    public function getTime(): ?string
+    public function getTime(): ?int
     {
         return $this->time;
     }
 
-    public function setTime(?string $time): void
+    public function setTime(?int $time): void
     {
         $this->time = $time;
     }
@@ -89,12 +89,12 @@ class Result
         $this->category = $category;
     }
 
-    public function getCategoryPosition(): ?string
+    public function getCategoryPosition(): ?int
     {
         return $this->categoryPosition;
     }
 
-    public function setCategoryPosition(?string $categoryPosition): void
+    public function setCategoryPosition(?int $categoryPosition): void
     {
         $this->categoryPosition = $categoryPosition;
     }

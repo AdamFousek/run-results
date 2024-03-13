@@ -24,18 +24,24 @@ class ResultDeserializer
      *      gender?: string
      *      },
      *     race: array{
-     *         id: int,
-     *         name: string,
-     *     slug: string,
-     *     tag: ?string,
-     *     date: ?int,
-     *     time: ?string
-     *    },
+     *      id: int,
+     *      name: string,
+     *      slug: string,
+     *      tag: string|null,
+     *      date: int|null,
+     *      time: string|null,
+     *      vintage: int|null,
+     *      distance: int|null,
+     *      location: string|null,
+     *      surface: string|null,
+     *      type: string|null,
+     *      region: string|null,
+     *      },
      *     startingNumber: int,
      *     position: int,
      *     time: ?string,
      *     category: ?string,
-     *     categoryPosition: ?string,
+     *     categoryPosition: ?int,
      *     club: ?string,
      *     dnf: bool,
      *     dns: bool
@@ -50,9 +56,9 @@ class ResultDeserializer
         $result->setRace($this->deserializeRace($data['race']));
         $result->setStartingNumber($data['startingNumber']);
         $result->setPosition($data['position']);
-        $result->setTime($data['time']);
+        $result->setTime((int)$data['time']);
         $result->setCategory($data['category']);
-        $result->setCategoryPosition($data['categoryPosition']);
+        $result->setCategoryPosition((int)$data['categoryPosition']);
         $result->setClub($data['club']);
         $result->setDnf($data['dnf']);
         $result->setDns($data['dns']);
@@ -77,20 +83,26 @@ class ResultDeserializer
         $runner->setFirstName($data['firstName']);
         $runner->setLastName($data['lastName']);
         $runner->setYear($data['year']);
-        $runner->setGender($data['gender'] ? RunnerGenderEnum::tryFrom($data['gender']) : null);
+        $runner->setGender(isset($data['gender']) ? RunnerGenderEnum::tryFrom($data['gender']) : null);
 
         return $runner;
     }
 
     /**
      * @param array{
-     *     id: int,
-     *     name: string,
-     *     slug: string,
-     *     tag: ?string,
-     *     date: ?int,
-     *     time: ?string
-     * } $data
+     *      id: int,
+     *      name: string,
+     *      slug: string,
+     *      tag: string|null,
+     *      date: int|null,
+     *      time: string|null,
+     *      vintage: int|null,
+     *      distance: int|null,
+     *      location: string|null,
+     *      surface: string|null,
+     *      type: string|null,
+     *      region: string|null,
+     *  } $data
      * @return ResultRace
      */
     private function deserializeRace(array $data): ResultRace
@@ -102,6 +114,12 @@ class ResultDeserializer
         $race->setTag($data['tag']);
         $race->setDate($data['date'] ? Carbon::createFromTimestamp($data['date']) : null);
         $race->setTime($data['time']);
+        $race->setVintage($data['vintage']);
+        $race->setDistance($data['distance']);
+        $race->setLocation($data['location']);
+        $race->setSurface($data['surface']);
+        $race->setType($data['type']);
+        $race->setRegion($data['region']);
 
         return $race;
     }
