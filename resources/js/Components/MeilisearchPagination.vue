@@ -36,8 +36,6 @@ const query = computed(() => {
 const current = computed(() => {
     return (usePage().props.ziggy as any).current ?? '#'
 })
-
-console.log({startPage, lastPage, endPage, query, current})
 </script>
 
 <template>

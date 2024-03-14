@@ -62,7 +62,7 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
 
         $filter = [
             'filter' => $filter,
-            'sort' => $sort,
+            'sort' => [$sort],
             'limit' => $query->limit,
             'offset' => $query->offset
         ];

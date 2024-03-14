@@ -31,6 +31,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    sort: {
+        type: String,
+        required: false,
+    }
 })
 
 const search = ref(props.search)
@@ -49,7 +53,7 @@ const searchRaces = () => {
         data: {
             query: search.value,
         },
-        only: ['results', 'paginate', 'ziggy'],
+        only: ['results', 'paginate', 'ziggy', 'sort'],
         preserveState: true,
         onFinish() {
             searching.value = false
@@ -98,7 +102,7 @@ const selectTab = (tab) => {
 
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">
-                            <ResultList :results="results" />
+                            <ResultList :results="results" :sort="sort" />
                             <section v-if="results.length === 0" class="p-4 text-center">
                                 {{ $t('noResults') }}
                             </section>

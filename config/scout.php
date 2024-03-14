@@ -175,7 +175,7 @@ return [
                     'category',
                     'categoryPosition',
                     'runner.gender', 'runner.lastName', 'runner.firstName', 'runner.year',
-                    'race.tag', 'race.name', 'race.distance', 'race.date',
+                    'race.tag', 'race.name', 'race.distance', 'race.date', 'race.location',
                 ],
                 'pagination' => [
                     'maxTotalHits' => 100000
