@@ -34,7 +34,11 @@ const props = defineProps({
     sort: {
         type: String,
         required: false,
-    }
+    },
+    head: {
+        type: Object,
+        required: true,
+    },
 })
 
 const search = ref(props.search)
@@ -67,12 +71,16 @@ const selectTab = (tab) => {
 </script>
 
 <template>
-    <Head :title="runner.last_name + ' ' + runner.first_name"/>
+    <Head>
+        <title>{{ head.title }}</title>
+        <meta name="description" :content="head.description">
+        <link rel="canonical" :href="head.canonical">
+    </Head>
 
     <AppLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ runner.last_name }} {{ runner.first_name }}
+                {{ runner.last_name }} {{ runner.first_name }} - {{ runner.year }}
             </h2>
         </template>
         <div class="py-4">

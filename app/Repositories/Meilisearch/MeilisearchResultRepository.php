@@ -6,8 +6,9 @@ declare(strict_types=1);
 namespace App\Repositories\Meilisearch;
 
 use App\Deserializer\ResultDeserializer;
+use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Result;
-use App\Queries\Result\GetRunnerResultsQuery;
+use App\Queries\Result\GetResultsQuery;
 use App\Repositories\Meilisearch\Results\ResultCollection;
 use App\Repositories\ResultRepositoryInterface;
 use App\Services\ResultSortService;
@@ -46,13 +47,32 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
     }
 
     #[\Override]
-    public function byQuery(GetRunnerResultsQuery $query): ResultCollection
+    public function byQuery(GetResultsQuery $query): ResultCollection
     {
         $index = $this->client->getIndex($this->getIndex());
 
         $filter = [];
         if ($query->runner !== null) {
             $filter[] = "runner.id = {$query->runner->id}";
+        }
+
+        if ($query->race !== null) {
+            $filter[] = "race.id = {$query->race->id}";
+        }
+
+        if ($query->showFemale === false) {
+            $female = RunnerGenderEnum::FEMALE->value;
+            $filter[] = "runner.gender != '{$female}'";
+        }
+
+        if ($query->showMale === false) {
+            $male = RunnerGenderEnum::MALE->value;
+            $filter[] = "runner.gender != '{$male}'";
+        }
+
+        if ($query->categories !== []) {
+            $categories = json_encode($query->categories);
+            $filter[] = "category IN {$categories}";
         }
 
         $sort = $query->sort;

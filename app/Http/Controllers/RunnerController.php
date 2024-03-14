@@ -6,8 +6,8 @@ use App\Http\Providers\ChartRunnerDataProvider;
 use App\Http\Transformers\Meilisearch\ResultListTransformer;
 use App\Http\Transformers\Meilisearch\RunnerListTransformer;
 use App\Models\Illuminate\Runner;
-use App\Queries\Result\GetRunnerResultsHandler;
-use App\Queries\Result\GetRunnerResultsQuery;
+use App\Queries\Result\GetResultsHandler;
+use App\Queries\Result\GetResultsQuery;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
 use App\Services\ResultSortService;
@@ -25,7 +25,7 @@ class RunnerController extends Controller
         private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly RunnerListTransformer $runnerListTransformer,
         private readonly RunnerSortService $sortService,
-        private readonly GetRunnerResultsHandler $getRunnerResultsHandler,
+        private readonly GetResultsHandler $getRunnerResultsHandler,
         private readonly ResultListTransformer $resultListTransformer,
         private readonly ResultSortService $resultSortService,
     ) {
@@ -67,7 +67,7 @@ class RunnerController extends Controller
         $requestSort = $request->get('sort', ResultSortService::DEFAULT_SORT);
         $sort = $this->resultSortService->resolveSort($requestSort);
 
-        $results = $this->getRunnerResultsHandler->handle(new GetRunnerResultsQuery(
+        $results = $this->getRunnerResultsHandler->handle(new GetResultsQuery(
             runner: $runner,
             search: $search,
             limit: self::LIMIT,
@@ -87,6 +87,11 @@ class RunnerController extends Controller
                 'total' => $results->estimatedTotal,
                 'limit' => self::LIMIT,
                 'onPage' => $results->total,
+            ],
+            'head' => [
+                'title' => $runner->full_name,
+                'description' => trans('messages.runner_metadescription', [ 'runner' => $runner->full_name, 'count' => $results->total ]),
+                'canonical' => route('runners.show', $runner),
             ],
             'chartData' => $chartData,
         ]);

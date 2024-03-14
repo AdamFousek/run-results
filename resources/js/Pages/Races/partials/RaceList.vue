@@ -3,6 +3,7 @@ import { Link, router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { NIcon } from 'naive-ui'
 import { KeyboardArrowDownFilled, KeyboardArrowUpFilled } from '@vicons/material'
+import SortBlock from '@/Components/SortBlock.vue'
 
 const props = defineProps({
     races: {
@@ -40,64 +41,24 @@ const changeSort = (name, isAsc) => {
 <template>
     <section>
         <div class="grid grid-cols-8 gap-2 md:gap-4 border-b">
-            <div class="font-bold p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('date', activeSort.isAsc)">
-                <div class="flex flex-col">
-                    <NIcon v-if="activeSort.name === 'date' && activeSort.isAsc">
-                        <KeyboardArrowUpFilled />
-                    </NIcon>
-                    <NIcon v-if="activeSort.name === 'date' && !activeSort.isAsc">
-                        <KeyboardArrowDownFilled />
-                    </NIcon>
-                </div>
-                <span>{{ $t('race.date') }}</span>
-            </div>
-            <div class="font-bold col-span-2 p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('name', activeSort.isAsc)">
-                <div class="flex flex-col">
-                    <NIcon v-if="activeSort.name === 'name' && activeSort.isAsc">
-                        <KeyboardArrowUpFilled />
-                    </NIcon>
-                    <NIcon v-if="activeSort.name === 'name' && !activeSort.isAsc">
-                        <KeyboardArrowDownFilled />
-                    </NIcon>
-                </div>
-                <span>{{ $t('race.name') }}</span>
-            </div>
-            <div class="col-span-2 font-bold p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('location', activeSort.isAsc)">
-                <div class="flex flex-col">
-                    <NIcon v-if="activeSort.name === 'location' && activeSort.isAsc">
-                        <KeyboardArrowUpFilled />
-                    </NIcon>
-                    <NIcon v-if="activeSort.name === 'location' && !activeSort.isAsc">
-                        <KeyboardArrowDownFilled />
-                    </NIcon>
-                </div>
-                <span>{{ $t('race.location') }}</span>
-            </div>
-            <div class="font-bold p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('distance', activeSort.isAsc)">
-                <div class="flex flex-col">
-                    <NIcon v-if="activeSort.name === 'distance' && activeSort.isAsc">
-                        <KeyboardArrowUpFilled />
-                    </NIcon>
-                    <NIcon v-if="activeSort.name === 'distance' && !activeSort.isAsc">
-                        <KeyboardArrowDownFilled />
-                    </NIcon>
-                </div>
-                <span>{{ $t('race.distance') }}</span>
-            </div>
+            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="date" :is-active="activeSort.name === 'date'" :is-asc="activeSort.isAsc">
+                {{ $t('race.date') }}
+            </SortBlock>
+            <SortBlock class="col-span-2 font-bold p-3 md:px-4 flex items-center gap-2" name="name" :is-active="activeSort.name === 'name'" :is-asc="activeSort.isAsc">
+                {{ $t('race.name') }}
+            </SortBlock>
+            <SortBlock class="col-span-2 font-bold p-3 md:px-4 flex items-center gap-2" name="location" :is-active="activeSort.name === 'location'" :is-asc="activeSort.isAsc">
+                {{ $t('race.location') }}
+            </SortBlock>
+            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="distance" :is-active="activeSort.name === 'distance'" :is-asc="activeSort.isAsc">
+                {{ $t('race.distance') }}
+            </SortBlock>
             <div class="font-bold p-3 md:px-4 flex items-center gap-2">
                 {{ $t('race.surface') }}
             </div>
-            <div class="font-bold p-3 md:px-4 flex items-center gap-2 cursor-pointer text-violet-900 hover:text-violet-800" @click="changeSort('runnerCount', activeSort.isAsc)">
-                <div class="flex flex-col">
-                    <NIcon v-if="activeSort.name === 'runnerCount' && activeSort.isAsc">
-                        <KeyboardArrowUpFilled />
-                    </NIcon>
-                    <NIcon v-if="activeSort.name === 'runnerCount' && !activeSort.isAsc">
-                        <KeyboardArrowDownFilled />
-                    </NIcon>
-                </div>
-                <span>{{ $t('race.runnersCount') }}</span>
-            </div>
+            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="runnerCount" :is-active="activeSort.name === 'runnerCount'" :is-asc="activeSort.isAsc">
+                {{ $t('race.runnersCount') }}
+            </SortBlock>
         </div>
         <Link v-for="(race, index) in races" :key="race.id" :href="route('races.show', { race: race.slug })"
               class="grid grid-cols-8 gap-2 md:gap-4 hover:bg-gray-100"

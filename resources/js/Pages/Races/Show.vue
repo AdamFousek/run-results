@@ -11,6 +11,7 @@ import { CloudDownloadOutlined, MapOutlined } from '@vicons/material'
 import MyLink from '@/Components/MyLink.vue'
 import Map from '@/Components/Map.vue'
 import Stats from '@/Pages/Races/partials/Stats.vue'
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 
 const props = defineProps({
     race: {
@@ -91,7 +92,7 @@ const searchRaces = () => {
         data: {
             ...data,
         },
-        only: ['results', 'paginate', 'filter'],
+        only: ['results', 'paginate', 'filter', 'ziggy'],
         preserveState: true,
         replace: true,
         preserveScroll: true,
@@ -116,6 +117,7 @@ const selectCategory = (category) => {
     <Head>
         <title>{{ head.title }}</title>
         <meta name="description" :content="head.description">
+        <link rel="canonical" :href="head.canonical">
     </Head>
 
     <AuthenticatedLayout>
@@ -204,7 +206,7 @@ const selectCategory = (category) => {
                             <section class="p-4 text-center" v-if="results.length === 0">{{ $t('noResults') }}</section>
                         </div>
                     </div>
-                    <Pagination v-if="!searching && results.length" :pages="paginate.links" class="my-4"/>
+                    <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{race: race.slug}" class="my-4"/>
                 </section>
                 <ChildRaceList v-if="childRaces.length > 0" :races="childRaces" />
             </div>

@@ -7,8 +7,6 @@ const props = defineProps<{
         link?: string,
     }[],
 }>()
-
-console.log(props.breadcrumb);
 </script>
 
 <template>

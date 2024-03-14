@@ -7,7 +7,7 @@ namespace App\Services;
 
 class ResultSortService
 {
-    public const string DEFAULT_SORT = self::SORT_RACE_DATE_DESC;
+    public const string DEFAULT_SORT = self::SORT_POSITION_ASC;
 
     public const string SORT_RACE_NAME_ASC = 'name:asc';
     public const string SORT_RACE_NAME_DESC = 'name:desc';

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Queries\Result\GetRunnerResultsQuery;
+use App\Queries\Result\GetResultsQuery;
 use App\Repositories\Meilisearch\Results\ResultCollection;
 
 interface ResultRepositoryInterface
@@ -16,5 +16,5 @@ interface ResultRepositoryInterface
      */
     public function byIds(array $ids): ResultCollection;
 
-    public function byQuery(GetRunnerResultsQuery $query): ResultCollection;
+    public function byQuery(GetResultsQuery $query): ResultCollection;
 }

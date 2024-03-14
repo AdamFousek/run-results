@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Transformers\Meilisearch\ResultListTransformer;
 use App\Http\Transformers\Race\RaceListTransformer;
-use App\Http\Transformers\Race\RaceRunnerListTransformer;
 use App\Http\Transformers\Race\RaceTransformer;
 use App\Http\Transformers\Runner\TopParticipantTransformer;
 use App\Http\Transformers\Runner\TopRunnerTransformer;
 use App\Models\Illuminate\Enums\RunnerGenderEnum;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\UploadedFiles;
-use App\Models\QueryResult\TopRunner;
 use App\Queries\Race\RaceSearch;
 use App\Queries\Race\RaceSearchHandler;
 use App\Queries\Result\GetCategoriesByRaceIdHandler;
@@ -19,12 +18,8 @@ use App\Queries\Result\GetResultsHandler;
 use App\Queries\Result\GetResultsQuery;
 use App\Queries\Result\GetTopParticipantsHandler;
 use App\Queries\Result\GetTopRunnersBy;
-use App\Queries\Runner\RunnerSearch;
-use App\Queries\Runner\RunnerSearchQuery;
 use App\Queries\TopResult\GetTopResultsByQuery;
 use App\Queries\TopResult\GetTopResultsQuery;
-use App\Repositories\Illuminate\Results\TopRunnersResult;
-use App\Services\PaginateService;
 use App\Services\Providers\ResultStatsService;
 use App\Services\RaceSortService;
 use Illuminate\Http\RedirectResponse;
@@ -37,21 +32,24 @@ class RaceController extends Controller
 {
     private const int LIMIT = 30;
 
+    private const int RESULT_LIMIT = 50;
+
+    private const int TOP_LIMIT = 100;
+
     public function __construct(
-        private readonly PaginateService $paginateService,
         private readonly RaceListTransformer $transformer,
-        private readonly RaceRunnerListTransformer $raceRunnerListTransformer,
         private readonly RaceTransformer $raceTransformer,
         private readonly RaceSearchHandler $raceSearchHandler,
         private readonly \App\Http\Transformers\Meilisearch\RaceListTransformer $meilisearchRaceListTransformer,
         private readonly RaceSortService $sortService,
         private readonly ResultStatsService $resultStatsService,
         private readonly GetCategoriesByRaceIdHandler $getCategoriesByRaceIdHandler,
-        private readonly GetResultsHandler $getResultsHandler,
         private readonly TopRunnerTransformer $topRunnerTransformer,
         private readonly GetTopResultsByQuery $getTopResultsByQuery,
         private readonly GetTopParticipantsHandler $getTopParticipantsHandler,
         private readonly TopParticipantTransformer $topParticipantTransformer,
+        private readonly GetResultsHandler $getRunnerResultsHandler,
+        private readonly ResultListTransformer $resultListTransformer,
     ) {
     }
 
@@ -109,20 +107,21 @@ class RaceController extends Controller
         $paginate = null;
         $stats = null;
         if (!$race->is_parent) {
-            $results = $this->getResultsHandler->handle(new GetResultsQuery(
+            $results = $this->getRunnerResultsHandler->handle(new GetResultsQuery(
                 race: $race,
                 search: $search,
-                page: $page,
-                showFemale: $filter['showFemale'],
-                showMale: $filter['showMale'],
-                categories: $filter['categories'],
+                limit: self::RESULT_LIMIT,
+                offset: ($page - 1) * self::RESULT_LIMIT,
+                showFemale: $showFemale === 'true',
+                showMale: $showMale === 'true',
+                categories: $categories,
             ));
 
             $paginate = [
-                'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
-                'total' => $results->total(),
-                'limit' => self::LIMIT
+                'total' => $results->estimatedTotal,
+                'limit' => self::RESULT_LIMIT,
+                'onPage' => $results->total,
             ];
         } else {
             $childRaces = $race->children()->orderBy('date', 'desc')->get();
@@ -131,18 +130,19 @@ class RaceController extends Controller
             }
         }
 
-        $total = $childRaces !== null ? $childRaces->count() : $results?->total();
+        $total = $childRaces !== null ? $childRaces->count() : $results?->total;
         $metaDescription = $this->resolveMetaDescription($race, (int)$total);
 
 
         $data = [
             'race' => $this->raceTransformer->transform($race),
             'childRaces' => $childRaces !== null ? $this->transformer->transform($childRaces) : [],
-            'results' => $results !== null ? $this->raceRunnerListTransformer->transform($results->items()) : [],
+            'results' => $results !== null ? $this->resultListTransformer->transform($results->items) : [],
             'paginate' => $paginate,
             'head' => [
                 'title' => $race->name,
                 'description' => $metaDescription,
+                'canonical' => route('races.show', $race),
             ],
             'selectedRunner' => $runnerId === 0 ? null : $runnerId,
             'files' => $files,
@@ -229,8 +229,8 @@ class RaceController extends Controller
         $runners = $this->getTopResultsByQuery->handle(new GetTopResultsQuery(
             raceTag: $race->tag,
             gender: RunnerGenderEnum::MALE,
-            limit: 100,
-            offset: ($page - 1) * 100,
+            limit: self::TOP_LIMIT,
+            offset: ($page - 1) * self::TOP_LIMIT,
             search: $search,
         ));
 
@@ -262,7 +262,7 @@ class RaceController extends Controller
             'paginate' => [
                 'page' => $page,
                 'total' => $runners->estimatedTotal,
-                'limit' => self::LIMIT,
+                'limit' => self::TOP_LIMIT,
                 'onPage' => $runners->total,
             ],
         ];
@@ -270,9 +270,9 @@ class RaceController extends Controller
         return Inertia::render('Races/TopRunners', $data);
     }
 
-    public function topWomen(Race $race): Response|RedirectResponse
+    public function topWomen(Request $request, Race $race): Response|RedirectResponse
     {
-        if (!$race->is_parent) {
+        if (!$race->is_parent || $race->tag === null || $race->tag === '') {
             if ($race->parent !== null) {
                 return Redirect::route('races.stats', $race->parent->slug);
             }
@@ -280,8 +280,47 @@ class RaceController extends Controller
             return Redirect::route('races.show', $race->slug);
         }
 
+        $search = trim($request->get('query'));
+        $page = (int)$request->get('page', 1);
+        $runners = $this->getTopResultsByQuery->handle(new GetTopResultsQuery(
+            raceTag: $race->tag,
+            gender: RunnerGenderEnum::FEMALE,
+            limit: self::TOP_LIMIT,
+            offset: ($page - 1) * self::TOP_LIMIT,
+            search: $search,
+        ));
+
+        $breadcrumb = [
+            [
+                'name' => $race->name,
+                'link' => route('races.show', $race->slug),
+            ],
+            [
+                'name' => trans('messages.races_stats_title'),
+                'link' => route('races.stats', $race->slug),
+            ],
+            [
+                'name' => trans('messages.topWomen'),
+                'link' => null,
+            ]
+        ];
+
         $data = [
+            'head' => [
+                'title' => $race->name . ' ' . trans('messages.topWomen'),
+                'description' => trans('messages.topWomen_description', [ 'race' => $race->name]),
+            ],
+            'title' => trans('messages.topWomen'),
             'race' => $this->raceTransformer->transform($race),
+            'breadcrumb' => $breadcrumb,
+            'runners' => $this->topRunnerTransformer->transform($runners->items),
+            'search' => $search,
+            'paginate' => [
+                'page' => $page,
+                'total' => $runners->estimatedTotal,
+                'limit' => self::TOP_LIMIT,
+                'onPage' => $runners->total,
+            ],
         ];
 
         return Inertia::render('Races/TopRunners', $data);

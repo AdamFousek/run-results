@@ -6,7 +6,7 @@ import { ArrowBackOutlined } from '@vicons/material'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import route from 'ziggy-js'
 import MyLink from '@/Components/MyLink.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 import Breadcrumb from '@/Components/Breadcrumb.vue'
 
@@ -67,6 +67,15 @@ const searchRaces = () => {
         }
     })
 }
+
+
+const pagination = computed(() => {
+    if (props.paginate.total < props.paginate.limit) {
+        return `${props.paginate.total} / ${props.paginate.total}`
+    }
+
+    return `${props.paginate.limit} / ${props.paginate.total}`
+})
 </script>
 
 <template>
@@ -131,6 +140,8 @@ const searchRaces = () => {
                         <div v-if="!isParticipiant" class="col-span-2 flex justify-end gap-2"><span>{{ runner.time }}</span><span v-if="runner.year">({{ runner.year }})</span></div>
                         <div v-else class="col-span-2 text-right">{{ runner.participiantCount }}</div>
                     </div>
+                    <section class="p-4 text-center" v-if="runners.length === 0">{{ $t('noResults') }}</section>
+                    <div class="flex justify-end px-4 border-t border-gray-200 p-4">{{ pagination }}</div>
                     <MeilisearchPagination v-if="!searching && runners.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{race: race.slug}" class="my-4"/>
                 </div>
             </div>
