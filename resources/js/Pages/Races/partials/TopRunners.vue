@@ -48,7 +48,7 @@ const showMoreLink = computed(() => {
         </div>
         <div v-for="(runner, index) in runners" class="grid grid-cols-6 justify-between gap-4  mb-1" :key="runner.name">
             <div v-if="!isParticipiant" class="col-span-1">{{ runner.position }}.</div>
-            <div v-else class="col-span-1">{{ ++index }}.</div>
+            <div v-else class="col-span-1">{{ index + 1 }}.</div>
             <MyLink :href="route('runners.show', { runner: runner.runnerId })" class="col-span-3">{{ runner.name }}</MyLink>
             <div v-if="!isParticipiant" class="col-span-2 flex justify-end gap-2"><span>{{ runner.time }}</span><span v-if="runner.year">({{ runner.year }})</span></div>
             <div v-else class="col-span-2 text-right">{{ runner.participantCount }}</div>
