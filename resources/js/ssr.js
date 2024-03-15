@@ -4,7 +4,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import Messages from '@/lang.js'
-import route from 'ziggy-js'
+import route from 'ziggy'
 
 createServer(page =>
     createInertiaApp({
@@ -16,11 +16,8 @@ createServer(page =>
         },
         setup({App, props, plugin}) {
                 const Ziggy = {
-                    // Pull the Ziggy config off of the props.
                     ...props.initialPage.props.ziggy,
-                    // Build the location, since there is
-                    // no window.location in Node.
-                    location: new URL(props.initialPage.props.ziggy.url)
+                    location: new URL(props.initialPage.props.ziggy.location)
                 }
 
                 return createSSRApp({

@@ -31,8 +31,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/js/',
-            ziggy: path.resolve('vendor/tightenco/ziggy/dist/index.es.js'),
-            ziggyVue: path.resolve('vendor/tightenco/ziggy/dist/vue.es.js'),
+            ziggy: path.resolve('vendor/tightenco/ziggy/src/js/index.js'),
         },
     }
 });

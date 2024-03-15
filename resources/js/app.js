@@ -27,7 +27,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createI18n } from 'vue-i18n';
 import Messages from './lang.js';
 import 'chartjs-adapter-moment';
-import route from 'ziggy-js';
+import useRoute from './libs/route.js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -39,14 +39,6 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        const Ziggy = {
-            // Pull the Ziggy config off of the props.
-            ...props.initialPage.props.ziggy,
-            // Build the location, since there is
-            // no window.location in Node.
-            location: new URL(props.initialPage.props.ziggy.url)
-        }
-
         return createSSRApp({ render: () => h(App, props) })
             .use(createI18n( {
                 legacy: false,
@@ -56,7 +48,7 @@ createInertiaApp({
             .use(plugin)
             .mixin({
                 methods: {
-                    route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
+                    route: (name, params, absolute, config = Ziggy) => useRoute().route(name, params, absolute, config),
                 },
             })
             .mount(el)
