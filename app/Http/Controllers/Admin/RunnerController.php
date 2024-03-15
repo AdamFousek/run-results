@@ -11,14 +11,15 @@ use App\Commands\Runner\UpdateRunnerHandler;
 use App\Http\Requests\MergeRunnerRequest;
 use App\Http\Requests\StoreRunnerRequest;
 use App\Http\Requests\UpdateRunnerRequest;
-use App\Http\Transformers\Meilisearch\RunnerListTransformer;
+use App\Http\Transformers\Runner\RunnerTransformer;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
-use App\Services\RunnerSortService;
+use App\Services\IlluminateSort\IlluminateRunnerSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,9 +31,9 @@ class RunnerController extends AdminController
     public function __construct(
         private readonly CreateRunnerHandler $createRunnerHandler,
         private readonly UpdateRunnerHandler $updateRunnerHandler,
-        private readonly RunnerSortService $sortService,
+        private readonly IlluminateRunnerSortService $sortService,
         private readonly RunnerSearchQuery $runnerSearchQuery,
-        private readonly RunnerListTransformer $runnerListTransformer,
+        private readonly RunnerTransformer $runnerTransformer,
         private readonly MergerRunnerHandler $mergerRunnerHandler,
     ) {
     }
@@ -41,25 +42,44 @@ class RunnerController extends AdminController
     {
         $search = trim($request->get('query', ''));
         $page = (int)$request->get('page', 1);
-        $requestSort = $request->get('sort', RunnerSortService::DEFAULT_SORT);
+        $requestSort = $request->get('sort', IlluminateRunnerSortService::DEFAULT_SORT);
         $sort = $this->sortService->resolveSort($requestSort);
         [$sortColumn, $sortDirection] = explode(':', $sort);
 
-        $runners = $this->runnerSearchQuery->handle(new RunnerSearch(
-            search: $search,
-            page: $page,
-            perPage: self::LIMIT,
-            sortBy: $sortColumn,
-            sortDirection: $sortDirection
-        ));
+        if ($search !== '') {
+            $searchRunners = $this->runnerSearchQuery->handle(new RunnerSearch(
+                search: $search,
+                page: 1,
+                perPage: 100000,
+            ));
+
+            $runnerIds = $searchRunners->items->map(fn (\App\Models\Meilisearch\Runner $runner) => $runner->getId())->toArray();
+
+            $runners = Runner::query()
+                ->withCount('results')
+                ->when($runnerIds !== [], function($query) use ($runnerIds) {
+                    return $query->whereIn('id', $runnerIds);
+                })
+                ->when($runnerIds === [], function($query) use ($search) {
+                    return $query->where(DB::raw("concat(first_name, ' ', last_name)"), 'LIKE', "%".$search."%");
+                })
+                ->orderBy($sortColumn, $sortDirection)
+                ->paginate(self::LIMIT);
+        } else {
+            $runners = Runner::query()
+                ->withCount('results')
+                ->orderBy($sortColumn, $sortDirection)
+                ->paginate(self::LIMIT);
+        }
+
 
         return Inertia::render('Admin/Runners/Index', [
-            'runners' => $this->runnerListTransformer->transform($runners->items),
+            'runners' => array_map(fn (Runner $runner) => $this->runnerTransformer->transform($runner), $runners->items()),
             'paginate' => [
                 'page' => $page,
-                'total' => $runners->estimatedTotal,
+                'total' => $runners->total(),
                 'limit' => self::LIMIT,
-                'onPage' => $runners->total,
+                'onPage' => $runners->perPage(),
             ],
             'search' => $search,
             'activeSort' => $sort,

@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user()?->only('id', 'username', 'email', 'role', 'email_verified_at'),
+                'isAdmin' => $request->user()?->isAdmin(),
                 'token' => csrf_token(),
             ],
             'ziggy' => fn () => [

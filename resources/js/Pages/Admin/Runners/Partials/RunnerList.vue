@@ -19,29 +19,13 @@ const activeSort = computed(() => {
         name: sort[0],
         isAsc: sort[1] === 'asc',
     }
-});
-
-const query = computed(() => {
-    return (usePage().props.ziggy as any).query
 })
-
-const changeSort = (name: string, isAsc: boolean) => {
-    const sort = isAsc ? `${name}:desc` : `${name}:asc`
-    router.reload({
-        data: {
-            ...query.value,
-            ...{
-                sort
-            }
-        },
-    })
-}
 </script>
 
 <template>
     <section>
-        <div class="grid grid-cols-5 md:grid-cols-7 gap-2 md:gap-4 border-b">
-            <SortBlock class="font-bold md:col-span-2 p-3 md:px-4 flex items-center gap-2" name="lastName" :is-active="activeSort.name === 'lastName'" :is-asc="activeSort.isAsc">
+        <div class="grid grid-cols-6 md:grid-cols-8 gap-2 md:gap-4 border-b">
+            <SortBlock class="font-bold md:col-span-2 p-3 md:px-4 flex items-center gap-2" name="last_name" :is-active="activeSort.name === 'last_name'" :is-asc="activeSort.isAsc">
                 {{ $t('runner.name') }}
             </SortBlock>
             <SortBlock class="font-bold p-3 md:px-4 flex items-center justify-center gap-2" name="year" :is-active="activeSort.name === 'year'" :is-asc="activeSort.isAsc">
@@ -53,20 +37,21 @@ const changeSort = (name: string, isAsc: boolean) => {
             <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="city" :is-active="activeSort.name === 'city'" :is-asc="activeSort.isAsc">
                 {{ $t('runner.city') }}
             </SortBlock>
-            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="resultsCount" :is-active="activeSort.name === 'resultsCount'" :is-asc="activeSort.isAsc">
+            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="results_count" :is-active="activeSort.name === 'results_count'" :is-asc="activeSort.isAsc">
                 {{ $t('runner.races') }}
             </SortBlock>
-            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="resultsCount" :is-active="activeSort.name === 'resultsCount'" :is-asc="activeSort.isAsc">
+            <SortBlock class="font-bold p-3 md:px-4 flex items-center gap-2" name="created_at" :is-active="activeSort.name === 'created_at'" :is-asc="activeSort.isAsc">
                 {{ $t('admin.runner.createdAt') }}
             </SortBlock>
         </div>
-        <Link v-for="(runner, index) in runners" :key="runner.id" :href="route('admin.runners.edit', { runner: runner.id })" class="grid grid-cols-5 md:grid-cols-7 gap-2 md:gap-4 hover:bg-gray-100"
+        <Link v-for="(runner, index) in runners" :key="runner.id" :href="route('admin.runners.edit', { runner: runner.id })" class="grid grid-cols-6 md:grid-cols-8 gap-2 md:gap-4 hover:bg-gray-100"
               :class="{ 'bg-gray-50': index%2 === 0}">
             <div class="md:col-span-2 p-3 md:px-4">{{ runner.lastName }} {{ runner.firstName }}</div>
             <div class="p-3 md:px-4 text-center">{{ runner.year === 0 ? '-' : runner.year }}</div>
             <div class="p-3 md:col-span-2 md:px-4 text-center">{{ runner.club }}</div>
             <div class="p-3 md:px-4">{{ runner.city }}</div>
             <div class="p-3 md:px-4 text-center">{{ runner.resultsCount }}</div>
+            <div class="p-3 md:px-4 text-center">{{ runner.createdAt }}</div>
         </Link>
     </section>
 </template>

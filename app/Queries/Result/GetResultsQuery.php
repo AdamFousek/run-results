@@ -7,7 +7,7 @@ namespace App\Queries\Result;
 
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Runner;
-use App\Services\ResultSortService;
+use App\Services\MeilisearchSort\ResultSortService;
 
 readonly class GetResultsQuery
 {

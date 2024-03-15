@@ -6,4 +6,5 @@ export default interface Runner {
     club: string
     city: string
     resultsCount: number
+    createdAt: string
 }

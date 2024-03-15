@@ -223,6 +223,7 @@ export default {
             selectedRunner: 'Vybraný závodník',
             changeRunner: 'Změnit závodníka',
             duplicity: 'Duplicitní závodníci',
+            createdAt: 'Vytvořeno',
         },
         races: {
             create: 'Vytvořit závod',
@@ -230,6 +231,7 @@ export default {
             back: 'Zpět na výpis',
             deleteRace: 'Smazat závod',
             show: 'Zobrazit závod',
+            showRace: 'Zobrazit v administraci',
             deleteDescription: 'Závod vymaže i výsledky závodníků!',
             delete: 'Smazat',
             deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
@@ -238,6 +240,7 @@ export default {
             uploadFile: 'Nahrát soubor',
             results: 'Výsledky závodu',
             showResults: 'Zobrazit výsledky',
+            createdAt: 'Vytvořeno',
         },
         results: {
             create: 'Vytvořit výsledky',

@@ -11,7 +11,7 @@ use App\Models\Illuminate\Result;
 use App\Queries\Result\GetResultsQuery;
 use App\Repositories\Meilisearch\Results\ResultCollection;
 use App\Repositories\ResultRepositoryInterface;
-use App\Services\ResultSortService;
+use App\Services\MeilisearchSort\ResultSortService;
 use Meilisearch\Client;
 
 readonly class MeilisearchResultRepository implements ResultRepositoryInterface

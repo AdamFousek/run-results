@@ -1,5 +1,5 @@
 <script setup>
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
 import { ref, watch } from 'vue'
@@ -8,6 +8,7 @@ import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const { t } = useI18n();
 
@@ -68,6 +69,8 @@ const searchRaces = () => {
 const selectTab = (tab) => {
     selectedTab.value = tab
 }
+
+const isAdmin = usePage().props?.auth?.isAdmin ?? false
 </script>
 
 <template>
@@ -79,9 +82,12 @@ const selectTab = (tab) => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ runner.last_name }} {{ runner.first_name }} - {{ runner.year }}
-            </h2>
+            <div class="flex justify-between items-center">
+                <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ runner.last_name }} {{ runner.first_name }} - {{ runner.year }}
+                </h1>
+                <PrimaryButton v-if="isAdmin" :href="route('admin.runners.edit', {runner: runner.id})" link rounded outline color="blue">{{ $t('admin.races.showRace') }}</PrimaryButton>
+            </div>
         </template>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { NIcon, NInput, NCheckbox, NButton } from 'naive-ui'
 import { ref, onMounted, watch } from 'vue'
@@ -12,6 +12,7 @@ import MyLink from '@/Components/MyLink.vue'
 import Map from '@/Components/Map.vue'
 import Stats from '@/Pages/Races/partials/Stats.vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const props = defineProps({
     race: {
@@ -111,6 +112,8 @@ const selectCategory = (category) => {
 
     searchRaces()
 }
+
+const isAdmin = usePage().props?.auth?.isAdmin ?? false
 </script>
 
 <template>
@@ -122,11 +125,14 @@ const selectCategory = (category) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h1 class="font-semibold text-lg md:text-2xl text-gray-800 leading-tight">
-                <span v-if="race.date">{{ race.date }}&nbsp;-&nbsp;</span>
-                <span v-if="race.vintage">{{ race.vintage }}.&nbsp;{{ $t('race.vintage')}}&nbsp;-&nbsp;</span>
-                <span>{{ race.name }}</span>
-            </h1>
+            <div class="flex justify-between items-center">
+                <h1 class="font-semibold text-lg md:text-2xl text-gray-800 leading-tight">
+                    <span v-if="race.date">{{ race.date }}&nbsp;-&nbsp;</span>
+                    <span v-if="race.vintage">{{ race.vintage }}.&nbsp;{{ $t('race.vintage')}}&nbsp;-&nbsp;</span>
+                    <span>{{ race.name }}</span>
+                </h1>
+                <PrimaryButton v-if="isAdmin" :href="route('admin.races.edit', {race: race.id})" link rounded outline color="blue">{{ $t('admin.races.showRace') }}</PrimaryButton>
+            </div>
         </template>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
