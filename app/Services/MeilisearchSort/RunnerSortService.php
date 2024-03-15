@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Services;
+namespace App\Services\MeilisearchSort;
 
 class RunnerSortService
 {

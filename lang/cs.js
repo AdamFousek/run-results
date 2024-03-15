@@ -13,6 +13,9 @@ export default {
     yes: 'Ano',
     no: 'Ne',
     welcome: 'Novinky',
+    showMore: 'Zobrazit více',
+    showAll: 'Zobrazit vše',
+    back: 'Zpět',
     news: {
         races: 'Nejnovější závody',
     },
@@ -117,6 +120,7 @@ export default {
         }
     },
     race: {
+        back: 'Zpět na závod',
         name: 'Název',
         slug: 'Slug - url adresa',
         date: 'Datum',
@@ -148,8 +152,12 @@ export default {
             title: 'Statistiky',
             fastestTime: 'Nejrychlejší čas',
             fastestMan: 'Nejrychlejší muž',
-            fastestWomen: 'Nejrychlejší žena',
+            fastestWoman: 'Nejrychlejší žena',
             averageTime: 'Průměrný čas',
+            topMen: 'Nejrychlejší muži',
+            topWomen: 'Nejrychlejší ženy',
+            topParticipant: 'Nejvíce startů',
+            showAll: 'Zobrazit všechny statistky',
         },
     },
     result: {
@@ -162,6 +170,8 @@ export default {
         club: 'Klub',
         DNF: 'DNF',
         DNS: 'DNS',
+        countParticipiant: 'Počet startů',
+        yearOfRun: 'Rok běhu',
         filter: {
             onlyFemale: 'Zobrazit ženy',
             onlyMale: 'Zobrazit muže',
@@ -213,6 +223,7 @@ export default {
             selectedRunner: 'Vybraný závodník',
             changeRunner: 'Změnit závodníka',
             duplicity: 'Duplicitní závodníci',
+            createdAt: 'Vytvořeno',
         },
         races: {
             create: 'Vytvořit závod',
@@ -220,12 +231,16 @@ export default {
             back: 'Zpět na výpis',
             deleteRace: 'Smazat závod',
             show: 'Zobrazit závod',
+            showRace: 'Zobrazit v administraci',
             deleteDescription: 'Závod vymaže i výsledky závodníků!',
             delete: 'Smazat',
             deleteConfirmation: 'Jste si jisti, že chcete smazat závod?',
             uploadedFiles: 'Nahrané soubory',
             uploadedFilesDescription: 'Název souboru bude zobrazen v seznamu nahraných souborů.',
             uploadFile: 'Nahrát soubor',
+            results: 'Výsledky závodu',
+            showResults: 'Zobrazit výsledky',
+            createdAt: 'Vytvořeno',
         },
         results: {
             create: 'Vytvořit výsledky',

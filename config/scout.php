@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\Illuminate\Race;
+use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
+use App\Models\TopResult;
 
 return [
 
@@ -147,8 +149,46 @@ return [
                 ]
             ],
             Race::class => [
-                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'isParent'],
+                'filterableAttributes'=> ['name', 'location', 'distance', 'date', 'surface', 'type', 'isParent', 'region'],
                 'sortableAttributes'=> ['name', 'location', 'distance', 'date', 'runnerCount'],
+                'pagination' => [
+                    'maxTotalHits' => 100000
+                ]
+            ],
+            Result::class => [
+                'filterableAttributes'=> [
+                    'race', 'race.name', 'race.tag', 'race.data', 'race.location', 'race.region',
+                    'runner', 'runner.id', 'runner.gender', 'runner.firstName', 'runner.lastName',
+                    'time',
+                    'startingNumber',
+                    'position',
+                    'category',
+                    'categoryPosition',
+                    'club',
+                    'dnf',
+                    'dns',
+                ],
+                'sortableAttributes'=> [
+                    'time',
+                    'startingNumber',
+                    'position',
+                    'category',
+                    'categoryPosition',
+                    'runner.gender', 'runner.lastName', 'runner.firstName', 'runner.year',
+                    'race.tag', 'race.name', 'race.distance', 'race.date', 'race.location',
+                ],
+                'pagination' => [
+                    'maxTotalHits' => 100000
+                ]
+            ],
+            TopResult::class => [
+                'filterableAttributes'=> [
+                    'race', 'race.name', 'race.tag', 'race.data', 'race.time',
+                    'runner', 'runner.id', 'runner.gender', 'runner.firstName', 'runner.lastName',
+                    'time',
+                    'topPosition',
+                ],
+                'sortableAttributes'=> ['time', 'topPosition', 'runner.gender', 'race.tag',],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]

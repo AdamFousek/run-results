@@ -3,13 +3,14 @@
 namespace App\Observers;
 
 
+use App\Jobs\RecalculateTopResults;
 use App\Models\Illuminate\Result;
 use App\Services\Providers\ResultStatsService;
 
-class ResultObserver
+readonly class ResultObserver
 {
     public function __construct(
-        private readonly ResultStatsService $resultStatsService,
+        private ResultStatsService $resultStatsService,
     ) {
     }
 
@@ -21,7 +22,11 @@ class ResultObserver
         $result->race->searchable();
         $result->runner->searchable();
 
-        $this->resultStatsService->invalidateCache($result->race->tag);
+        $tag = (string)$result->race->tag;
+        if ($tag !== '') {
+            $this->resultStatsService->invalidateCache($tag);
+            RecalculateTopResults::dispatch($tag);
+        }
     }
 
     /**
@@ -32,7 +37,11 @@ class ResultObserver
         $result->race->searchable();
         $result->runner->searchable();
 
-        $this->resultStatsService->invalidateCache($result->race->tag);
+        $tag = (string)$result->race->tag;
+        if ($tag !== '') {
+            $this->resultStatsService->invalidateCache($tag);
+            RecalculateTopResults::dispatch($tag);
+        }
     }
 
     /**
@@ -43,7 +52,11 @@ class ResultObserver
         $result->race->searchable();
         $result->runner->searchable();
 
-        $this->resultStatsService->invalidateCache($result->race->tag);
+        $tag = (string)$result->race->tag;
+        if ($tag !== '') {
+            $this->resultStatsService->invalidateCache($tag);
+            RecalculateTopResults::dispatch($tag);
+        }
     }
 
     /**

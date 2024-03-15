@@ -79,6 +79,7 @@ class RaceListTransformer
             'distance' => $race->distance,
             'distanceRaw' => $race->getRawOriginal('distance'),
             'resultsCount' => $race->results_count ?? 0,
+            'createdAt' => $race->created_at?->format('j. n. Y H:i:s'),
         ];
     }
 }

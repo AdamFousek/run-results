@@ -1,11 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method Illuminate\\\\Support\\\\HigherOrderCollectionProxy\\<string, Illuminate\\\\Database\\\\Eloquent\\\\Model, Illuminate\\\\Database\\\\Eloquent\\\\Collection&iterable\\<App\\\\Models\\\\Illuminate\\\\Race\\|App\\\\Models\\\\Illuminate\\\\Runner\\>\\>\\:\\:pushSoftDeleteMetadata\\(\\)\\.$#"
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\HigherOrderCollectionProxy\\<string, Illuminate\\\\Database\\\\Eloquent\\\\Model, Illuminate\\\\Database\\\\Eloquent\\\\Collection&iterable\\<App\\\\Models\\\\Illuminate\\\\Race\\|App\\\\Models\\\\Illuminate\\\\Result\\|App\\\\Models\\\\Illuminate\\\\Runner\\>\\>\\:\\:pushSoftDeleteMetadata\\(\\)\\.$#"
 			count: 1
 			path: app/Engines/MeilisearchEngine.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<\\(int\\|string\\),Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:map\\(\\) expects callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Model, int\\|string\\)\\: \\(non\\-empty\\-array\\|null\\), Closure\\(App\\\\Models\\\\Illuminate\\\\Race\\|App\\\\Models\\\\Illuminate\\\\Runner\\)\\: \\(non\\-empty\\-array\\|null\\) given\\.$#"
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<\\(int\\|string\\),Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:map\\(\\) expects callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Model, int\\|string\\)\\: \\(non\\-empty\\-array\\|null\\), Closure\\(App\\\\Models\\\\Illuminate\\\\Race\\|App\\\\Models\\\\Illuminate\\\\Result\\|App\\\\Models\\\\Illuminate\\\\Runner\\)\\: \\(non\\-empty\\-array\\|null\\) given\\.$#"
 			count: 1
 			path: app/Engines/MeilisearchEngine.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Illuminate\\\\Result\\:\\:\\$count\\.$#"
+			count: 1
+			path: app/Repositories/Illuminate/IlluminateResultRepository.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsToMany\\<App\\\\Models\\\\Illuminate\\\\Runner\\>\\:\\:searchable\\(\\)\\.$#"
+			count: 1
+			path: app/Services/HandleUploadFileResultService.php

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
 import { ref, watch } from 'vue'
@@ -7,6 +7,8 @@ import ResultList from '@/Pages/Runners/partials/ResultList.vue'
 import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
+import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const { t } = useI18n();
 
@@ -30,9 +32,18 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    sort: {
+        type: String,
+        required: false,
+    },
+    head: {
+        type: Object,
+        required: true,
+    },
 })
 
 const search = ref(props.search)
+const searching = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
 
 watch(search, (value) => {
@@ -42,28 +53,41 @@ watch(search, (value) => {
 })
 
 const searchRaces = () => {
+    searching.value = true
     router.reload({
         data: {
             query: search.value,
         },
-        only: ['results'],
+        only: ['results', 'paginate', 'ziggy', 'sort'],
         preserveState: true,
+        onFinish() {
+            searching.value = false
+        },
     })
 }
 
 const selectTab = (tab) => {
     selectedTab.value = tab
 }
+
+const isAdmin = usePage().props?.auth?.isAdmin ?? false
 </script>
 
 <template>
-    <Head :title="runner.last_name + ' ' + runner.first_name"/>
+    <Head>
+        <title>{{ head.title }}</title>
+        <meta name="description" :content="head.description">
+        <link rel="canonical" :href="head.canonical">
+    </Head>
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ runner.last_name }} {{ runner.first_name }}
-            </h2>
+            <div class="flex justify-between items-center">
+                <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ runner.last_name }} {{ runner.first_name }} - {{ runner.year }}
+                </h1>
+                <PrimaryButton v-if="isAdmin" :href="route('admin.runners.edit', {runner: runner.id})" link rounded outline color="blue">{{ $t('admin.races.showRace') }}</PrimaryButton>
+            </div>
         </template>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -92,13 +116,13 @@ const selectTab = (tab) => {
 
                     <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
                         <div class="md:w-full flex-shrink-0">
-                            <ResultList :results="results" :runner="runner"/>
+                            <ResultList :results="results" :sort="sort" />
                             <section v-if="results.length === 0" class="p-4 text-center">
                                 {{ $t('noResults') }}
                             </section>
                         </div>
                     </div>
-                    <Pagination v-if="results.length" :pages="paginate.links" class="my-4" />
+                    <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{runner: runner.id}" class="my-4"/>
                 </div>
                 <div v-show="selectedTab === $t('runner.tabCharts')">
                     <ChartIndex :data="chartData" />

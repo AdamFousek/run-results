@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Providers\ChartRunnerDataProvider;
+use App\Http\Transformers\Meilisearch\ResultListTransformer;
 use App\Http\Transformers\Meilisearch\RunnerListTransformer;
-use App\Http\Transformers\Runner\RunnerRaceListTransformer;
-use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
-use App\Queries\Race\GetRaceIdsBySearch;
-use App\Queries\Race\GetRaceIdsBySearchHandler;
+use App\Queries\Result\GetResultsHandler;
+use App\Queries\Result\GetResultsQuery;
 use App\Queries\Runner\RunnerSearch;
 use App\Queries\Runner\RunnerSearchQuery;
-use App\Services\PaginateService;
-use App\Services\RaceSortService;
-use App\Services\RunnerSortService;
+use App\Services\MeilisearchSort\ResultSortService;
+use App\Services\MeilisearchSort\RunnerSortService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,14 +21,13 @@ class RunnerController extends Controller
     private const int LIMIT = 30;
 
     public function __construct(
-        private readonly RunnerRaceListTransformer $runnerRaceListTransformer,
         private readonly ChartRunnerDataProvider $chartRunnerDataProvider,
         private readonly RunnerSearchQuery $runnerSearchQuery,
         private readonly RunnerListTransformer $runnerListTransformer,
-        private readonly GetRaceIdsBySearchHandler $getRaceIdsBySearchHandler,
-        private readonly PaginateService $paginateService,
         private readonly RunnerSortService $sortService,
-        private readonly RaceSortService $raceSortService,
+        private readonly GetResultsHandler $getRunnerResultsHandler,
+        private readonly ResultListTransformer $resultListTransformer,
+        private readonly ResultSortService $resultSortService,
     ) {
     }
 
@@ -67,38 +64,34 @@ class RunnerController extends Controller
     {
         $page = (int)$request->get('page', 1);
         $search = trim($request->get('query'));
-        $requestSort = $request->get('sort', RunnerSortService::DEFAULT_SORT);
-        $sort = $this->raceSortService->resolveSort($requestSort);
-        [$sortColumn, $sortDirection] = explode(':', $sort);
-        $orderBy = 'races.' . $sortColumn;
+        $requestSort = $request->get('sort', ResultSortService::DEFAULT_SORT);
+        $sort = $this->resultSortService->resolveSort($requestSort);
 
-        if ($search !== '') {
-            $raceIds = $this->getRaceIdsBySearchHandler->handle(new GetRaceIdsBySearch($search));
-            $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
-                ->join('races', 'results.race_id', '=', 'races.id')
-                ->orderBy($orderBy, $sortDirection)
-                ->whereIn('races.id', $raceIds)
-                ->with('race')
-                ->paginate(self::LIMIT);
-        } else {
-            $results = Result::query()->selectRaw('results.*')->whereRunnerId($runner->id)
-                ->join('races', 'results.race_id', '=', 'races.id')
-                ->orderBy($orderBy, $sortDirection)
-                ->with('race')
-                ->paginate(self::LIMIT);
-        }
+        $results = $this->getRunnerResultsHandler->handle(new GetResultsQuery(
+            runner: $runner,
+            search: $search,
+            limit: self::LIMIT,
+            offset: ($page - 1) * self::LIMIT,
+            sort: $sort,
+        ));
 
         $chartData = $this->chartRunnerDataProvider->provide($runner);
 
         return Inertia::render('Runners/Show', [
             'runner' => $runner,
-            'results' => $this->runnerRaceListTransformer->transform($results->items()),
+            'results' => $this->resultListTransformer->transform($results->items),
             'search' => $search,
+            'sort' => $requestSort,
             'paginate' => [
-                'links' => $this->paginateService->resolveLinks($results),
                 'page' => $page,
-                'total' => $results->total(),
-                'limit' => self::LIMIT
+                'total' => $results->estimatedTotal,
+                'limit' => self::LIMIT,
+                'onPage' => $results->total,
+            ],
+            'head' => [
+                'title' => $runner->full_name,
+                'description' => trans('messages.runner_metadescription', [ 'runner' => $runner->full_name, 'count' => $results->total ]),
+                'canonical' => route('runners.show', $runner),
             ],
             'chartData' => $chartData,
         ]);

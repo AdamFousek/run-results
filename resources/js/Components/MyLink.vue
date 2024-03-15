@@ -28,7 +28,8 @@ const colorClasses = {
     primary: 'text-violet-950 hover:text-violet-800',
     secondary: 'bg-white hover:bg-gray-50 text-gray-700',
     danger: 'bg-red-600 hover:bg-red-700',
-    link: 'text-indigo-500 hover:text-indigo-800',
+    link: 'text-indigo-800 hover:text-indigo-950',
+    linkSecondary: 'text-rose-600 hover:text-rose-800',
 }
 
 const typeClasses = {

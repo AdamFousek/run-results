@@ -101,7 +101,7 @@ const setData = (value) => {
 
 <template>
     <div class="w-full max-h-screen mb-4">
-        <div class="flex justify-start gap-4 m-2">
+        <div class="flex justify-start flex-wrap gap-4 m-2">
             <NButton v-for="(value, tag) of data" :key="tag" @click="setData(value)" type="info" secondary round>
                 {{ tag }}
             </NButton>

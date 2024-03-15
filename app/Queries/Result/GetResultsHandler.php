@@ -5,18 +5,18 @@ declare(strict_types=1);
 
 namespace App\Queries\Result;
 
-use App\Repositories\IlluminateResultRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Repositories\Meilisearch\Results\ResultCollection;
+use App\Repositories\ResultRepositoryInterface;
 
-class GetResultsHandler
+readonly class GetResultsHandler
 {
     public function __construct(
-        private readonly IlluminateResultRepositoryInterface $resultRepository,
+        private ResultRepositoryInterface $repository,
     ) {
     }
 
-    public function handle(GetResultsQuery $query): LengthAwarePaginator
+    public function handle(GetResultsQuery $query): ResultCollection
     {
-        return $this->resultRepository->findResults($query);
+        return $this->repository->byQuery($query);
     }
 }

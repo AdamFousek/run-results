@@ -40,7 +40,7 @@ const searchRunners = () => {
             query: search.value,
             page: 1,
         },
-        preserveState: true,
+        preserveState: false,
     })
 }
 

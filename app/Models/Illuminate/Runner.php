@@ -4,6 +4,7 @@ namespace App\Models\Illuminate;
 
 use App\Models\IlluminateModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,6 +50,9 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Runner whereYear($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Runner withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Runner withoutTrashed()
+ * @property string $gender
+ * @property-read string $full_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Runner whereGender($value)
  * @mixin \Eloquent
  */
 class Runner extends IlluminateModel
@@ -101,5 +105,12 @@ class Runner extends IlluminateModel
     public function getSerializer(): ?string
     {
         return \App\Serializer\RunnerSerializer::class;
+    }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes): string => sprintf('%s %s', $attributes['last_name'], $attributes['first_name']),
+        );
     }
 }

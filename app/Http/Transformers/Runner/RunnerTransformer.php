@@ -18,7 +18,8 @@ class RunnerTransformer
      *      year: int,
      *      city: string|null,
      *      club: string|null,
-     *      results_count: int
+     *      resultsCount: int,
+     *      createdAt: string|null
      *  }
      */
     public function transform(Runner $runner): array
@@ -30,7 +31,8 @@ class RunnerTransformer
             'year' => $runner->year,
             'city' => $runner->city,
             'club' => $runner->club,
-            'results_count' => $runner->results_count ?? 0,
+            'resultsCount' => $runner->results_count ?? 0,
+            'createdAt' => $runner->created_at?->format('j. n. Y H:i:s'),
         ];
     }
 }
