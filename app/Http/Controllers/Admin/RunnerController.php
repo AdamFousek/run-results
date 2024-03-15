@@ -25,7 +25,7 @@ use Inertia\Response;
 
 class RunnerController extends AdminController
 {
-    private const LIMIT = 50;
+    private const int LIMIT = 50;
 
     public function __construct(
         private readonly CreateRunnerHandler $createRunnerHandler,

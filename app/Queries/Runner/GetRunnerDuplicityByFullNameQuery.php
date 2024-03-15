@@ -8,7 +8,7 @@ namespace App\Queries\Runner;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
 use Illuminate\Support\Collection;
 
-readonly class GetRunnerDuplicityByLastNameQuery
+readonly class GetRunnerDuplicityByFullNameQuery
 {
     public function __construct(
         private IlluminateRunnerRepositoryInterface $repository,
@@ -20,6 +20,6 @@ readonly class GetRunnerDuplicityByLastNameQuery
      */
     public function handle(): Collection
     {
-        return $this->repository->findDuplicityByLastName();
+        return $this->repository->findDuplicityByFullName();
     }
 }

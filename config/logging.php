@@ -126,6 +126,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'sentry' => [
+            'driver' => 'sentry',
+            'channels' => ['single', 'sentry'],
+            'level' => 'error',
+            'bubble' => true,
+        ],
     ],
 
 ];
