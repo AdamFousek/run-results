@@ -21,7 +21,7 @@ readonly class ResultListTransformer
     }
 
     /**
-     * @param Collection<Result> $results
+     * @param Collection<?Result> $results
      * @return array{
      *     id: int,
      *     runner: array{
@@ -39,20 +39,20 @@ readonly class ResultListTransformer
      *      date: string|null,
      *      time: string|null,
      *      vintage: int|null,
-     *      distance: int|null,
+     *      distance: string,
      *      location: string|null,
      *      surface: string|null,
      *      type: string|null,
      *      region: string|null,
-     *      },
+     *     },
      *     category: string,
-     *     categoryPosition: string,
+     *     categoryPosition: int|null,
      *     club: string|null,
      *     dnf: bool,
      *     dns: bool,
      *     position: int,
      *     startingNumber: int,
-     *     time: string|null
+     *     time: string
      * }[]
      */
     public function transform(Collection $results): array
@@ -67,18 +67,16 @@ readonly class ResultListTransformer
                 'id' => $item->getId(),
                 'runner' => $this->parseRunner($item->getRunner()),
                 'race' => $this->parseRace($item->getRace()),
-                'category' => $item->getCategory(),
+                'category' => (string)$item->getCategory(),
                 'categoryPosition' => $item->getCategoryPosition(),
                 'club' => $item->getClub(),
                 'dnf' => $item->isDnf(),
                 'dns' => $item->isDns(),
                 'position' => $item->getPosition(),
                 'startingNumber' => $item->getStartingNumber(),
-                'time' => $this->timeCast->getFromValue($item->getTime()),
+                'time' => $this->timeCast->getFromValue((int)$item->getTime()),
             ];
         }
-
-
 
         return $result;
     }
@@ -114,7 +112,7 @@ readonly class ResultListTransformer
      *     date: string|null,
      *     time: string|null,
      *     vintage: int|null,
-     *     distance: int|null,
+     *     distance: string,
      *     location: string|null,
      *     surface: string|null,
      *     type: string|null,
@@ -131,7 +129,7 @@ readonly class ResultListTransformer
             'date' => $race->getDate()?->format('j.n.Y'),
             'time' => $race->getTime(),
             'vintage' => $race->getVintage(),
-            'distance' => $this->distanceCast->getValue($race->getDistance()),
+            'distance' => $this->distanceCast->getValue((int)$race->getDistance()),
             'location' => $race->getLocation(),
             'surface' => $race->getSurface(),
             'type' => $race->getType(),

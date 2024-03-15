@@ -18,7 +18,7 @@ class RunnerTransformer
      *      year: int,
      *      city: string|null,
      *      club: string|null,
-     *      results_count: int,
+     *      resultsCount: int,
      *      createdAt: string|null
      *  }
      */

@@ -45,12 +45,6 @@ interface IlluminateResultRepositoryInterface
     public function getCategoriesByRaceId(int $raceId): array;
 
     /**
-     * @param GetResultsQuery $query
-     * @return LengthAwarePaginator
-     */
-    public function findResults(GetResultsQuery $query): LengthAwarePaginator;
-
-    /**
      * @param GetTopRunnersBy $query
      * @return Collection<Result>
      */

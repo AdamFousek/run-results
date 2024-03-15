@@ -12,10 +12,10 @@ use App\Models\Meilisearch\Result\ResultRunner;
 use App\Models\Meilisearch\Result\TopResult;
 use Illuminate\Support\Carbon;
 
-class TopResultDeserializer
+readonly class TopResultDeserializer
 {
     public function __construct(
-        private readonly TimeCast $timeCast,
+        private TimeCast $timeCast,
     ) {
     }
 
@@ -71,7 +71,7 @@ class TopResultDeserializer
         $runner->setFirstName($data['firstName']);
         $runner->setLastName($data['lastName']);
         $runner->setYear($data['year']);
-        $runner->setGender($data['gender'] ? RunnerGenderEnum::tryFrom($data['gender']) : null);
+        $runner->setGender(isset($data['gender']) ? RunnerGenderEnum::tryFrom($data['gender']) : null);
 
         return $runner;
     }

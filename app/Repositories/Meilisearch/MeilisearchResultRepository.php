@@ -35,6 +35,40 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
 
         $search = $index->search(null, $filter);
         $items = collect();
+        /**
+         * @var array{
+         *      id: int,
+         *      runner: array{
+         *       id: int,
+         *       firstName: string,
+         *       lastName: string,
+         *       year: int,
+         *       gender?: string
+         *       },
+         *      race: array{
+         *       id: int,
+         *       name: string,
+         *       slug: string,
+         *       tag: string|null,
+         *       date: int|null,
+         *       time: string|null,
+         *       vintage: int|null,
+         *       distance: int|null,
+         *       location: string|null,
+         *       surface: string|null,
+         *       type: string|null,
+         *       region: string|null,
+         *       },
+         *      startingNumber: int,
+         *      position: int,
+         *      time: ?string,
+         *      category: ?string,
+         *      categoryPosition: ?int,
+         *      club: ?string,
+         *      dnf: bool,
+         *      dns: bool
+         *  } $hit
+         */
         foreach ($search->getHits() as $hit) {
             $items->add($this->resultDeserializer->deserialize($hit));
         }
@@ -46,6 +80,9 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
         );
     }
 
+    /**
+     * @throws \JsonException
+     */
     #[\Override]
     public function byQuery(GetResultsQuery $query): ResultCollection
     {
@@ -71,7 +108,7 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
         }
 
         if ($query->categories !== []) {
-            $categories = json_encode($query->categories);
+            $categories = json_encode($query->categories, JSON_THROW_ON_ERROR);
             $filter[] = "category IN {$categories}";
         }
 
@@ -94,6 +131,40 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
 
         $search = $index->search($search, $filter);
         $items = collect();
+        /**
+         * @var array{
+         *      id: int,
+         *      runner: array{
+         *       id: int,
+         *       firstName: string,
+         *       lastName: string,
+         *       year: int,
+         *       gender?: string
+         *       },
+         *      race: array{
+         *       id: int,
+         *       name: string,
+         *       slug: string,
+         *       tag: string|null,
+         *       date: int|null,
+         *       time: string|null,
+         *       vintage: int|null,
+         *       distance: int|null,
+         *       location: string|null,
+         *       surface: string|null,
+         *       type: string|null,
+         *       region: string|null,
+         *       },
+         *      startingNumber: int,
+         *      position: int,
+         *      time: ?string,
+         *      category: ?string,
+         *      categoryPosition: ?int,
+         *      club: ?string,
+         *      dnf: bool,
+         *      dns: bool,
+         *  } $hit
+         */
         foreach ($search->getHits() as $hit) {
             $items->add($this->resultDeserializer->deserialize($hit));
         }

@@ -9,27 +9,28 @@ use App\Http\Transformers\Runner\RunnerTransformer;
 use App\Models\Illuminate\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class UserListTransformer
+readonly class UserListTransformer
 {
     public function __construct(
-        private readonly RunnerTransformer $runnerTransformer,
+        private RunnerTransformer $runnerTransformer,
     ) {
     }
 
     /**
      * @param array<int, ?User> $users
      * @return array<array{
-     *     id: int,
+     *      id: int,
      *      username: string,
      *      email: string,
      *      runner: array{
-     *          id: int,
-     *          firstName: string,
-     *          lastName: string,
-     *          year: int,
-     *          city: string|null,
-     *          club: string|null,
-     *          results_count: int
+     *       id: int,
+     *       firstName: string,
+     *       lastName: string,
+     *       year: int,
+     *       city: string|null,
+     *       club: string|null,
+     *       resultsCount: int,
+     *       createdAt: string|null
      *      }|null
      *  }>
      */

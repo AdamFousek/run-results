@@ -53,8 +53,8 @@ class TimeCast implements CastsAttributes
         return $value;
     }
 
-    public function getFromValue(int $value)
+    public function getFromValue(int $value): string
     {
-        return $this->get(new IlluminateModel(), '', $value, []);
+        return (string)$this->get(new IlluminateModel(), '', $value, []);
     }
 }
