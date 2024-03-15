@@ -2,7 +2,6 @@
 import {NInput, NModal} from "naive-ui";
 import {useForm, usePage} from "@inertiajs/vue3";
 import {reactive, ref} from "vue";
-import route from 'ziggy-js'
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";

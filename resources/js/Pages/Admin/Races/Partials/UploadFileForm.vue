@@ -4,7 +4,6 @@ import {CloseSharp, DeleteFilled, LockOpenFilled, LockOutlined} from "@vicons/ma
 import {NCard, NCheckbox, NIcon, NInput, NModal, NPopover, NPopconfirm} from "naive-ui";
 import {ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
-import route from 'ziggy-js'
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import MyLink from "@/Components/MyLink.vue";

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {Link} from '@inertiajs/vue3'
 import type Runner from "@/Models/List/Runner";
-import route from 'ziggy-js'
 import { computed } from 'vue'
 import SortBlock from "@/Components/SortBlock.vue";
 

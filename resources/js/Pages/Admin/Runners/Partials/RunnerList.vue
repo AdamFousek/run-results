@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import {Link, router, usePage} from '@inertiajs/vue3'
+import {Link} from '@inertiajs/vue3'
 import type Runner from "@/Models/List/Runner";
-import route from 'ziggy-js'
-import {KeyboardArrowDownFilled, KeyboardArrowUpFilled} from "@vicons/material";
-import {NIcon} from "naive-ui";
 import { computed } from 'vue'
 import SortBlock from "@/Components/SortBlock.vue";
 

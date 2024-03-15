@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                 'isAdmin' => $request->user()?->isAdmin(),
                 'token' => csrf_token(),
             ],
-            'ziggy' => fn () => [
+            'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
                 'query' => $request->query(),

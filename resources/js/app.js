@@ -24,11 +24,10 @@ window.Trix = Trix;
 import { createSSRApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { createI18n } from 'vue-i18n';
 import Messages from './lang.js';
-import { Ziggy } from './ziggy';
 import 'chartjs-adapter-moment';
+import route from 'ziggy-js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -40,6 +39,14 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
+        const Ziggy = {
+            // Pull the Ziggy config off of the props.
+            ...props.initialPage.props.ziggy,
+            // Build the location, since there is
+            // no window.location in Node.
+            location: new URL(props.initialPage.props.ziggy.url)
+        }
+
         return createSSRApp({ render: () => h(App, props) })
             .use(createI18n( {
                 legacy: false,
@@ -47,7 +54,11 @@ createInertiaApp({
                 messages: Messages,
             }))
             .use(plugin)
-            .use(ZiggyVue, Ziggy)
+            .mixin({
+                methods: {
+                    route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
+                },
+            })
             .mount(el)
             .$nextTick(() => {
                 delete el.dataset.page

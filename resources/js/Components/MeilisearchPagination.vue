@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3'
-import route from 'ziggy-js'
 import {computed} from "vue";
 
 const props = defineProps({

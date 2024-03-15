@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import MyLink from "@/Components/MyLink.vue";
-import route from 'ziggy-js'
 
 const props = withDefaults(defineProps<{
     raceSlug?: string,

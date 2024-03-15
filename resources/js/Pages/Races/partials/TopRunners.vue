@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import route from 'ziggy-js'
 import MyLink from "@/Components/MyLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {computed} from "vue";

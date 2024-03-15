@@ -4,8 +4,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import Messages from '@/lang.js'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m.js'
-import { Ziggy } from './ziggy';
+import route from 'ziggy-js'
 
 createServer(page =>
     createInertiaApp({
@@ -16,16 +15,28 @@ createServer(page =>
             return pages[`./Pages/${name}.vue`]
         },
         setup({App, props, plugin}) {
-            return createSSRApp({
-                render: () => h(App, props),
+                const Ziggy = {
+                    // Pull the Ziggy config off of the props.
+                    ...props.initialPage.props.ziggy,
+                    // Build the location, since there is
+                    // no window.location in Node.
+                    location: new URL(props.initialPage.props.ziggy.url)
+                }
+
+                return createSSRApp({
+                    render: () => h(App, props),
+                })
+            .use(createI18n({
+                legacy: false,
+                locale: props.initialPage.props.locale,
+                messages: Messages,
+            }))
+            .use(plugin)
+            .mixin({
+                methods: {
+                    route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
+                },
             })
-                .use(createI18n({
-                    legacy: false,
-                    locale: props.initialPage.props.locale,
-                    messages: Messages,
-                }))
-                .use(ZiggyVue, Ziggy)
-                .use(plugin)
         },
     }),
 )

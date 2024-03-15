@@ -1,8 +1,12 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 export default defineConfig({
+    build: {
+        chunkSizeWarningLimit: 1500,
+    },
     plugins: [
         laravel({
             input: 'resources/js/app.js',
@@ -27,6 +31,8 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/js/',
+            ziggy: path.resolve('vendor/tightenco/ziggy/dist/index.es.js'),
+            ziggyVue: path.resolve('vendor/tightenco/ziggy/dist/vue.es.js'),
         },
     }
 });
