@@ -9,7 +9,7 @@ use App\Queries\Race\GetRaceIdsBySearch;
 use App\Queries\Race\RaceSearch;
 use App\Repositories\Meilisearch\Results\RaceCollection;
 
-interface RaceRepository
+interface RaceRepositoryInterface
 {
     public function search(RaceSearch $query): RaceCollection;
 
@@ -18,4 +18,6 @@ interface RaceRepository
      * @return int[]
      */
     public function getIds(GetRaceIdsBySearch $search): array;
+
+    public function delete(int $id): void;
 }

@@ -6,12 +6,12 @@ declare(strict_types=1);
 namespace App\Queries\Runner;
 
 use App\Repositories\Meilisearch\Results\RunnerCollection;
-use App\Repositories\RunnerRepository;
+use App\Repositories\RunnerRepositoryInterface;
 
 class SearchRunnerByNameAndYearHandler
 {
     public function __construct(
-        private readonly RunnerRepository $repository,
+        private readonly RunnerRepositoryInterface $repository,
     ) {
     }
 

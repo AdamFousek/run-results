@@ -6,12 +6,12 @@ declare(strict_types=1);
 namespace App\Queries\Race;
 
 use App\Repositories\Meilisearch\Results\RaceCollection;
-use App\Repositories\RaceRepository;
+use App\Repositories\RaceRepositoryInterface;
 
 class RaceSearchHandler
 {
     public function __construct(
-        private readonly RaceRepository $repository
+        private readonly RaceRepositoryInterface $repository
     ) {
     }
 

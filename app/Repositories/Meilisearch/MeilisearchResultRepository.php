@@ -176,6 +176,14 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
         );
     }
 
+    #[\Override]
+    public function delete(int $id): void
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $index->deleteDocument($id);
+    }
+
     private function getIndex(): string
     {
         return (new Result())->searchableAs();

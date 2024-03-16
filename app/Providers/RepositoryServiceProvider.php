@@ -13,13 +13,13 @@ use App\Repositories\IlluminateRaceRepositoryInterface;
 use App\Repositories\IlluminateResultRepositoryInterface;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
 use App\Repositories\IlluminateUploadFileResultRowRepositoryInterface;
-use App\Repositories\Meilisearch\MeilisearchRaceRepository;
+use App\Repositories\Meilisearch\MeilisearchRaceRepositoryInterface;
 use App\Repositories\Meilisearch\MeilisearchResultRepository;
-use App\Repositories\Meilisearch\MeilisearchRunnerRepository;
+use App\Repositories\Meilisearch\MeilisearchRunnerRepositoryInterface;
 use App\Repositories\Meilisearch\MeilisearchTopResultRepository;
-use App\Repositories\RaceRepository;
+use App\Repositories\RaceRepositoryInterface;
 use App\Repositories\ResultRepositoryInterface;
-use App\Repositories\RunnerRepository;
+use App\Repositories\RunnerRepositoryInterface;
 use App\Repositories\TopResultRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,8 +28,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Meilisearch
-        $this->app->bind(RunnerRepository::class, MeilisearchRunnerRepository::class);
-        $this->app->bind(RaceRepository::class, MeilisearchRaceRepository::class);
+        $this->app->bind(RunnerRepositoryInterface::class, MeilisearchRunnerRepositoryInterface::class);
+        $this->app->bind(RaceRepositoryInterface::class, MeilisearchRaceRepositoryInterface::class);
         $this->app->bind(ResultRepositoryInterface::class, MeilisearchResultRepository::class);
         $this->app->bind(TopResultRepositoryInterface::class, MeilisearchTopResultRepository::class);
 

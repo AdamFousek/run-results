@@ -9,14 +9,14 @@ use App\Deserializer\RunnerDeserializer;
 use App\Models\Illuminate\Runner;
 use App\Queries\Runner\RunnerSearch;
 use App\Repositories\Meilisearch\Results\RunnerCollection;
-use App\Repositories\RunnerRepository;
+use App\Repositories\RunnerRepositoryInterface;
 use Meilisearch\Client;
 
-class MeilisearchRunnerRepository implements RunnerRepository
+readonly class MeilisearchRunnerRepositoryInterface implements RunnerRepositoryInterface
 {
     public function __construct(
-        private readonly Client $client,
-        private readonly RunnerDeserializer $runnerDeserializer,
+        private Client $client,
+        private RunnerDeserializer $runnerDeserializer,
     ) {
     }
 
@@ -108,5 +108,13 @@ class MeilisearchRunnerRepository implements RunnerRepository
     private function getIndex(): string
     {
         return (new Runner())->searchableAs();
+    }
+
+    #[\Override]
+    public function delete(int $id): void
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $index->deleteDocument($id);
     }
 }

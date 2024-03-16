@@ -5,12 +5,12 @@ declare(strict_types=1);
 
 namespace App\Queries\Race;
 
-use App\Repositories\RaceRepository;
+use App\Repositories\RaceRepositoryInterface;
 
 class GetRaceIdsBySearchHandler
 {
     public function __construct(
-        private readonly RaceRepository $raceRepository,
+        private readonly RaceRepositoryInterface $raceRepository,
     ) {
     }
 

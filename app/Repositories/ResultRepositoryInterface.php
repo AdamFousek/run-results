@@ -17,4 +17,6 @@ interface ResultRepositoryInterface
     public function byIds(array $ids): ResultCollection;
 
     public function byQuery(GetResultsQuery $query): ResultCollection;
+
+    public function delete(int $id): void;
 }

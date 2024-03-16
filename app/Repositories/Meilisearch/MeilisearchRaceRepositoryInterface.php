@@ -10,10 +10,10 @@ use App\Models\Illuminate\Race;
 use App\Queries\Race\GetRaceIdsBySearch;
 use App\Queries\Race\RaceSearch;
 use App\Repositories\Meilisearch\Results\RaceCollection;
-use App\Repositories\RaceRepository;
+use App\Repositories\RaceRepositoryInterface;
 use Meilisearch\Client;
 
-class MeilisearchRaceRepository implements RaceRepository
+class MeilisearchRaceRepositoryInterface implements RaceRepositoryInterface
 {
     public function __construct(
         private readonly Client $client,
@@ -94,6 +94,14 @@ class MeilisearchRaceRepository implements RaceRepository
         $result = $index->search($search->search, $filter);
 
         return collect($result->getHits())->pluck('id')->toArray();
+    }
+
+    #[\Override]
+    public function delete(int $id): void
+    {
+        $index = $this->client->getIndex($this->getIndex());
+
+        $index->deleteDocument($id);
     }
 
     private function getIndex(): string
