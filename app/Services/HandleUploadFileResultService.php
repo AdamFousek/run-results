@@ -86,9 +86,10 @@ class HandleUploadFileResultService
         $results->processed_at = now();
         $results->save();
 
-        $race = Race::whereId( $results->race_id)->first();
+        $race = Race::whereId($results->race_id)->with(['runners', 'results'])->first();
         if ($race instanceof Race) {
             $race->runners()->searchable();
+            $race->results()->searchable();
             $tag = (string)$race->tag;
             if ($tag !== '') {
                 RecalculateTopResults::dispatch($tag);
