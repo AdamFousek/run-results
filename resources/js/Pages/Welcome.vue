@@ -1,10 +1,8 @@
 <script setup>
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
-import { NInput } from 'naive-ui'
 import { ref, watch } from 'vue'
 import axios from 'axios'
-import TextInput from '../../../vendor/laravel/breeze/stubs/inertia-vue-ts/resources/js/Components/TextInput.vue'
 import MyLink from '@/Components/MyLink.vue'
 
 defineProps({
