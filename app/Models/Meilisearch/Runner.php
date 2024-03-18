@@ -141,4 +141,9 @@ class Runner
     {
         $this->gender = $gender;
     }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
 }

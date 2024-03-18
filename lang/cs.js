@@ -16,6 +16,11 @@ export default {
     showMore: 'Zobrazit více',
     showAll: 'Zobrazit vše',
     back: 'Zpět',
+    search: 'Vyhledat',
+    searchTitles: {
+        races: 'Závody',
+        runners: 'Závodníci',
+    },
     news: {
         races: 'Nejnovější závody',
     },
@@ -91,6 +96,7 @@ export default {
         users: 'Uživatelé',
         results: 'Výsledky',
         measurement: 'Měření',
+        settings: 'Nastavení webu',
     },
     runner: {
         name: 'Jméno',
@@ -267,6 +273,11 @@ export default {
             deleteConfirmation: 'Opravdu smazat soubor?',
             delete: 'Smazat',
             cancel: 'Zrušit',
+        },
+        settings: {
+            title: 'Nastavení',
+            refreshData: 'Přeuložit data - v případě nějakých problémů',
+            refreshDataCta: 'Přeuložit',
         }
     },
     user: {

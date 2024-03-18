@@ -170,6 +170,7 @@ class RunnerController extends AdminController
             ));
 
             $targetRunner->searchable();
+            $targetRunner->results()->searchable();
 
             $this->withMessage(self::ALERT_SUCCESS, 'messages.runners_merged_successfully');
 

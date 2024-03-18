@@ -18,6 +18,8 @@ use Inertia\Inertia;
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class)->name('welcome');
 
+Route::post('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
 Route::get('/zavodnici', [\App\Http\Controllers\RunnerController::class, 'index'])->name('runners.index');
 Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class, 'show'])->name('runners.show');
 
@@ -69,6 +71,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
 
     Route::get('/admin/mereni', [\App\Http\Controllers\Admin\MeasurementController::class, 'index'])->name('admin.measurement.index');
+
+    Route::get('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings.index');
 });
 
 require __DIR__.'/auth.php';

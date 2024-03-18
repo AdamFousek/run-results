@@ -64,7 +64,7 @@ class RunnerController extends Controller
     {
         $page = (int)$request->get('page', 1);
         $search = trim($request->get('query'));
-        $requestSort = $request->get('sort', ResultSortService::DEFAULT_SORT);
+        $requestSort = $request->get('sort', ResultSortService::SORT_RACE_DATE_DESC);
         $sort = $this->resultSortService->resolveSort($requestSort);
 
         $results = $this->getRunnerResultsHandler->handle(new GetResultsQuery(

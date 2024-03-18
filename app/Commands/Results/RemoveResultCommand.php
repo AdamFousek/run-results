@@ -14,8 +14,12 @@ readonly class RemoveResultCommand
     ) {
     }
 
-    public function handle(int $id): void
+    /**
+     * @param int[] $ids
+     * @return void
+     */
+    public function handle(array $ids): void
     {
-        $this->repository->delete($id);
+        $this->repository->delete($ids);
     }
 }

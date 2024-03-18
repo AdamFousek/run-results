@@ -94,7 +94,8 @@ const alert = computed(() => {
 
                   <template #content>
                     <template v-if="$page.props.auth.user.role === UserRoleEnum.ADMIN">
-                      <DropdownLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</DropdownLink>
+                        <DropdownLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</DropdownLink>
+                        <DropdownLink :href="route('admin.settings.index')">{{ $t('menu.settings') }}</DropdownLink>
                       <hr>
                     </template>
                     <DropdownLink :href="route('profile.edit')">{{ $t('menu.profile') }}</DropdownLink>

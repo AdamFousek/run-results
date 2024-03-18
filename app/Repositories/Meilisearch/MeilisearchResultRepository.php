@@ -177,11 +177,15 @@ readonly class MeilisearchResultRepository implements ResultRepositoryInterface
     }
 
     #[\Override]
-    public function delete(int $id): void
+    public function delete(array $ids): void
     {
         $index = $this->client->getIndex($this->getIndex());
 
-        $index->deleteDocument($id);
+        $filter = [
+            'filter' => 'id IN [' . implode(',', $ids) . ']',
+        ];
+
+        $index->deleteDocuments($filter);
     }
 
     private function getIndex(): string

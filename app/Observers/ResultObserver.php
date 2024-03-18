@@ -60,7 +60,7 @@ readonly class ResultObserver
             RecalculateTopResults::dispatch($tag);
         }
 
-        $this->removeResultCommand->handle($result->id);
+        $this->removeResultCommand->handle([$result->id]);
     }
 
     /**

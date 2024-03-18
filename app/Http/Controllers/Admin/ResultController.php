@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Commands\Results\CreateResult;
 use App\Commands\Results\CreateResultCommand;
+use App\Commands\Results\RemoveResultCommand;
 use App\Commands\Results\UpdateResult;
 use App\Commands\Results\UpdateResultHandler;
 use App\Commands\UploadFileResult\CreateUploadFileResult;
@@ -33,7 +34,7 @@ use Inertia\Response;
 
 class ResultController extends Controller
 {
-    private const LIMIT = 30;
+    private const int LIMIT = 30;
 
     public function __construct(
         private readonly RaceTransformer $raceTransformer,
@@ -45,6 +46,7 @@ class ResultController extends Controller
         private readonly RaceSearchHandler $raceSearchHandler,
         private readonly IlluminateRaceSortService $raceSortService,
         private readonly RaceListTransformer $transformer,
+        private readonly RemoveResultCommand $removeResultCommand,
     ) {
     }
 
@@ -196,6 +198,8 @@ class ResultController extends Controller
                 file: $path
             ));
 
+            $resultsIds = $race->results->pluck('id')->toArray();
+            $this->removeResultCommand->handle($resultsIds);
             $race->results()->delete();
 
             ProcessResults::dispatch($uploadFileResult);

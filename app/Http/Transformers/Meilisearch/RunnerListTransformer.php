@@ -35,6 +35,7 @@ class RunnerListTransformer
                 'id' => $runner->getId(),
                 'firstName' => $runner->getFirstName(),
                 'lastName' => $runner->getLastName(),
+                'fullName' => $runner->getFullName(),
                 'club' => $runner->getClub(),
                 'city' => $runner->getCity(),
                 'year' => $runner->getYear(),
