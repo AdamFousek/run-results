@@ -3,6 +3,10 @@ import { computed, toRefs } from 'vue'
 import ziggyRoute from 'ziggy';
 
 const ziggy = computed(() => {
+    console.log({
+        ...usePage().props.ziggy,
+        location: new URL(usePage().props.ziggy.location)
+    });
     return {
         ...usePage().props.ziggy,
         location: new URL(usePage().props.ziggy.location)

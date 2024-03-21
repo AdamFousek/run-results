@@ -25,14 +25,14 @@ const props = withDefaults(defineProps<{
 
 const showMoreLink = computed(() => {
     if (props.isTopMen) {
-        return route('races.stats.topMen', { race: props.raceSlug })
+        return 'races.stats.topMen'
     }
 
     if (props.isTopWomen) {
-        return route('races.stats.topWomen', { race: props.raceSlug })
+        return 'races.stats.topWomen'
     }
 
-    return route('races.stats.topParticipant', { race: props.raceSlug })
+    return 'races.stats.topParticipant'
 })
 </script>
 
@@ -53,7 +53,7 @@ const showMoreLink = computed(() => {
             <div v-else class="col-span-2 text-right">{{ runner.participantCount }}</div>
         </div>
         <div v-if="!isParticipiant" class="flex justify-center mt-4">
-            <PrimaryButton :href="showMoreLink" link color="blue" rounded class="flex items-center gap-3">
+            <PrimaryButton :href="route(showMoreLink, { race: props.raceSlug })" link color="blue" rounded class="flex items-center gap-3">
                 <span>{{ $t('showAll') }}</span>
             </PrimaryButton>
         </div>

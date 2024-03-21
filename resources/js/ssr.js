@@ -4,7 +4,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import Messages from '@/lang.js'
-import route from 'ziggy'
+import ziggyRoute from 'ziggy';
 
 createServer(page =>
     createInertiaApp({
@@ -31,7 +31,7 @@ createServer(page =>
             .use(plugin)
             .mixin({
                 methods: {
-                    route: (name, params, absolute, config = Ziggy) => route(name, params, absolute, config),
+                    route: (name, params, absolute, config = Ziggy) => ziggyRoute(name, params, absolute, config),
                 },
             })
         },
