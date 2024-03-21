@@ -153,10 +153,21 @@ readonly class IlluminateResultRepository implements IlluminateResultRepositoryI
 
         $fastestRunners->groupBy('runner_id');
 
+        $singleRace = DB::table('results')
+            ->selectRaw('results.runner_id, MIN(results.race_id) as race_id')
+            ->joinSub($fastestRunners, 'min', function ($join) {
+                $join->on('results.runner_id', '=', 'min.runner_id');
+                $join->on('results.time', '=', 'min.resultTime');
+            })
+            ->groupBy('results.runner_id');
+
         $results = Result::query()
             ->select('*')
-            ->joinSub($fastestRunners, 'min','results.runner_id', '=', 'min.runner_id')
-            ->whereRaw('results.time = min.resultTime')
+            ->joinSub($singleRace, 'race',function ($join) {
+                $join->on('results.runner_id', '=', 'race.runner_id');
+                $join->on('results.race_id', '=', 'race.race_id');
+            })
+            ->orderBy('results.time')
             ->limit($query->limit)
             ->offset($query->offset)
             ->get();
