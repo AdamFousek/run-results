@@ -90,6 +90,7 @@ class HandleUploadFileResultService
         if ($race instanceof Race) {
             $race->runners()->searchable();
             $race->results()->searchable();
+            $race->searchable();
             $tag = (string)$race->tag;
             if ($tag !== '') {
                 RecalculateTopResults::dispatch($tag);
