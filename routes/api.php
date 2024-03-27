@@ -26,4 +26,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/results/availableRunners', \App\Http\Controllers\Api\Results\AvailableRunnersController::class)->name('api.results.availableRunners');
+
+    Route::post('/admin/entity/reloadEntity', \App\Http\Controllers\Api\ReloadMeilisearchDataController::class)->name('api.meilisearch.reloadEntity');
 });

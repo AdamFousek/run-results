@@ -53,5 +53,9 @@ return [
 
     'race_meta_description' => 'Závodu :race se účastnilo :count běžců.:description Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...',
     'race_parent_meta_description' => 'Závod :race, který má na svém účtě :count podzávodů. Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...',
-    'race_stats_meta_description' => 'Statistiky závodu :race - průměrný čas, nejrychlejší běžci, nejlepší běžkyně, nejlepší účastníci. Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...'
+    'race_stats_meta_description' => 'Statistiky závodu :race - průměrný čas, nejrychlejší běžci, nejlepší běžkyně, nejlepší účastníci. Podrobné výsledky a statistiky závodu najdete na této stránce - stovky závodů, tisíce výsledků...',
+
+    'entity_id_is_required' => 'Je třeba zadat ID entity.',
+    'entity_not_found' => 'Entity nebyla nalezena.',
+    'entity_data_reloaded' => 'Data byla přenačtena.',
 ];

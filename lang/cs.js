@@ -247,6 +247,7 @@ export default {
             results: 'Výsledky závodu',
             showResults: 'Zobrazit výsledky',
             createdAt: 'Vytvořeno',
+            reloadData: 'Přenačíst data',
         },
         results: {
             create: 'Vytvořit výsledky',
