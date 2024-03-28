@@ -277,6 +277,9 @@ export default {
         },
         settings: {
             title: 'Nastavení',
+            reloadRunners: 'Přeuložit všechny závodníky',
+            reloadRaces: 'Přeuložit všechny závody',
+            reloadResults: 'Přeuložit všechny výsledky',
             refreshData: 'Přeuložit data - v případě nějakých problémů',
             refreshDataCta: 'Přeuložit',
         }

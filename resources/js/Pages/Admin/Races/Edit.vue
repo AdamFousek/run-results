@@ -1,7 +1,7 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { Head, useForm, usePage } from '@inertiajs/vue3'
-import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker, NIcon, NAlert } from 'naive-ui'
+import { Head, useForm } from '@inertiajs/vue3'
+import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker, NIcon } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
@@ -10,8 +10,7 @@ import MyTrixEditor from '@/Components/MyTrixEditor.vue'
 import { RemoveRedEyeOutlined } from '@vicons/material'
 import UploadFileForm from '@/Pages/Admin/Races/Partials/UploadFileForm.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
-import axios from 'axios'
-import { ref } from 'vue'
+import ReloadMeilisearchData from '@/Components/Entity/ReloadMeilisearchData.vue'
 
 const props = defineProps({
     race: {
@@ -63,8 +62,6 @@ const form = useForm({
     isParent: !!props.race.isParent,
 })
 
-const meilisearchResult = ref('')
-const meilisearchResultMessage = ref('')
 
 const submit = () => {
     form.post(route('admin.races.update', {race: props.race.id}))
@@ -81,17 +78,6 @@ const fillValueFromParent = (value) => {
         form.type = selectedRace.type
         form.tag = selectedRace.tag
     }
-}
-
-const reloadMeilisearch = () => {
-    axios.post(route('api.meilisearch.reloadEntity'), {
-        'entity': 'Race',
-        'entityId': props.race.id,
-        '_token': usePage().props.auth.token,
-    }).then((response) => {
-        meilisearchResult.value = response.data.result ? 'success' : 'error'
-        meilisearchResultMessage.value = response.data.message
-    })
 }
 </script>
 
@@ -338,16 +324,7 @@ const reloadMeilisearch = () => {
                     </div>
                     <div class="col-span-1 md:col-span-2">
                         <div class="grid gap-4">
-                            <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.races.reloadData') }}</h2>
-                                    <PrimaryButton @click="reloadMeilisearch" color="yellow" rounded>
-                                        {{ $t('admin.races.reloadData') }}
-                                    </PrimaryButton>
-                                </div>
-                                <NAlert v-if="meilisearchResultMessage !== ''" :title="meilisearchResultMessage" :type="meilisearchResult" closable @close="meilisearchResultMessage = ''">
-                                </NAlert>
-                            </section>
+                            <ReloadMeilisearchData :entity-id="race.id" entity="Race" />
                             <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
                                 <div class="flex justify-between items-center mb-2">
                                     <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.races.results') }} - {{ resultCount }}</h2>

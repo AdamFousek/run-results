@@ -28,4 +28,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/results/availableRunners', \App\Http\Controllers\Api\Results\AvailableRunnersController::class)->name('api.results.availableRunners');
 
     Route::post('/admin/entity/reloadEntity', \App\Http\Controllers\Api\ReloadMeilisearchDataController::class)->name('api.meilisearch.reloadEntity');
+
+    // Settings
+    Route::post('/admin/settings/reloadRunners', [\App\Http\Controllers\Api\SettingsController::class, 'reloadRunners'])->name('api.settings.reloadRunners');
+    Route::post('/admin/settings/reloadRaces', [\App\Http\Controllers\Api\SettingsController::class, 'reloadRaces'])->name('api.settings.reloadRaces');
+    Route::post('/admin/settings/reloadResults', [\App\Http\Controllers\Api\SettingsController::class, 'reloadResults'])->name('api.settings.reloadResults');
 });

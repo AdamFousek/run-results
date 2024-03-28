@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Illuminate\Race;
 use App\Models\IlluminateModel;
+use App\Services\RecalculateTopResultsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ReloadMeilisearchDataController extends Controller
 {
+    public function __construct(
+        private readonly RecalculateTopResultsService $recalculateTopResultsService,
+    ) {
+    }
+
     /**
      * Handle the incoming request.
      */
@@ -36,6 +43,14 @@ class ReloadMeilisearchDataController extends Controller
         }
 
         $model->searchable();
+
+        if ($model instanceof Race) {
+            $model->results()->searchable();
+
+            if ($model->tag !== null) {
+                $this->recalculateTopResultsService->handle($model->tag);
+            }
+        }
 
         return response()->json([
             'result' => true,
