@@ -9,6 +9,7 @@ import DeleteRunnerForm from '@/Pages/Admin/Runners/Partials/DeleteRunnerForm.vu
 import { RemoveRedEyeOutlined } from '@vicons/material'
 import MergeRunnerForm from '@/Pages/Admin/Runners/Partials/MergeRunnerForm.vue'
 import { useI18n } from 'vue-i18n'
+import ReloadMeilisearchData from '@/Components/Entity/ReloadMeilisearchData.vue'
 
 const { t } = useI18n();
 
@@ -81,7 +82,7 @@ const genderOptions = [
 
         <div class="py-4 md:py-12">
             <div class="max-w-7xl mx-auto sm:px-3 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div class="col-span-1 md:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6">
                         <form @submit.prevent="submit">
                             <div>
@@ -204,8 +205,9 @@ const genderOptions = [
                             </div>
                         </form>
                     </div>
-                    <div class="col-span-1">
+                    <div class="col-span-2">
                         <div class="flex flex-col gap-4">
+                            <ReloadMeilisearchData :entity-id="runner.id" entity="Runner" />
                             <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
                                 {{ $t('admin.runner.resultCount') }}: {{ resultCount }}
                             </section>

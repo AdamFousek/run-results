@@ -16,6 +16,16 @@ parameters:
 			path: app/Http/Controllers/Admin/RunnerController.php
 
 		-
+			message: "#^Call to an undefined method App\\\\Models\\\\IlluminateModel\\:\\:searchable\\(\\)\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReloadMeilisearchDataController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasMany\\<App\\\\Models\\\\Illuminate\\\\Result\\>\\:\\:searchable\\(\\)\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReloadMeilisearchDataController.php
+
+		-
 			message: "#^Access to an undefined property App\\\\Models\\\\Illuminate\\\\Result\\:\\:\\$count\\.$#"
 			count: 1
 			path: app/Repositories/Illuminate/IlluminateResultRepository.php

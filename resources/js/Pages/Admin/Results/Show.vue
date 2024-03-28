@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from "vue";
-import { Head, useForm, router } from '@inertiajs/vue3'
+import { Head, useForm, router, usePage } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { NButton, NIcon, NModal, NCard, NBadge } from 'naive-ui';
 import { DeleteFilled, DriveFolderUploadFilled, PlusFilled, CloseSharp, RemoveRedEyeOutlined } from '@vicons/material'
@@ -9,6 +9,8 @@ import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import CreateForm from '@/Pages/Admin/Results/Partials/ResultForm.vue'
 import MyLink from '@/Components/MyLink.vue'
 import UploadsList from '@/Pages/Admin/Results/Partials/UploadsList.vue'
+import axios from 'axios'
+import ReloadMeilisearchData from '@/Components/Entity/ReloadMeilisearchData.vue'
 
 const props = defineProps({
     race: {
@@ -112,9 +114,10 @@ const failedRows = computed(() => {
         <div class="md:py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex flex-col m-2 md:mx-0 md:flex-row justify-between align-top mb-4">
-                    <RaceInfo :race="race" class="bg-white p-4 shadow-sm rounded-xl"/>
+                    <RaceInfo :race="race" class="bg-white p-4 self-start shadow-sm rounded-xl"/>
                     <div class="my-4 flex flex-col justify-start gap-4">
-                        <NButton round type="info" @click="uploadResults">
+                        <ReloadMeilisearchData class="self-start" :entity-id="race.id" entity="Race" />
+                        <NButton class="self-end" round type="info" @click="uploadResults">
                             <template #icon>
                                 <NIcon>
                                     <DriveFolderUploadFilled/>
@@ -122,7 +125,7 @@ const failedRows = computed(() => {
                             </template>
                             {{ $t('admin.results.upload') }}
                         </NButton>
-                        <NButton round type="success" @click="addSingleResult">
+                        <NButton class="self-end" round type="success" @click="addSingleResult">
                             <template #icon>
                                 <NIcon>
                                     <PlusFilled/>
@@ -130,7 +133,7 @@ const failedRows = computed(() => {
                             </template>
                             {{ $t('admin.results.createSingle') }}
                         </NButton>
-                        <NBadge :value="failedRows">
+                        <NBadge class="self-end" :value="failedRows">
                             <NButton v-if="uploads.length" round type="warning" @click="openUploadsLogModal">
                                 <template #icon>
                                     <NIcon>

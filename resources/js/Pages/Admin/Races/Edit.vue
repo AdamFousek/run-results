@@ -1,15 +1,16 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
-import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker, NIcon, NCard, NPopover, NPopconfirm, NModal } from 'naive-ui'
+import { NButton, NInput, NCheckbox, NSelect, NInputNumber, NTimePicker, NIcon } from 'naive-ui'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import MyLink from '@/Components/MyLink.vue'
 import DeleteRaceForm from '@/Pages/Admin/Races/Partials/DeleteRaceForm.vue'
 import MyTrixEditor from '@/Components/MyTrixEditor.vue'
-import { CloseSharp, DeleteFilled, LockOpenFilled, LockOutlined, RemoveRedEyeOutlined } from '@vicons/material'
+import { RemoveRedEyeOutlined } from '@vicons/material'
 import UploadFileForm from '@/Pages/Admin/Races/Partials/UploadFileForm.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
+import ReloadMeilisearchData from '@/Components/Entity/ReloadMeilisearchData.vue'
 
 const props = defineProps({
     race: {
@@ -60,6 +61,7 @@ const form = useForm({
     latitude: props.race.latitude,
     isParent: !!props.race.isParent,
 })
+
 
 const submit = () => {
     form.post(route('admin.races.update', {race: props.race.id}))
@@ -322,6 +324,7 @@ const fillValueFromParent = (value) => {
                     </div>
                     <div class="col-span-1 md:col-span-2">
                         <div class="grid gap-4">
+                            <ReloadMeilisearchData :entity-id="race.id" entity="Race" />
                             <section class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 md:p-6 space-y-6">
                                 <div class="flex justify-between items-center mb-2">
                                     <h2 class="text-lg font-medium text-gray-900">{{ $t('admin.races.results') }} - {{ resultCount }}</h2>

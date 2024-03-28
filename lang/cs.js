@@ -247,6 +247,7 @@ export default {
             results: 'Výsledky závodu',
             showResults: 'Zobrazit výsledky',
             createdAt: 'Vytvořeno',
+            reloadData: 'Přenačíst data',
         },
         results: {
             create: 'Vytvořit výsledky',
@@ -276,6 +277,9 @@ export default {
         },
         settings: {
             title: 'Nastavení',
+            reloadRunners: 'Přeuložit všechny závodníky',
+            reloadRaces: 'Přeuložit všechny závody',
+            reloadResults: 'Přeuložit všechny výsledky',
             refreshData: 'Přeuložit data - v případě nějakých problémů',
             refreshDataCta: 'Přeuložit',
         }
