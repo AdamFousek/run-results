@@ -21,6 +21,8 @@ class SettingsController extends Controller
             ]);
         }
 
+        Runner::removeAllFromSearch();
+
         Runner::all()->searchable();
 
         return response()->json([
@@ -39,6 +41,8 @@ class SettingsController extends Controller
             ]);
         }
 
+        Race::removeAllFromSearch();
+
         Race::all()->searchable();
 
         return response()->json([
@@ -56,6 +60,8 @@ class SettingsController extends Controller
                 'message' => 'Not authorized'
             ]);
         }
+
+        Result::removeAllFromSearch();
 
         Result::all()->searchable();
 

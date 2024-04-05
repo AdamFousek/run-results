@@ -1,6 +1,6 @@
+import "./libs/trix";
 import './bootstrap';
 import '../css/app.css';
-import Trix from 'trix';
 import * as Sentry from "@sentry/vue";
 
 if (import.meta.env.VITE_SENTRY_ENABLE === 'true') {
@@ -17,9 +17,6 @@ if (import.meta.env.VITE_SENTRY_ENABLE === 'true') {
         tracesSampleRate: 0.01, //  Capture 100% of the transactions
     });
 }
-
-
-window.Trix = Trix;
 
 import { createSSRApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
