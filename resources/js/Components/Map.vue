@@ -24,19 +24,12 @@ const props = defineProps({
 
 const mapyApi = import.meta.env.VITE_MAPY_CZ_API_KEY
 const defaultZoom = ref(props.zoom)
-const loaded = ref(false)
 
 const tileLayer = ref({
     url: `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${mapyApi}`,
     minZoom: 0,
     maxZoom: 19,
     attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
-})
-
-onMounted(() => {
-    setTimeout(() => {
-        loaded.value = true
-    })
 })
 
 const zoomIn = () => {
@@ -52,8 +45,7 @@ const zoomOut = () => {
     <div class="maps-wrapper overflow-hidden border border-indigo-500 hover:border-indigo-800"
          @mouseenter="zoomIn"
          @mouseleave="zoomOut">
-        <LMap v-if="loaded"
-              :id="name"
+        <LMap :id="name"
               :options="{
                     zoomControl: false,
                     dragging: false,

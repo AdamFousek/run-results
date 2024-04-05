@@ -2,9 +2,8 @@
 import { Head, router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
-import { ref, watch } from 'vue'
+import { ref, watch, defineAsyncComponent } from 'vue'
 import ResultList from '@/Pages/Runners/partials/ResultList.vue'
-import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
@@ -45,6 +44,8 @@ const props = defineProps({
 const search = ref(props.search)
 const searching = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
+
+const ChartIndex = defineAsyncComponent(() => import('@/Pages/Runners/Charts/ChartIndex.vue'))
 
 watch(search, (value) => {
     if (value === '' || value.length > 2) {
@@ -103,7 +104,7 @@ const isAdmin = usePage().props?.auth?.isAdmin ?? false
                          }"
                          @click="selectTab($t('runner.tabCharts'))">{{ $t('runner.tabCharts') }}</div>
                 </div>
-                <div v-show="selectedTab === $t('runner.tabRaces')" class="">
+                <div v-if="selectedTab === $t('runner.tabRaces')" class="">
                     <div class="my-2 md:my-4 w-7/12 mx-auto">
                         <NInput type="text"
                                 class="mx-4"
@@ -124,7 +125,7 @@ const isAdmin = usePage().props?.auth?.isAdmin ?? false
                     </div>
                     <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{runner: runner.id}" class="my-4"/>
                 </div>
-                <div v-show="selectedTab === $t('runner.tabCharts')">
+                <div v-if="selectedTab === $t('runner.tabCharts')">
                     <ChartIndex :data="chartData" />
                 </div>
             </div>
