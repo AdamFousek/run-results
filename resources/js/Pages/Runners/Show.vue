@@ -2,11 +2,12 @@
 import { Head, router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
-import { ref, watch, defineAsyncComponent } from 'vue'
+import { ref, watch } from 'vue'
 import ResultList from '@/Pages/Runners/partials/ResultList.vue'
 import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const { t } = useI18n();
@@ -44,8 +45,6 @@ const props = defineProps({
 const search = ref(props.search)
 const searching = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
-
-const ChartIndex = defineAsyncComponent(() => import('@/Pages/Runners/Charts/ChartIndex.vue'))
 
 watch(search, (value) => {
     if (value === '' || value.length > 2) {

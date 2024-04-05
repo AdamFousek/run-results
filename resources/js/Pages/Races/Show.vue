@@ -2,13 +2,15 @@
 import { Head, router, usePage } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { NIcon, NInput, NCheckbox, NButton } from 'naive-ui'
-import { ref, onMounted, watch, defineAsyncComponent } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import RaceInfo from '@/Components/Race/RaceInfo.vue'
 import ResultList from '@/Pages/Races/partials/ResultList.vue'
 import { CloudDownloadOutlined, MapOutlined } from '@vicons/material'
 import MyLink from '@/Components/MyLink.vue'
 import Stats from '@/Pages/Races/partials/Stats.vue'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
+import Map from '@/Components/Map.vue'
+import ChildRaceList from '@/Pages/Races/partials/ChildRaceList.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const props = defineProps({
@@ -72,9 +74,6 @@ const filterCategories = ref(props.filter?.categories)
 watch([showFemale, showMale], () => {
     searchRaces()
 })
-
-const Map = defineAsyncComponent(() => import('@/Components/Map.vue'));
-const ChildRaceList = defineAsyncComponent(() => import('@/Pages/Races/partials/ChildRaceList.vue'));
 
 onMounted(() => {
     loading.value = false

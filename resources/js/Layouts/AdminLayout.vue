@@ -8,7 +8,6 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import NaiveUiTheme from '@/NaiveUiTheme.js'
 import { NConfigProvider, NAlert } from 'naive-ui'
-import UserRoleEnum from '@/Enums/UserRoleEnum.js'
 
 const showingNavigationDropdown = ref(false);
 
@@ -93,7 +92,7 @@ const alert = computed(() => {
                   </template>
 
                   <template #content>
-                    <template v-if="$page.props.auth.user.role === UserRoleEnum.ADMIN">
+                    <template v-if="$page.props.auth.user.role === 'admin'">
                         <DropdownLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</DropdownLink>
                         <DropdownLink :href="route('admin.settings.index')">{{ $t('menu.settings') }}</DropdownLink>
                       <hr>
@@ -178,7 +177,7 @@ const alert = computed(() => {
             </div>
 
             <div class="mt-3 space-y-1">
-              <template v-if="$page.props.auth.user.role === UserRoleEnum.ADMIN">
+              <template v-if="$page.props.auth.user.role === 'admin'">
                 <ResponsiveNavLink :href="route('admin.runners.index')">{{ $t('menu.administration') }}</ResponsiveNavLink>
                 <hr>
               </template>
