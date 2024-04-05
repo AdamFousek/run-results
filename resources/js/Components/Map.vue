@@ -36,7 +36,7 @@ const tileLayer = ref({
 onMounted(() => {
     setTimeout(() => {
         loaded.value = true
-    }, 1000)
+    })
 })
 
 const zoomIn = () => {
