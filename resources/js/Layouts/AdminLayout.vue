@@ -29,7 +29,7 @@ const alert = computed(() => {
               <div class="shrink-0 flex items-center">
                 <Link :href="route('welcome')" :aria-label="$t('welcome')">
                   <ApplicationLogo
-                    class="block w-auto fill-current text-gray-800"
+                    class="block"
                   />
                 </Link>
               </div>
