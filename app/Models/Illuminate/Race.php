@@ -112,7 +112,7 @@ class Race extends IlluminateModel
     /**
      * @var array|string[]
      */
-    protected array $richTextFields = [
+    protected array $richTextAttributes = [
         'description',
     ];
 

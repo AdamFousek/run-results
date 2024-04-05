@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LMap, LTileLayer, LControl, LMarker } from "@vue-leaflet/vue-leaflet";
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
     x: {
@@ -24,6 +24,7 @@ const props = defineProps({
 
 const mapyApi = import.meta.env.VITE_MAPY_CZ_API_KEY
 const defaultZoom = ref(props.zoom)
+const loaded = ref(false)
 
 const tileLayer = ref({
     url: `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${mapyApi}`,
@@ -31,11 +32,28 @@ const tileLayer = ref({
     maxZoom: 19,
     attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
 })
+
+onMounted(() => {
+    setTimeout(() => {
+        loaded.value = true
+    }, 1000)
+})
+
+const zoomIn = () => {
+    defaultZoom.value = 12
+}
+
+const zoomOut = () => {
+    defaultZoom.value = props.zoom
+}
 </script>
 
 <template>
-    <div class="overflow-hidden border border-indigo-500 hover:border-indigo-800 ">
-        <LMap :id="name"
+    <div class="maps-wrapper overflow-hidden border border-indigo-500 hover:border-indigo-800"
+         @mouseenter="zoomIn"
+         @mouseleave="zoomOut">
+        <LMap v-if="loaded"
+              :id="name"
               :options="{
                     zoomControl: false,
                     dragging: false,
@@ -46,7 +64,7 @@ const tileLayer = ref({
               :use-global-leaflet="false"
               v-model:zoom="defaultZoom"
               :center="[x, y]"
-              class="maps-wrapper hover:scale-105 duration-150 overflow-hidden"
+              class="maps-wrapper overflow-hidden"
         >
             <LTileLayer
                     :url="tileLayer.url"
@@ -59,7 +77,7 @@ const tileLayer = ref({
             <LControl :options="{position: 'bottomleft'}" disable-click-propagation>
                 <div>
                     <a href="http://mapy.cz/" target="_blank" aria-label="Link to mapy.cz">
-                        <img src="https://api.mapy.cz/img/api/logo.svg" alt="mapy.cz" />
+                        <img src="https://api.mapy.cz/img/api/logo.svg" alt="mapy.cz" width="93" height="28" />
                     </a>
                 </div>
             </LControl>

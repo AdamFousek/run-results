@@ -21,7 +21,7 @@ class IlluminateModel extends Model
     /**
      * @var array|string[]
      */
-    protected array $richTextFields = [];
+    protected array $richTextAttributes = [];
 
     /**
      * @var array|string[]
@@ -38,7 +38,7 @@ class IlluminateModel extends Model
      */
     public function getRichTextFieldsSearchable(): array
     {
-        return $this->richTextFields;
+        return $this->richTextAttributes;
     }
 
     /**
