@@ -6,7 +6,6 @@ import path from 'path';
 export default defineConfig({
     build: {
         chunkSizeWarningLimit: 1500,
-        cssSourceMap: true,
     },
     plugins: [
         laravel({
