@@ -1,9 +1,10 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { ref, watch } from 'vue'
 import axios from 'axios'
 import MyLink from '@/Components/MyLink.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 defineProps({
     races: {
@@ -19,7 +20,7 @@ const focused = ref(false)
 
 const searchRaces = () => {
     loading.value = true
-    axios.post(route('search'), {
+    axios.post(route('api.search'), {
         'search': search.value,
         '_token': usePage().props.auth.token,
     }).then((response) => {
@@ -35,6 +36,9 @@ watch(search, (value) => {
     }
 })
 
+const searchPage = () => {
+    router.get(route('search.index', { search: search.value }));
+}
 </script>
 
 <template>
@@ -52,18 +56,19 @@ watch(search, (value) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid md:grid-cols-4 gap-4">
                     <div class="md:col-span-3">
-                        <div class="m-2 flex justify-center flex-wrap">
-                            <div class="w-full">
+                        <div class="m-2 flex justify-center flex-wrap gap-4">
+                            <div class="flex-1">
                                 <input type="text"
-                                       class="rounded-t-lg w-full focus:border-gray-300 py-1 focus:ring-0 shadow-sm"
-                                       :class="{'rounded-b-lg': search.length < 3, 'focus:border-purple-300 focus:border-b-gray-300': search.length > 2}"
+                                       class="rounded-t w-full focus:border-gray-300 py-1 focus:ring-0 shadow-sm"
+                                       :class="{'rounded-b': search.length < 3, 'focus:border-purple-300 focus:border-b-gray-300': search.length > 2}"
                                        v-model="search"
                                        @focusin="focused = true"
+                                       @keyup.enter="searchPage"
                                        :placeholder="$t('search')"
                                 />
                                 <div class="w-full relative">
                                     <div v-show="focused && search.length > 2" class="absolute top-0 right-0 left-0 p-2 rounded-b-lg bg-white outline-2 border-purple-300 border-r border-l border-b">
-                                        <div class="grid md:grid-cols-5 gap-4">
+                                        <div class="grid md:grid-cols-5 gap-14">
                                             <div class="md:col-span-3">
                                                 <h3 class="text-lg border-b mb-2">{{ $t('searchTitles.races') }}</h3>
                                                 <div v-if="searchRace.length" class="grid gap-2">
@@ -90,7 +95,7 @@ watch(search, (value) => {
                                     </div>
                                 </div>
                             </div>
-
+                            <PrimaryButton @click="searchPage" color="blue">{{ $t('search') }}</PrimaryButton>
                         </div>
                     </div>
                     <div class="md:col-span-1">

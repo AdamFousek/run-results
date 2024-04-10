@@ -18,7 +18,7 @@ use Inertia\Inertia;
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class)->name('welcome');
 
-Route::post('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 
 Route::get('/zavodnici', [\App\Http\Controllers\RunnerController::class, 'index'])->name('runners.index');
 Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class, 'show'])->name('runners.show');

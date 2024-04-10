@@ -94,6 +94,7 @@ export default {
         runners: 'Závodníci',
         races: 'Závody',
         users: 'Uživatelé',
+        search: 'Vyhledat',
         results: 'Výsledky',
         measurement: 'Měření',
         settings: 'Nastavení webu',
@@ -302,5 +303,26 @@ export default {
     genders: {
         F: 'Žena',
         M: 'Muž',
+    },
+    searchPage: {
+        fillSearchField: 'Vyplňte pole pro vyhledávání',
+    },
+    errors: {
+        401: {
+            title: 'Neautorizováno',
+            description: 'Pro zobrazení této stránky musíte být přihlášeni.',
+        },
+        403: {
+            title: 'Zakázáno',
+            description: 'Nemáte dostatečná oprávnění pro zobrazení této stránky.',
+        },
+        404: {
+            title: 'Stránka nenalezena',
+            description: 'Omlouváme se, ale stránka, kterou hledáte, neexistuje.',
+        },
+        500: {
+            title: 'Něco se pokazilo',
+            description: 'Omlouváme se, ale něco se pokazilo. Zkuste to prosím znovu.',
+        },
     },
 }
