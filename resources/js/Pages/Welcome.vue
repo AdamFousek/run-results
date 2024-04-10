@@ -30,10 +30,17 @@ const searchRaces = () => {
     })
 };
 
+let searchTimeout;
+
 watch(search, (value) => {
-    if (value === '' || value.length > 2) {
-        searchRaces()
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
     }
+    searchTimeout = setTimeout(() => {
+        if (value === '' || value.length > 2) {
+            searchRaces()
+        }
+    }, 500)
 })
 
 const searchPage = () => {
