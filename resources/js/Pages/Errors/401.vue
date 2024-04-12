@@ -13,7 +13,10 @@ defineProps({
 </script>
 
 <template>
-    <Head :title="$t('errors.401.title')" />
+    <Head>
+        <title>{{ $t('errors.401.title') }}</title>
+        <meta name="robots" content="noindex,nofollow">
+    </Head>
 
     <AuthenticatedLayout>
         <template #header>

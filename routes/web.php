@@ -18,7 +18,9 @@ use Inertia\Inertia;
 
 Route::get('/', \App\Http\Controllers\WelcomeController::class)->name('welcome');
 
-Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+Route::get('/vyhledat', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+
+Route::get('/novinky', [\App\Http\Controllers\PostsController::class, 'index'])->name('posts.index');
 
 Route::get('/zavodnici', [\App\Http\Controllers\RunnerController::class, 'index'])->name('runners.index');
 Route::get('/zavodnik/{runner}', [\App\Http\Controllers\RunnerController::class, 'show'])->name('runners.show');
@@ -63,6 +65,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vysledky/{result}/upravit', [\App\Http\Controllers\Admin\ResultController::class, 'update'])->name('admin.results.update');
     Route::delete('/admin/vysledky/{result}/smazat', [\App\Http\Controllers\Admin\ResultController::class, 'destroy'])->name('admin.results.destroy');
     Route::delete('/admin/vysledky/{race}/smazat-vsechny', [\App\Http\Controllers\Admin\ResultController::class, 'destroyAll'])->name('admin.results.destroyAll');
+
+    Route::get('/admin/novinky', [\App\Http\Controllers\Admin\AdminPostsController::class, 'index'])->name('admin.posts.index');
 
     Route::post('/admin/soubory/{uploadedFiles}/togglePublicity', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'togglePublicity'])->name('admin.uploadedFiles.togglePublicity');
     Route::delete('/admin/soubory/{uploadedFiles}/smazat', [\App\Http\Controllers\Admin\UploadedFilesController::class, 'destroy'])->name('admin.uploadedFiles.destroy');

@@ -2,7 +2,7 @@
 import { Head, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import MyLink from '@/Components/MyLink.vue'
 
@@ -20,7 +20,6 @@ const props = defineProps({
 })
 
 const searchPhrase = ref(props.search)
-console.log(props.search);
 
 const searchPage = () => {
     router.reload({
@@ -29,6 +28,19 @@ const searchPage = () => {
         },
     });
 }
+
+let searchTimeout;
+
+watch(searchPhrase, (value) => {
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    if (value === '' || value.length > 2) {
+        searchTimeout = setTimeout(() => {
+            searchPage()
+        }, 250)
+    }
+})
 </script>
 
 <template>
@@ -54,8 +66,11 @@ const searchPage = () => {
                     />
                     <PrimaryButton @click="searchPage" color="blue">{{ $t('search') }}</PrimaryButton>
                 </div>
-                <div v-if="searchPhrase.length === 0 || (races.length === 0 && runners.length === 0)" class="bg-white flex justify-center p-4">
+                <div v-if="searchPhrase.length === 0" class="bg-white flex justify-center p-4">
                     <p>{{ $t('searchPage.fillSearchField')}}</p>
+                </div>
+                <div v-else-if="races.length === 0 && runners.length === 0" class="bg-white flex justify-center p-4">
+                    <p>{{ $t('noResults')}}</p>
                 </div>
                 <div v-else class="grid md:grid-cols-5 gap-4">
                     <div class="bg-white md:col-span-3 p-4 rounded-lg self-start">

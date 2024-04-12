@@ -97,6 +97,7 @@ export default {
         search: 'Vyhledat',
         results: 'Výsledky',
         measurement: 'Měření',
+        posts: 'Články',
         settings: 'Nastavení webu',
     },
     runner: {

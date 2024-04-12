@@ -37,9 +37,16 @@ class Handler extends ExceptionHandler
         $response = parent::render($request, $e);
         $status = $response->getStatusCode();
 
-        if (app()->environment(['local', 'testing'])) {
+        if (!app()->environment(['local', 'testing'])) {
 
             $returnLink = url()->previous() === $request->url() ? route('welcome') : url()->previous();
+
+            $session = null;
+            try {
+                $session = $request->session();
+            } catch (Throwable $e) {
+                // do nothing
+            }
 
             $data = [
                 'locale' => app()->getLocale(),
@@ -49,7 +56,7 @@ class Handler extends ExceptionHandler
                     'token' => csrf_token(),
                 ],
                 'flash' => [
-                    'alert' => $request->session()->get('alert'),
+                    'alert' => $session?->get('alert'),
                 ],
                 'returnLink' => $returnLink,
             ];
