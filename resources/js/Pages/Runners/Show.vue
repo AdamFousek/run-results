@@ -2,15 +2,14 @@
 import { Head, router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { NInput } from 'naive-ui'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import ResultList from '@/Pages/Runners/partials/ResultList.vue'
-import Pagination from '@/Components/Pagination.vue'
 import { useI18n } from 'vue-i18n'
 import MeilisearchPagination from '@/Components/MeilisearchPagination.vue'
 import ChartIndex from '@/Pages/Runners/Charts/ChartIndex.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 const props = defineProps({
     runner: {
@@ -42,6 +41,7 @@ const props = defineProps({
     },
 })
 
+const loading = ref(true)
 const search = ref(props.search)
 const searching = ref(false)
 const selectedTab = ref(t('runner.tabRaces'))
@@ -50,6 +50,12 @@ watch(search, (value) => {
     if (value === '' || value.length > 2) {
         searchRaces()
     }
+})
+
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false
+    }, 0);
 })
 
 const searchRaces = () => {
@@ -86,7 +92,9 @@ const isAdmin = usePage().props?.auth?.isAdmin ?? false
                 <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ runner.last_name }} {{ runner.first_name }} - {{ runner.year }}
                 </h1>
-                <PrimaryButton v-if="isAdmin" :href="route('admin.runners.edit', {runner: runner.id})" link rounded outline color="blue">{{ $t('admin.races.showRace') }}</PrimaryButton>
+                <PrimaryButton v-if="isAdmin" :href="route('admin.runners.edit', {runner: runner.id})" link rounded
+                               outline color="blue">{{ $t('admin.races.showRace') }}
+                </PrimaryButton>
             </div>
         </template>
         <div class="py-4">
@@ -96,37 +104,44 @@ const isAdmin = usePage().props?.auth?.isAdmin ?? false
                          :class="{
                             'border-b-2 border-violet-600': selectedTab === $t('runner.tabRaces'),
                          }"
-                         @click="selectTab($t('runner.tabRaces'))">{{ $t('runner.tabRaces') }}</div>
+                         @click="selectTab($t('runner.tabRaces'))">{{ $t('runner.tabRaces') }}
+                    </div>
                     <div class="p-4 cursor-pointer hover:border-b-2 border-gray-300"
                          :class="{
                             'border-b-2 border-violet-600': selectedTab === $t('runner.tabCharts'),
                          }"
-                         @click="selectTab($t('runner.tabCharts'))">{{ $t('runner.tabCharts') }}</div>
-                </div>
-                <div v-if="selectedTab === $t('runner.tabRaces')" class="">
-                    <div class="my-2 md:my-4 w-7/12 mx-auto">
-                        <NInput type="text"
-                                class="mx-4"
-                                v-model:value="search"
-                                :placeholder="$t('race.search')"
-                                clearable
-                                round
-                        />
+                         @click="selectTab($t('runner.tabCharts'))">{{ $t('runner.tabCharts') }}
                     </div>
-
-                    <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
-                        <div class="md:w-full flex-shrink-0">
-                            <ResultList :results="results" :sort="sort" />
-                            <section v-if="results.length === 0" class="p-4 text-center">
-                                {{ $t('noResults') }}
-                            </section>
+                </div>
+                <template v-if="!loading">
+                    <div v-if="selectedTab === $t('runner.tabRaces')" class="">
+                        <div class="my-2 md:my-4 w-7/12 mx-auto">
+                            <NInput type="text"
+                                    class="mx-4"
+                                    v-model:value="search"
+                                    :placeholder="$t('race.search')"
+                                    clearable
+                                    round
+                            />
                         </div>
+
+                        <div class="bg-white overflow-x-auto shadow-sm sm:rounded-lg flex">
+                            <div class="md:w-full flex-shrink-0">
+                                <ResultList :results="results" :sort="sort"/>
+                                <section v-if="results.length === 0" class="p-4 text-center">
+                                    {{ $t('noResults') }}
+                                </section>
+                            </div>
+                        </div>
+                        <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page"
+                                               :per-page="paginate.limit" :total="paginate.total"
+                                               :on-page="paginate.onPage" :ulr-params="{runner: runner.id}"
+                                               class="my-4"/>
                     </div>
-                    <MeilisearchPagination v-if="!searching && results.length" :page="paginate.page" :per-page="paginate.limit" :total="paginate.total" :on-page="paginate.onPage" :ulr-params="{runner: runner.id}" class="my-4"/>
-                </div>
-                <div v-if="selectedTab === $t('runner.tabCharts')">
-                    <ChartIndex :data="chartData" />
-                </div>
+                    <div v-if="selectedTab === $t('runner.tabCharts')">
+                        <ChartIndex :data="chartData"/>
+                    </div>
+                </template>
             </div>
         </div>
     </AppLayout>
