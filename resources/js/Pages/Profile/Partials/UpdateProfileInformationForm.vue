@@ -38,7 +38,7 @@ const form = useForm({
         <NInput
           :input-props="{ id: 'name', autocomplete: 'name' }"
           type="text"
-          class="mt-1 block w-full"
+          class="mt-1 w-full"
           v-model:value="form.username"
           disabled
         />
@@ -51,7 +51,7 @@ const form = useForm({
 
         <NInput
           :input-props="{ type: 'email', id: 'email', autocomplete: 'email' }"
-          class="mt-1 block w-full"
+          class="mt-1 w-full"
           v-model:value="form.email"
           required
         />

@@ -56,10 +56,14 @@ const fillValueFromParent = (value) => {
     const selectedRace = props.parentRaces.filter((race) => race.id === value).shift()
 
     if (selectedRace) {
+        form.name = selectedRace.name
         form.date = selectedRace.formDate
         form.location = selectedRace.location
         form.distance = selectedRace.distanceRaw
         form.surface = selectedRace.surface
+        form.region = selectedRace.region
+        form.longitude = selectedRace.longitude
+        form.latitude = selectedRace.latitude
         form.type = selectedRace.type
         form.tag = selectedRace.tag
     }
@@ -84,7 +88,7 @@ const fillValueFromParent = (value) => {
                                 <NInput
                                         :input-props="{ type: 'text', id: 'name', autofocus: true }"
                                         :placeholder="$t('race.name')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.name"
                                         required
                                 />
@@ -97,7 +101,7 @@ const fillValueFromParent = (value) => {
                                 <NInput
                                         :input-props="{ type: 'text', id: 'slug' }"
                                         :placeholder="$t('race.slug')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.slug"
                                         required
                                         disabled
@@ -113,7 +117,7 @@ const fillValueFromParent = (value) => {
                                 <NCheckbox
                                         :input-props="{ type: 'text', id: 'isParent'}"
                                         :placeholder="$t('race.isParent')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:checked="form.isParent"
                                         required
                                 />
@@ -131,7 +135,7 @@ const fillValueFromParent = (value) => {
                                         :options="parentRaces"
                                         label-field="name"
                                         value-field="id"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         @update:value="fillValueFromParent"
                                 />
 
@@ -154,7 +158,7 @@ const fillValueFromParent = (value) => {
                                 <NInputNumber
                                         :input-props="{ type: 'number', id: 'vintage' }"
                                         :placeholder="$t('race.vintage')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.vintage"
                                 />
 
@@ -166,7 +170,7 @@ const fillValueFromParent = (value) => {
                                 <NInput
                                         :input-props="{ type: 'date', id: 'date' }"
                                         :placeholder="''"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.date"
                                 />
 
@@ -180,7 +184,7 @@ const fillValueFromParent = (value) => {
                                         :placeholder="''"
                                         format="HH:mm"
                                         value-format="HH:mm"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:formatted-value="form.time"
                                 />
 
@@ -195,7 +199,7 @@ const fillValueFromParent = (value) => {
                                 <NInput
                                         :input-props="{ type: 'text', id: 'location' }"
                                         :placeholder="$t('race.location')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.location"
                                 />
 
@@ -207,7 +211,7 @@ const fillValueFromParent = (value) => {
                                 <NInput
                                         :input-props="{ type: 'text', id: 'region' }"
                                         :placeholder="$t('race.region')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.region"
                                 />
 
@@ -221,7 +225,7 @@ const fillValueFromParent = (value) => {
                                 <NInputNumber
                                         :input-props="{ id: 'latitude' }"
                                         :placeholder="$t('race.latitude')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.latitude"
                                 />
 
@@ -233,7 +237,7 @@ const fillValueFromParent = (value) => {
                                 <NInputNumber
                                         :input-props="{ id: 'longitude' }"
                                         :placeholder="$t('race.longitude')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.longitude"
                                 />
 
@@ -247,7 +251,7 @@ const fillValueFromParent = (value) => {
                             <NInputNumber
                                     :input-props="{ type: 'number', id: 'distance' }"
                                     :placeholder="$t('race.distance')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.distance"
                             />
 
@@ -258,7 +262,7 @@ const fillValueFromParent = (value) => {
                             <InputLabel for="surface" :value="$t('race.surface')"/>
 
                             <NSelect v-model:value="form.surface" :input-props="{ id: 'surface' }" filterable tag clearable
-                                     :options="optionsSurface" class="mt-1 block w-full"/>
+                                     :options="optionsSurface" class="mt-1 w-full"/>
 
                             <InputError class="mt-2" :message="form.errors.surface"/>
                         </div>
@@ -267,7 +271,7 @@ const fillValueFromParent = (value) => {
                             <InputLabel for="type" :value="$t('race.type')"/>
 
                             <NSelect v-model:value="form.type" :input-props="{ id: 'type' }" filterable tag clearable
-                                     :options="optionsType" class="mt-1 block w-full"/>
+                                     :options="optionsType" class="mt-1 w-full"/>
 
                             <InputError class="mt-2" :message="form.errors.type"/>
                         </div>
@@ -277,7 +281,7 @@ const fillValueFromParent = (value) => {
 
                             <NSelect v-model:value="form.tag" :input-props="{ id: 'tag' }" filterable tag
                                      clearable
-                                     :options="optionsTag" class="mt-1 block w-full"/>
+                                     :options="optionsTag" class="mt-1 w-full"/>
 
                             <InputError class="mt-2" :message="form.errors.tag"/>
                         </div>

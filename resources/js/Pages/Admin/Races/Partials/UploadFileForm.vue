@@ -126,7 +126,7 @@ const removeFile = (id) => {
                             <NInput
                                     :input-props="{ type: 'text', id: 'name', autofocus: true }"
                                     :placeholder="$t('admin.file.name')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="uploadFileForm.name"
                                     required
                             />
@@ -144,7 +144,7 @@ const removeFile = (id) => {
                                 <NCheckbox
                                         :input-props="{ id: 'isPublic'}"
                                         :placeholder="$t('admin.file.isPublic')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:checked="uploadFileForm.isPublic"
                                         required>
                                     <InputLabel for="isParent" :value="$t('admin.file.isPublic')" class="flex-shrink-0"/>

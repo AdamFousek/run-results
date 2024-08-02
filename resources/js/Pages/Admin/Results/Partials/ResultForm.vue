@@ -68,7 +68,7 @@ onMounted(() => {
                     :options="availableRunners"
                     label-field="label"
                     value-field="value"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     required
             />
 
@@ -80,7 +80,7 @@ onMounted(() => {
             <NInputNumber
                     :input-props="{ id: 'startingNumber' }"
                     :placeholder="$t('result.startingNumber')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.startingNumber"
                     required
             />
@@ -93,7 +93,7 @@ onMounted(() => {
             <NInputNumber
                     :input-props="{ id: 'position' }"
                     :placeholder="$t('result.position')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.position"
                     required
             />
@@ -106,7 +106,7 @@ onMounted(() => {
             <NInput
                     :input-props="{ type: 'text', id: 'time' }"
                     :placeholder="$t('result.time')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.time"
                     required
             />
@@ -119,7 +119,7 @@ onMounted(() => {
             <NInput
                     :input-props="{ type: 'text', id: 'category' }"
                     :placeholder="$t('result.category')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.category"
                     required
             />
@@ -132,7 +132,7 @@ onMounted(() => {
             <NInputNumber
                     :input-props="{  id: 'categoryPosition' }"
                     :placeholder="$t('result.categoryPosition')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.categoryPosition"
                     required
             />
@@ -145,7 +145,7 @@ onMounted(() => {
             <NInput
                     :input-props="{ type: 'text', id: 'club' }"
                     :placeholder="$t('result.club')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:value="form.club"
                     required
             />
@@ -158,7 +158,7 @@ onMounted(() => {
             <NCheckbox
                     :input-props="{ id: 'DNF'}"
                     :placeholder="$t('result.DNF')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:checked="form.DNF"
             />
 
@@ -170,7 +170,7 @@ onMounted(() => {
             <NCheckbox
                     :input-props="{ id: 'DNS'}"
                     :placeholder="$t('result.DNS')"
-                    class="mt-1 block w-full"
+                    class="mt-1 w-full"
                     v-model:checked="form.DNS"
             />
 

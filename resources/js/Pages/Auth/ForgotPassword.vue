@@ -47,7 +47,7 @@ const submit = () => {
                 id="email"
                 :input-props="{ type: 'email' }"
                 :placeholder="$t('auth.email')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.email"
                 required
                 autofocus

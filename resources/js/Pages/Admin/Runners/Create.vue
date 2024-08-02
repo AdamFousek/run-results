@@ -60,7 +60,7 @@ const genderOptions = [
                             <NInput
                                     :input-props="{ type: 'text', id: 'first_name', autofocus: true }"
                                     :placeholder="$t('runner.firstName')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.first_name"
                                     required
                             />
@@ -74,7 +74,7 @@ const genderOptions = [
                             <NInput
                                     :input-props="{ type: 'text', id: 'last_name' }"
                                     :placeholder="$t('runner.lastName')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.last_name"
                                     required
                             />
@@ -91,7 +91,7 @@ const genderOptions = [
                                         :placeholder="$t('runner.day')"
                                         :min="0"
                                         :max="31"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.day"
                                 />
 
@@ -105,7 +105,7 @@ const genderOptions = [
                                         :placeholder="$t('runner.month')"
                                         :min="0"
                                         :max="12"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.month"
                                 />
 
@@ -119,7 +119,7 @@ const genderOptions = [
                                         :placeholder="$t('runner.year')"
                                         :min="minYear"
                                         :max="maxYear"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.year"
                                         required
                                 />
@@ -134,7 +134,7 @@ const genderOptions = [
                             <NInput
                                     :input-props="{ type: 'text', id: 'city' }"
                                     :placeholder="$t('runner.city')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.city"
                             />
 
@@ -147,7 +147,7 @@ const genderOptions = [
                             <NInput
                                     :input-props="{ type: 'text', id: 'club' }"
                                     :placeholder="$t('runner.club')"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.club"
                             />
 
@@ -161,7 +161,7 @@ const genderOptions = [
                                     :input-props="{ id: 'gender' }"
                                     :placeholder="$t('runner.gender')"
                                     :options="genderOptions"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 w-full"
                                     v-model:value="form.gender"
                             />
 

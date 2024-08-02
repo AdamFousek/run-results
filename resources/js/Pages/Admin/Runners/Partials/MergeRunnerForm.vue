@@ -84,7 +84,7 @@ const mergeRunner = () => {
                     <NInput
                             type="text"
                             :input-props="{ id: 'runnerName' }"
-                            class="mt-1 block w-full"
+                            class="mt-1 w-full"
                             v-model:value="search"
                             :placeholder="$t('runner.search')"
                             @keyup="searchRunner"
