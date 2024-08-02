@@ -50,7 +50,7 @@ const submit = () => {
 
               <NInput
                 id="username"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.email"
                 required
                 autofocus
@@ -68,7 +68,7 @@ const submit = () => {
                 id="password"
                 :input-props="{ type: 'password' }"
                 :placeholder="$t('auth.password')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.password"
                 required
                 autocomplete="password"

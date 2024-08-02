@@ -103,7 +103,7 @@ const pairRunner = () => {
             <NInput
               type="text"
               :input-props="{ id: 'runnerName' }"
-              class="mt-1 block w-full"
+              class="mt-1 w-full"
               v-model:value="search"
               :placeholder="$t('runner.search')"
               @keyup="searchRunner"
@@ -156,7 +156,7 @@ const pairRunner = () => {
 
               <NInput
                 :input-props="{ type: 'number', min: 1, max: 31, id: 'day' }"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.day"
                 required
               />
@@ -166,7 +166,7 @@ const pairRunner = () => {
 
               <NInput
                 :input-props="{ type: 'number', min: 1, max: 12, id: 'month' }"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.month"
                 required
               />

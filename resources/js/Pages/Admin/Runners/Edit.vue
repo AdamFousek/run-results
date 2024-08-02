@@ -91,7 +91,7 @@ const genderOptions = [
                                 <NInput
                                         :input-props="{ type: 'text', id: 'first_name', autofocus: true }"
                                         :placeholder="$t('runner.firstName')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.first_name"
                                         required
                                 />
@@ -105,7 +105,7 @@ const genderOptions = [
                                 <NInput
                                         :input-props="{ type: 'text', id: 'last_name' }"
                                         :placeholder="$t('runner.lastName')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.last_name"
                                         required
                                 />
@@ -120,7 +120,7 @@ const genderOptions = [
                                     <NInputNumber
                                             :input-props="{ type: 'number', id: 'day', min: 0, max: 31 }"
                                             :placeholder="$t('runner.day')"
-                                            class="mt-1 block w-full"
+                                            class="mt-1 w-full"
                                             v-model:value="form.day"
                                     />
 
@@ -132,7 +132,7 @@ const genderOptions = [
                                     <NInputNumber
                                             :input-props="{ type: 'number', id: 'day', min: 0, max: 12 }"
                                             :placeholder="$t('runner.month')"
-                                            class="mt-1 block w-full"
+                                            class="mt-1 w-full"
                                             v-model:value="form.month"
                                     />
 
@@ -144,7 +144,7 @@ const genderOptions = [
                                     <NInputNumber
                                             :input-props="{ type: 'number', id: 'year', min: minYear, max: maxYear }"
                                             :placeholder="$t('runner.year')"
-                                            class="mt-1 block w-full"
+                                            class="mt-1 w-full"
                                             v-model:value="form.year"
                                             required
                                     />
@@ -159,7 +159,7 @@ const genderOptions = [
                                 <NInput
                                         :input-props="{ type: 'text', id: 'city' }"
                                         :placeholder="$t('runner.city')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.city"
                                 />
 
@@ -172,7 +172,7 @@ const genderOptions = [
                                 <NInput
                                         :input-props="{ type: 'text', id: 'club' }"
                                         :placeholder="$t('runner.club')"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.club"
                                 />
 
@@ -186,7 +186,7 @@ const genderOptions = [
                                         :input-props="{ id: 'gender' }"
                                         :placeholder="$t('runner.gender')"
                                         :options="genderOptions"
-                                        class="mt-1 block w-full"
+                                        class="mt-1 w-full"
                                         v-model:value="form.gender"
                                 />
 

@@ -41,7 +41,7 @@ const submit = () => {
                 id="username"
                 :input-props="{ type: 'text' }"
                 :placeholder="$t('auth.username')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.username"
                 required
                 autofocus
@@ -58,7 +58,7 @@ const submit = () => {
                 id="email"
                 :input-props="{ type: 'email' }"
                 :placeholder="$t('auth.email')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.email"
                 required
                 autocomplete="username"
@@ -74,7 +74,7 @@ const submit = () => {
                 id="password"
                 :input-props="{ type: 'password' }"
                 :placeholder="$t('auth.password')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.password"
                 required
                 autocomplete="new-password"
@@ -90,7 +90,7 @@ const submit = () => {
                 id="password_confirmation"
                 :input-props="{ type: 'password' }"
                 :placeholder="$t('auth.confirmPassword')"
-                class="mt-1 block w-full"
+                class="mt-1 w-full"
                 v-model:value="form.password_confirmation"
                 required
                 autocomplete="new-password"
