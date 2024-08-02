@@ -14,12 +14,11 @@ use App\Http\Requests\UpdateRunnerRequest;
 use App\Http\Transformers\Runner\RunnerTransformer;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
-use App\Queries\Runner\RunnerSearch;
-use App\Queries\Runner\RunnerSearchQuery;
+use App\Queries\Illuminate\Race\IlluminateSearchRaceQuery;
+use App\Repositories\IlluminateRaceRepositoryInterface;
 use App\Services\IlluminateSort\IlluminateRunnerSortService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,7 +31,7 @@ class RunnerController extends AdminController
         private readonly CreateRunnerHandler $createRunnerHandler,
         private readonly UpdateRunnerHandler $updateRunnerHandler,
         private readonly IlluminateRunnerSortService $sortService,
-        private readonly RunnerSearchQuery $runnerSearchQuery,
+        private readonly IlluminateRaceRepositoryInterface $raceRepository,
         private readonly RunnerTransformer $runnerTransformer,
         private readonly MergerRunnerHandler $mergerRunnerHandler,
     ) {
@@ -41,37 +40,19 @@ class RunnerController extends AdminController
     public function index(Request $request): Response
     {
         $search = trim($request->get('query', ''));
+        $search = str_replace('?', '', $search);
         $page = (int)$request->get('page', 1);
         $requestSort = $request->get('sort', IlluminateRunnerSortService::DEFAULT_SORT);
         $sort = $this->sortService->resolveSort($requestSort);
         [$sortColumn, $sortDirection] = explode(':', $sort);
 
-        if ($search !== '') {
-            $searchRunners = $this->runnerSearchQuery->handle(new RunnerSearch(
-                search: $search,
-                page: 1,
-                perPage: 100000,
-            ));
-
-            $runnerIds = $searchRunners->items->map(fn (\App\Models\Meilisearch\Runner $runner) => $runner->getId())->toArray();
-
-            $runners = Runner::query()
-                ->withCount('results')
-                ->when($runnerIds !== [], function($query) use ($runnerIds) {
-                    return $query->whereIn('id', $runnerIds);
-                })
-                ->when($runnerIds === [], function($query) use ($search) {
-                    return $query->where(DB::raw("concat(first_name, ' ', last_name)"), 'LIKE', "%".$search."%");
-                })
-                ->orderBy($sortColumn, $sortDirection)
-                ->paginate(self::LIMIT);
-        } else {
-            $runners = Runner::query()
-                ->withCount('results')
-                ->orderBy($sortColumn, $sortDirection)
-                ->paginate(self::LIMIT);
-        }
-
+        $runners = $this->raceRepository->search(new IlluminateSearchRaceQuery(
+            search: $search,
+            page: $page,
+            perPage: self::LIMIT,
+            sortBy: $sortColumn,
+            sortDirection: $sortDirection,
+        ));
 
         return Inertia::render('Admin/Runners/Index', [
             'runners' => array_map(fn (Runner $runner) => $this->runnerTransformer->transform($runner), $runners->items()),

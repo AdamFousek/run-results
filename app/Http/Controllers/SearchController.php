@@ -25,10 +25,32 @@ class SearchController extends Controller
 
     public function index(Request $request): Response
     {
-        $search = $request->get('query');
+        $search = (string)$request->get('search', '');
+
+        $runners = null;
+        $races = null;
+        if ($search !== '') {
+            $runners = $this->runnerSearchQuery->handle(new RunnerSearch(
+                search: $search,
+                page: 1,
+                perPage: 50,
+                sortBy: 'year',
+                sortDirection: 'desc'
+            ));
+
+            $races = $this->raceSearchHandler->handle(new RaceSearch(
+                search: $search,
+                page: 1,
+                perPage: 50,
+                sortBy: 'date',
+                sortDirection: 'desc'
+            ));
+        }
 
         return Inertia::render('Search', [
-            'search' => '',
+            'search' => $search,
+            'runners' => $runners !== null ? $this->runnerListTransformer->transform($runners->items) : [],
+            'races' => $races !== null ? $this->raceListTransformer->transform($races->items) : [],
         ]);
     }
 

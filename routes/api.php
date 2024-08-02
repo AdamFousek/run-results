@@ -18,6 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('api.search');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/runners', \App\Http\Controllers\Api\SearchRunnerController::class)->name('api.runners.search');
 

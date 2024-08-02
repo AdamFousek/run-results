@@ -20,7 +20,7 @@ readonly class RunnerSearch
         public int $page,
         public int $perPage,
         public string $sortBy = '',
-        public string $sortDirection = '',
+        public string $sortDirection = 'asc',
         public array $withoutIds = [],
     ) {
     }
