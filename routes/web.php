@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::get('/zavody/{race:slug}/statistiky', [\App\Http\Controllers\RaceControll
 Route::get('/zavody/{race:slug}/statistiky/nejlepsi-muzi', [\App\Http\Controllers\RaceController::class, 'topMen'])->name('races.stats.topMen');
 Route::get('/zavody/{race:slug}/statistiky/nejlepsi-zeny', [\App\Http\Controllers\RaceController::class, 'topWomen'])->name('races.stats.topWomen');
 Route::get('/zavody/{race:slug}/statistiky/nejvice-ucasti', [\App\Http\Controllers\RaceController::class, 'topParticipant'])->name('races.stats.topParticipant');
+
+Route::get('/clanky', [\App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
+Route::get('/clanek/{article:slug}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('articles.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -71,6 +75,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/uzivatele/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
 
     Route::get('/admin/mereni', [\App\Http\Controllers\Admin\MeasurementController::class, 'index'])->name('admin.measurement.index');
+
+    Route::get('/admin/clanky', [ArticleController::class, 'index'])->name('admin.articles.index');
+    Route::get('/admin/clanky/vytvorit', [ArticleController::class, 'create'])->name('admin.articles.create');
+    Route::post('/admin/clanky/vytvorit', [ArticleController::class, 'store'])->name('admin.articles.store');
+    Route::get('/admin/clanky/{article}', [ArticleController::class, 'edit'])->name('admin.articles.edit');
+    Route::post('/admin/clanky/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
+    Route::delete('/admin/clanky/{article}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
 
     Route::get('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings.index');
 });

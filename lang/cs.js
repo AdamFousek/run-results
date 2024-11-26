@@ -16,6 +16,7 @@ export default {
     showMore: 'Zobrazit více',
     showAll: 'Zobrazit vše',
     back: 'Zpět',
+    requiredDescription: 'Tyto pole jsou povinné a je potřeba je vyplnit',
     search: 'Vyhledat',
     searchTitles: {
         races: 'Závody',
@@ -23,6 +24,7 @@ export default {
     },
     news: {
         races: 'Nejnovější závody',
+        articles: 'Články',
     },
     profile: {
         information: 'Informace o profilu',
@@ -85,6 +87,8 @@ export default {
             results: 'Administrace - Výsledky',
             measurement: 'Administrace - Měření',
             runnersDuplicity: 'Administrace - Duplicitní závodníci',
+            articles: 'Administrace - Články',
+            article_create: 'Administrace - Vytvořit článek',
         }
     },
     menu: {
@@ -97,6 +101,23 @@ export default {
         results: 'Výsledky',
         measurement: 'Měření',
         settings: 'Nastavení webu',
+        articles: 'Články',
+    },
+    article: {
+        title: 'Titulek',
+        slug: 'Slug - url adresa',
+        content: 'Obsah',
+        search: 'Vyhledat článek',
+        sort: 'Řadit',
+        information: 'Zakldaní informace',
+        createdAt: 'Vytvořeno',
+        publishedAt: 'Publikováno',
+        author: 'Autor',
+        tags: 'Štítky',
+        meta: {
+            description: 'Popis pro google',
+            keywords: 'Klíčová slova pro google',
+        }
     },
     runner: {
         name: 'Jméno',
@@ -282,6 +303,24 @@ export default {
             reloadResults: 'Přeuložit všechny výsledky',
             refreshData: 'Přeuložit data - v případě nějakých problémů',
             refreshDataCta: 'Přeuložit',
+        },
+        articles: {
+            create: 'Vytvořit článek',
+            create_description: 'Vyplňte název, obsah a publikujte článek. Datum publikace rozhoduje o tom, od kdy bude článek viditelný na webu. Meta sekce rozhoduje o tom, co google pak ukazuje ve výsledcích a v jakém pořadí.',
+            update: 'Aktualizovat článek',
+            back: 'Zpět na výpis',
+            deleteArticle: 'Smazat článek',
+            deleteDescription: 'Článek bude smazán ze všech stránek!',
+            delete: 'Smazat',
+            deleteConfirmation: 'Jste si jisti, že chcete smazat článek?',
+            createdAt: 'Vytvořeno',
+            publishedAtDescription: 'Článek bude viditelný na webu podle data zadání.',
+            form: {
+                section_basic_header: 'Základní informace',
+                section_basic_description: 'Vyplňte základní informace o článku. Slug bude vytvořen automaticky.',
+                section_meta_header: 'Meta informace',
+                section_meta_description: 'Vyplňte meta informace o článku. Tyto informace se zobrazují ve výsledcích vyhledávání. Pokud nebude vyplněno, vezme se první věta z obsahu.',
+            }
         }
     },
     user: {

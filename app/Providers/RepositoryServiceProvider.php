@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Repositories\ArticleRepositoryInterface;
 use App\Repositories\Illuminate\IlluminateRaceRepository;
 use App\Repositories\Illuminate\IlluminateResultRepository;
 use App\Repositories\Illuminate\IlluminateRunnerRepository;
@@ -13,6 +14,7 @@ use App\Repositories\IlluminateRaceRepositoryInterface;
 use App\Repositories\IlluminateResultRepositoryInterface;
 use App\Repositories\IlluminateRunnerRepositoryInterface;
 use App\Repositories\IlluminateUploadFileResultRowRepositoryInterface;
+use App\Repositories\Meilisearch\MeilisearchArticleRepository;
 use App\Repositories\Meilisearch\MeilisearchRaceRepositoryInterface;
 use App\Repositories\Meilisearch\MeilisearchResultRepository;
 use App\Repositories\Meilisearch\MeilisearchRunnerRepositoryInterface;
@@ -32,6 +34,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RaceRepositoryInterface::class, MeilisearchRaceRepositoryInterface::class);
         $this->app->bind(ResultRepositoryInterface::class, MeilisearchResultRepository::class);
         $this->app->bind(TopResultRepositoryInterface::class, MeilisearchTopResultRepository::class);
+        $this->app->bind(ArticleRepositoryInterface::class, MeilisearchArticleRepository::class);
 
         // Illuminate
         $this->app->bind(IlluminateRunnerRepositoryInterface::class, IlluminateRunnerRepository::class);

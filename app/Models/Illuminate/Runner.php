@@ -12,49 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-/**
- * App\Models\Illuminate\Runner
- *
- * @property int $id
- * @property int|null $user_id
- * @property string $first_name
- * @property string $last_name
- * @property string|null $day
- * @property string|null $month
- * @property int $year
- * @property string|null $city
- * @property string|null $club
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Race> $races
- * @property-read int|null $races_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Illuminate\Result> $results
- * @property-read int|null $results_count
- * @property-read \App\Models\Illuminate\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|Runner newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Runner newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Runner onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Runner query()
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereClub($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereYear($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Runner withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Runner withoutTrashed()
- * @property string $gender
- * @property-read string $full_name
- * @method static \Illuminate\Database\Eloquent\Builder|Runner whereGender($value)
- * @mixin \Eloquent
- */
 class Runner extends IlluminateModel
 {
     use HasFactory, SoftDeletes, Searchable;

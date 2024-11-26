@@ -6,11 +6,12 @@ declare(strict_types=1);
 namespace App\Serializer;
 
 use App\Models\Illuminate\Runner;
+use App\Models\IlluminateModel;
 
-class RunnerSerializer
+class RunnerSerializer implements ShouldSerialize
 {
     /**
-     * @param Runner $runner
+     * @param Runner $model
      * @return array{
      *     id: int,
      *     userId: int|null,
@@ -24,20 +25,20 @@ class RunnerSerializer
      *     upsertedAt: int
      * }
      */
-    public function serialize(Runner $runner): array
+    public function serialize(IlluminateModel $model): array
     {
         return [
-            'id' => $runner->id,
-            'userId' => $runner->user_id,
-            'firstName' => $runner->first_name,
-            'lastName' => $runner->last_name,
-            'year' => $runner->year,
-            'city' => $runner->city,
-            'club' => $runner->club,
-            'gender' => $runner->gender,
-            'resultsCount' => $runner->results->count(),
-            'createdAt' => $runner->created_at?->getTimestamp(),
-            'updatedAt' => $runner->updated_at?->getTimestamp(),
+            'id' => $model->id,
+            'userId' => $model->user_id,
+            'firstName' => $model->first_name,
+            'lastName' => $model->last_name,
+            'year' => $model->year,
+            'city' => $model->city,
+            'club' => $model->club,
+            'gender' => $model->gender,
+            'resultsCount' => $model->results->count(),
+            'createdAt' => $model->created_at?->getTimestamp(),
+            'updatedAt' => $model->updated_at?->getTimestamp(),
             'upsertedAt' => now()->getTimestamp(),
         ];
     }

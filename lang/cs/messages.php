@@ -23,6 +23,8 @@ return [
     'race_delete_success' => 'Závod byl vymazán',
     'race_created_success' => 'Závod byl vytvořen',
 
+    'article_created_success' => 'Článek byl vytvořen',
+
     'result_create_success' => 'Vysledek byl přidán',
     'result_delete_success' => 'Vysledek byl odstraněn',
 

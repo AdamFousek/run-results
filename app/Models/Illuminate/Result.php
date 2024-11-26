@@ -10,45 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
 
-
-/**
- * App\Models\Illuminate\Result
- *
- * @property int $id
- * @property int $runner_id
- * @property int $race_id
- * @property int $starting_number
- * @property int $position
- * @property mixed|null $time
- * @property string $category
- * @property int $category_position
- * @property int $DNF
- * @property int $DNS
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Illuminate\Race $race
- * @property-read \App\Models\Illuminate\Runner $runner
- * @method static \Illuminate\Database\Eloquent\Builder|Result newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Result newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Result query()
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereCategory($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereCategoryPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereDNF($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereDNS($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result wherePosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereRaceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereRunnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereStartingNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereUpdatedAt($value)
- * @property string|null $club
- * @method static \Illuminate\Database\Eloquent\Builder|Result whereClub($value)
- * @method static Builder|Result withoutFemale()
- * @method static Builder|Result withoutMale()
- * @mixin \Eloquent
- */
 class Result extends IlluminateModel
 {
     use HasFactory, Searchable;

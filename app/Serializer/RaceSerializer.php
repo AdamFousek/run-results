@@ -6,11 +6,12 @@ declare(strict_types=1);
 namespace App\Serializer;
 
 use App\Models\Illuminate\Race;
+use App\Models\IlluminateModel;
 
-class RaceSerializer
+class RaceSerializer implements ShouldSerialize
 {
     /**
-     * @param Race $race
+     * @param Race $model
      * @return array{
      *     id: int,
      *     name: string,
@@ -40,36 +41,36 @@ class RaceSerializer
      *     upsertedAt: int
      * }
      */
-    public function serialize(Race $race): array
+    public function serialize(IlluminateModel $model): array
     {
         return [
-            'id' => $race->id,
-            'name' => $race->name,
-            'slug' => $race->slug,
-            'description' => $race->description->toPlainText(),
-            'date' => $race->date?->getTimestamp(),
-            'time' => $race->time?->format('H:i'),
-            'location' => $race->location ?? '',
-            'region' => $race->region,
-            'distance' => $race->getRawOriginal('distance'),
-            'vintage' => $race->vintage,
-            'surface' => $race->surface ?? '',
-            'type' => $race->type ?? '',
-            'tag' => $race->tag ?? '',
-            'isParent' => (bool)$race->is_parent,
-            'parent' => $race->parent !== null ? [
-                'id' => $race->parent->id,
-                'name' => $race->parent->name,
-                'slug' => $race->parent->slug,
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'description' => $model->description->toPlainText(),
+            'date' => $model->date?->getTimestamp(),
+            'time' => $model->time?->format('H:i'),
+            'location' => $model->location ?? '',
+            'region' => $model->region,
+            'distance' => $model->getRawOriginal('distance'),
+            'vintage' => $model->vintage,
+            'surface' => $model->surface ?? '',
+            'type' => $model->type ?? '',
+            'tag' => $model->tag ?? '',
+            'isParent' => (bool)$model->is_parent,
+            'parent' => $model->parent !== null ? [
+                'id' => $model->parent->id,
+                'name' => $model->parent->name,
+                'slug' => $model->parent->slug,
             ] : null,
             '_geo' => [
-                'lat' => $race->latitude,
-                'lng' => $race->longitude,
+                'lat' => $model->latitude,
+                'lng' => $model->longitude,
             ],
-            'files' => $this->resolveFiles($race),
-            'runnerCount' => $race->results->count(),
-            'createdAt' => $race->created_at?->getTimestamp(),
-            'updatedAt' => $race->updated_at?->getTimestamp(),
+            'files' => $this->resolveFiles($model),
+            'runnerCount' => $model->results->count(),
+            'createdAt' => $model->created_at?->getTimestamp(),
+            'updatedAt' => $model->updated_at?->getTimestamp(),
             'upsertedAt' => now()->getTimestamp(),
         ];
     }

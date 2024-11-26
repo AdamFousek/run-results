@@ -8,12 +8,13 @@ namespace App\Serializer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
+use App\Models\IlluminateModel;
 use Carbon\Carbon;
 
-class TopResultSerializer
+class TopResultSerializer implements ShouldSerialize
 {
     /**
-     * @param Result $result
+     * @param Result $model
      * @return array{
      *     id: int,
      *     topPosition: int,
@@ -34,14 +35,14 @@ class TopResultSerializer
      *     time: int,
      * }
      */
-    public function serialize(Result $result): array
+    public function serialize(IlluminateModel $model): array
     {
         return [
-            'id' => $result->id,
-            'topPosition' => $result->getTopPosition(),
-            'race' => $this->serializeRace($result->race),
-            'runner' => $this->serializeRunner($result->runner),
-            'time' => (int)$result->getRawOriginal('time'),
+            'id' => $model->id,
+            'topPosition' => $model->getTopPosition(),
+            'race' => $this->serializeRace($model->race),
+            'runner' => $this->serializeRunner($model->runner),
+            'time' => (int)$model->getRawOriginal('time'),
             'lastUpsertedAt' => (new Carbon())->timestamp,
         ];
     }
