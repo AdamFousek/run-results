@@ -115,7 +115,7 @@ class ResultDeserializer
         $race->setDate($data['date'] ? Carbon::createFromTimestamp($data['date']) : null);
         $race->setTime($data['time']);
         $race->setVintage($data['vintage']);
-        $race->setDistance($data['distance']);
+        $race->setDistance((int)$data['distance']);
         $race->setLocation($data['location']);
         $race->setSurface($data['surface']);
         $race->setType($data['type']);
