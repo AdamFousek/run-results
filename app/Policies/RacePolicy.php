@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\User;
+use Illuminate\Auth\Access\Response;
 
 class RacePolicy
 {

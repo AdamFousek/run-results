@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Illuminate\Article;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
@@ -190,13 +189,6 @@ return [
                     'topPosition',
                 ],
                 'sortableAttributes'=> ['time', 'topPosition', 'runner.gender', 'race.tag',],
-                'pagination' => [
-                    'maxTotalHits' => 100000
-                ]
-            ],
-            Article::class => [
-                'filterableAttributes'=> ['title', 'content', 'publishedAt', 'author', 'tags'],
-                'sortableAttributes'=> ['title', 'publishedAt', 'author'],
                 'pagination' => [
                     'maxTotalHits' => 100000
                 ]

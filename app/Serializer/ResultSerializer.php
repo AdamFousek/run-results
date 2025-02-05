@@ -8,12 +8,11 @@ namespace App\Serializer;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
-use App\Models\IlluminateModel;
 
-class ResultSerializer implements ShouldSerialize
+class ResultSerializer
 {
     /**
-     * @param Result $model
+     * @param Result $result
      * @return array{
      *     id: int,
      *     race: array{
@@ -47,20 +46,20 @@ class ResultSerializer implements ShouldSerialize
      *     dns: bool
      * }
      */
-    public function serialize(IlluminateModel $model): array
+    public function serialize(Result $result): array
     {
         return [
-            'id' => $model->id,
-            'race' => $this->serializeRace($model->race),
-            'runner' => $this->serializeRunner($model->runner),
-            'time' => (int)$model->getRawOriginal('time'),
-            'startingNumber' => $model->starting_number,
-            'position' => $model->position,
-            'category' => $model->category,
-            'categoryPosition' => $model->category_position,
-            'club' => $model->club,
-            'dnf' => (bool)$model->DNF,
-            'dns' => (bool)$model->DNS,
+            'id' => $result->id,
+            'race' => $this->serializeRace($result->race),
+            'runner' => $this->serializeRunner($result->runner),
+            'time' => (int)$result->getRawOriginal('time'),
+            'startingNumber' => $result->starting_number,
+            'position' => $result->position,
+            'category' => $result->category,
+            'categoryPosition' => $result->category_position,
+            'club' => $result->club,
+            'dnf' => (bool)$result->DNF,
+            'dns' => (bool)$result->DNS,
         ];
     }
 

@@ -15,7 +15,6 @@
         "laravel/tinker": "^2.8",
         "meilisearch/meilisearch-php": "^1.5",
         "sentry/sentry-laravel": "^4.2",
-        "spatie/laravel-tags": "^4.7",
         "tightenco/ziggy": "^1.0",
         "tonysm/rich-text-laravel": "^3.0"
     },

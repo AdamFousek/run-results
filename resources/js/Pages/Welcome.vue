@@ -4,14 +4,9 @@ import AuthenticatedLayout from '@/Layouts/AppLayout.vue'
 import { ref, watch } from 'vue'
 import axios from 'axios'
 import MyLink from '@/Components/MyLink.vue'
-import RaceItem from '@/Pages/Welcome/Partials/RaceItem.vue'
-import ArticleItem from '@/Pages/Welcome/Partials/ArticleItem.vue'
 
 defineProps({
     races: {
-        type: Array,
-    },
-    articles: {
         type: Array,
     }
 });
@@ -57,7 +52,7 @@ watch(search, (value) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid md:grid-cols-4 gap-4">
                     <div class="md:col-span-3">
-                        <div class="flex justify-center flex-wrap">
+                        <div class="m-2 flex justify-center flex-wrap">
                             <div class="w-full">
                                 <input type="text"
                                        class="rounded-t-lg w-full focus:border-gray-300 py-1 focus:ring-0 shadow-sm"
@@ -97,18 +92,25 @@ watch(search, (value) => {
                             </div>
 
                         </div>
-
-                        <section id="articles" class="pt-4">
-                            <h3 class="text-2xl p-4 md:px-0 text-gray-900">{{ $t('news.articles') }}</h3>
-                            <div class="grid space-y-6">
-                                <ArticleItem v-for="article in articles" :key="article.id" :article="article" />
-                            </div>
-                        </section>
                     </div>
                     <div class="md:col-span-1">
-                        <h3 class="text-lg pb-2 md:px-0 text-gray-900">{{ $t('news.races') }}</h3>
-                        <div class="grid  space-y-6">
-                            <RaceItem v-for="race in races" :key="race.id" :race="race" />
+                        <div class="text-lg p-2 md:px-0 text-gray-900">{{ $t('news.races') }}</div>
+                        <div class="grid gap-4 items-start">
+                            <Link :href="route('races.show', { race: race.slug })" v-for="race in races" :key="race.id"
+                                  class="p-2 bg-white overflow-hidden shadow-sm hover:shadow-lg sm:rounded-lg">
+                                <h3 class="font-bold text-lg">{{ race.name }}</h3>
+                                <div class="flex justify-between">
+                                    <div class="text-gray-600">{{ race.date }}</div>
+                                    <div class="text-gray-600">{{ race.location }}</div>
+                                </div>
+                                <div v-if="race.region !== ''" class="flex justify-end">
+                                    <div class="text-gray-600">{{ race.region }}</div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <div class="text-gray-600">{{ $t('race.runners') }}</div>
+                                    <div class="text-gray-600">{{ race.resultsCount }}</div>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </div>

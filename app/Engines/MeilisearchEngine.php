@@ -8,8 +8,6 @@ namespace App\Engines;
 use App\Models\Illuminate\Race;
 use App\Models\Illuminate\Result;
 use App\Models\Illuminate\Runner;
-use App\Models\IlluminateModel;
-use App\Serializer\ShouldSerialize;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -50,15 +48,11 @@ class MeilisearchEngine extends \Laravel\Scout\Engines\MeilisearchEngine
             $models->each->pushSoftDeleteMetadata();
         }
 
-        $objects = $models->map(function (IlluminateModel $model) {
+        $objects = $models->map(function (Race|Runner|Result $model) {
             if ($model->getSerializer() !== null) {
                 $serializer = app($model->getSerializer());
 
-                if ($serializer instanceof ShouldSerialize) {
-                    $searchableData = $serializer->serialize($model);
-                } else {
-                    $searchableData = $model->toSearchableArray();
-                }
+                $searchableData = $serializer->serialize($model);
             } else {
                 $searchableData = $model->toSearchableArray();
             }
