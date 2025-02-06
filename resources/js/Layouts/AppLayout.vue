@@ -34,7 +34,7 @@ const alert = computed(() => {
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div class="hidden sm:-my-px sm:ms-5 sm:flex gap-4">
                                 <NavLink :href="route('welcome')" :active="route().current('welcome')">
                                     {{ $t('menu.dashboard') }}
                                 </NavLink>
@@ -44,15 +44,18 @@ const alert = computed(() => {
                                 <NavLink :href="route('races.index')" :active="route().current('races.*')">
                                     {{ $t('menu.races') }}
                                 </NavLink>
+                                <NavLink :href="route('search.index')" :active="route().current('search.*')">
+                                    {{ $t('menu.search') }}
+                                </NavLink>
                             </div>
                         </div>
 
                         <div v-if="!$page.props.auth?.user" class="hidden sm:flex sm:items-center sm:ml-6">
-                            <NavLink :href="route('login')" class="m-4">
+                            <NavLink :href="route('login')" class="md:m-4">
                                 {{ $t('auth.login') }}
                             </NavLink>
 
-                            <NavLink :href="route('register')" class="m-4">
+                            <NavLink :href="route('register')" class="md:m-4">
                                 {{ $t('auth.register') }}
                             </NavLink>
                         </div>
@@ -156,6 +159,9 @@ const alert = computed(() => {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('races.index')" :active="route().current('races.*')">
                             {{ $t('menu.races') }}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('search.index')" :active="route().current('search.*')">
+                            {{ $t('menu.search') }}
                         </ResponsiveNavLink>
                     </div>
 

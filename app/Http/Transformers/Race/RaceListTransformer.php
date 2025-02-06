@@ -77,6 +77,8 @@ class RaceListTransformer
             'type' => $race->type,
             'tag' => $race->tag,
             'vintage' => $race->vintage,
+            'latitude' => $race->latitude,
+            'longitude' => $race->longitude,
             'region' => $race->region,
             'latitude' => $race->latitude,
             'longitude' => $race->longitude,
