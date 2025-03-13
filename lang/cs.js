@@ -139,7 +139,7 @@ export default {
         tag: 'Tag',
         search: 'Vyhledat závod',
         sort: 'Řadit',
-        information: 'Zakldaní informace',
+        information: 'Základní informace',
         runners: 'Počet závodníků',
         parent: 'Nadřazený závod',
         isParent: 'Nadřazený závod',

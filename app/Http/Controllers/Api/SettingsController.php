@@ -23,7 +23,9 @@ class SettingsController extends Controller
 
         Runner::removeAllFromSearch();
 
-        Runner::all()->searchable();
+        Runner::query()->chunk(200, function ($runners) {
+            $runners->searchable();
+        });
 
         return response()->json([
             'result' => true,
@@ -43,7 +45,9 @@ class SettingsController extends Controller
 
         Race::removeAllFromSearch();
 
-        Race::all()->searchable();
+        Race::query()->chunk(200, function ($races) {
+            $races->searchable();
+        });
 
         return response()->json([
             'result' => true,
@@ -63,7 +67,9 @@ class SettingsController extends Controller
 
         Result::removeAllFromSearch();
 
-        Result::all()->searchable();
+        Result::query()->chunk(200, function ($races) {
+            $races->searchable();
+        });
 
         return response()->json([
             'result' => true,
